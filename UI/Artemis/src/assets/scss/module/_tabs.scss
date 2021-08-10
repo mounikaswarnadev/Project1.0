@@ -1,0 +1,133 @@
+/*_tabs.scss*/
+
+#{$ar}-tabs{
+    $tabs:&;
+    height: 100%;
+    &__nav{
+        height: 40px;
+        border-bottom: solid 1px #cdcdcd;
+        padding: 0 20px;
+
+        > li{
+            float: left;
+            margin-right: 15px;
+        }
+
+        &-lnk{
+            display: inline-block;
+            color: #999;
+            line-height: 40px;
+            border-bottom: solid 4px transparent;
+            height: 40px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            &.active{
+                color: #444;
+                border-bottom: solid 4px #FBD336;
+            }
+        }
+
+        @extend .clearfix;
+    }
+
+    &__panel{
+        display: none;
+        height: 100%;
+        overflow: auto;
+
+        &s{
+            height: calc(100% - 40px);
+        }
+
+        &.active{
+            display: block;
+            overflow: hidden;
+        }
+
+        &-body{
+            height: 100%;
+            padding: 20px;
+            overflow: auto;
+            height: calc(100% - 168px);
+        }
+
+        &-footer{
+            padding: 20px;
+            height: 168px;
+            background: #eee;
+            //box-shadow: 0px 0px 16px rgba(0,0,0,.2);
+        }
+    }
+
+    &__list{
+        position: relative;
+        margin: 20px 0;
+
+        &-item{
+            height: 40px;
+            border-bottom: 0.5px solid #EAEAEA;
+        }
+
+        &-lnk{
+            display: flex;
+            height: 100%;
+            padding: 0 15px;
+            align-items: center;
+            justify-content: space-between;
+            border-left: solid 3px transparent;
+            color:#777;
+            cursor: pointer;
+
+            .fa-ellipsis-h{
+                display: none;
+            }
+
+            &.active,&:hover{
+                background-color: #F3F1F1;
+                border-left: solid 3px $pc-shell-yellow;
+
+                .fa-ellipsis-h{
+                    display: flex;
+                }
+            }
+
+            &.active{
+                font-weight: 700;
+            }
+        }
+
+        &-input{
+            display: flex;
+            height: 100%;
+            padding: 0 15px;
+            align-items: center;
+            justify-content: space-between;
+            border-left: solid 3px transparent;
+            color:#777;
+            cursor: pointer;
+
+            #{$ar}-control{
+                height: 30px;
+                margin-right: 10px;
+            }
+        }
+    }
+
+    &--page{
+        #{$tabs}__nav{
+            > li{
+                float: left;
+                margin-right: 45px;
+            }
+
+            &-lnk{
+
+                &.active{
+
+
+                }
+            }
+        }
+    }
+}

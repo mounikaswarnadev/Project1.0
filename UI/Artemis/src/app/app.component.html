@@ -1,18 +1,10 @@
-<main class="dr-main">
-    <header class="dr-header">
-        <div class="dr-header__left">
-            <span class="dr-header__logo">
-          <img  src="./../assets/shell_logo.png"/>
-      </span>
-            <h1 class="dr-header__title"><span>ARTEMIS</span><span class="dr-header__subtitle">Migration Programme</span></h1>
-        </div>
-    </header>
-
-    <section class="dr-body">
-        <section class="dr-body__content">
-            <h1 style="color: #666; font-size: x-large;">
-                Welcome to ARTEMIS Web App
-            </h1>
-        </section>
+<main class="ar-main">
+  <app-header></app-header>
+  <section class="ar-body">
+    <app-aside></app-aside>
+    <section class="ar-body__content">
+      <router-outlet></router-outlet>
+      <!-- <app-toast></app-toast> -->
     </section>
+  </section>
 </main>
