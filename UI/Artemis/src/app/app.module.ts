@@ -9,6 +9,7 @@ import { HomeModule } from './modules/home/home.module';
 import { OAuthModule, OAuthStorage } from 'angular-oauth2-oidc';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import {FormsModule} from '@angular/forms';
+import { CoreModule } from './core/core.module';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import {FormsModule} from '@angular/forms';
     SharedModule,
     AppConfigModule,
     AppRoutingModule,
+    CoreModule,
     HomeModule,
     OAuthModule.forRoot({
 

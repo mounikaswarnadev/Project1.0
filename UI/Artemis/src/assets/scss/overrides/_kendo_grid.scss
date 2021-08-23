@@ -1,5 +1,7 @@
 /*_kendo_grid.scss*/
-
+.k-grid .k-grid-content-locked .k-state-selected td {
+    background-color: rgba(183, 213, 225, 0.5) !important;
+}
 #{$ar}-kgrid {
     $kgrid: &;
     height: 94%;
@@ -19,6 +21,10 @@
         td {
             white-space: nowrap;
         }
+    }
+    .k-grid-toolbar {
+      padding: 10px 0px;
+      background-color: #f4f8f9;
     }
     .k-grid-aria-root {}
     .k-grid-header {
@@ -139,4 +145,8 @@
             }
         }
     }
+}
+.k-pager-numbers .k-link.k-state-selected {
+    color: #006999;
+    background-color: #EEE;
 }

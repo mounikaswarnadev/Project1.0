@@ -1,3 +1,219 @@
-<section class="ar-section" *ngIf="!loading">
-  <h1>Success</h1>
+<section class="ar-section">
+  <header class="ar-section__header">
+    <h1 class="ar-section__title">Samples</h1>
+  </header>
+  <section class="ar-section__content p-b-4">
+    <div class="ar-kgrid" id="kgrid_home_project">
+      <kendo-grid
+        #grid
+        [data]="gridData"
+        filterable="menu"
+        (dataStateChange)="dataStateChange($event)"
+        [pageSize]="state.take"
+        [skip]="state.skip"
+        [filter]="state.filter"
+        [pageable]="true"
+        [resizable]="true"
+        [sortable]="{ allowUnsort: true, mode: 'single' }"
+        [sort]="sort"
+        [navigable]="true"
+        (sortChange)="sortChange($event)"
+        [kendoGridBinding]="gridView"
+        (cellClick)="cellClickHandler($event)"
+        (cellClose)="cellCloseHandler($event)"
+        [selectable]="{ enabled: true, checkboxOnly: true }"
+        (selectedKeysChange)="onSelectedKeysChange($event)"
+        [selectedKeys]="mySelection"
+        [kendoGridSelectBy]="selectedCallback"
+        id="home_grid"
+        [columnMenu]="{ filter: true }"
+      >
+        <ng-template kendoGridNoRecordsTemplate>
+          <span *ngIf="!loading && sampleData.length === 0"
+            >There are No Samples uploaded yet</span
+          >
+        </ng-template>
+        <ng-template kendoGridToolbarTemplate>
+          <input
+            class="ar-kinput"
+            placeholder="Search in all columns..."
+            kendoTextBox
+            (input)="onFilter($event.target.value)"
+          />
+        </ng-template>
+        <kendo-grid-checkbox-column showSelectAll="true" width="50px">
+          <ng-template kendoGridHeaderTemplate>
+            <input
+              class="k-checkbox"
+              id="selectAllCheckboxId"
+              kendoGridSelectAllCheckbox
+              [state]="selectAllState"
+              (selectAllChange)="onSelectAllChange($event)"
+            />
+            <label class="k-checkbox-label" for="selectAllCheckboxId"></label>
+          </ng-template>
+        </kendo-grid-checkbox-column>
+        <!-- <kendo-grid-column field="id" title="Sample ID" width="80px ">
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span title="{{ dataItem.id }}">{{ dataItem.id }}</span>
+          </ng-template>
+        </kendo-grid-column> -->
+        <kendo-grid-column field="ArtemisID"  [filterable]="true" title="Artemis ID" width="80px ">
+          <ng-template kendoGridCellTemplate let-dataItem let-filter>
+            <span title="{{ dataItem.ArtemisID }}">{{
+              dataItem.ArtemisID
+            }}</span>
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="BusinessAppName"
+          title="Business App Name "
+          width="150px "
+          [filterable]="true"
+
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span title="{{ dataItem.BusinessAppName }}">{{
+              dataItem.BusinessAppName
+            }}</span>
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="CorrelationID"
+          title="Correlation ID"
+          width="100px "
+          [filterable]="true"
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span title="{{ dataItem.CorrelationID }}">{{
+              dataItem.CorrelationID
+            }}</span>
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="ServerName"
+          title="Server Name "
+          width="100px "
+          [filterable]="true"
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span title="{{ dataItem.ServerName }}">{{
+              dataItem.ServerName
+            }}</span>
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="AppContactName"
+          title="App Contact Name"
+          width="150px"
+          [filterable]="true"
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span title="{{ dataItem.AppContactName }}">
+              {{ dataItem.AppContactName }}</span
+            >
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="installStatus"
+          title="Install Status"
+          width="100px"
+          [filterable]="true"
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+      <div style="display: flex; align-items: center">
+            <div class="status" [ngClass]="getIconBackground(dataItem)">
+              <span class="status-icon" [ngClass]="getStatusIcon(dataItem)" aria-hidden="true"></span>
+            </div>
+            <span
+              >{{ dataItem.installStatus }}
+            </span>
+            </div>
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="siteComments"
+          title="Add Comments"
+          [width]="200"
+          [sortable]="false"
+          [columnMenu]="false"
+        >
+          <ng-template
+            kendoGridCellTemplate
+            let-dataItem="dataItem"
+            class="ar-kgrid__cell-lnk"
+          >
+            <span class="comments">
+              <div [ngClass]="{ 'editEnabled': !isDone, 'editDisabled': isDone }">
+                <i *ngIf="canEditTeamComments" class="fas fa-edit editIcon"></i>
+              </div>
+              <p class="line-break" [ngStyle]="(dataItem.ContactComment ==null)?{'color': '#0575D1','font-style': 'italic'}:{}">
+                {{ dataItem.ContactComment? dataItem.ContactComment : 'Add Comment here' }}
+              </p>
+              <div>&nbsp;</div>
+              <div class="by" style="color: #b8b8b8">
+                Last edited by {{ dataItem.UpdatedBy }}
+              </div>
+              <div class="on" style="color: #b8b8b8">
+                {{ dataItem.LastUpdatedDate | date: "dd/MM/yyyy h:mm a" }}
+              </div>
+              <br />
+            </span>
+            <span class="audit">
+              <div class="by">Edited by {{ dataItem.UpdatedBy }}</div>
+              <div class="on">{{ dataItem.AddedDate | date: "dd/MM/yyyy h:mm a" }}</div>
+              <br />
+            </span>
+          </ng-template>
+
+          <ng-template
+            kendoGridEditTemplate
+            let-dataItem="dataItem"
+            let-column="column"
+            let-formGroup="formGroup"
+            class="ar-kgrid__cell-lnk"
+          >
+            <span class="comments">
+              <textarea
+              #input
+                name="siteComments"
+                class="k-textbox"
+                required
+                [formControl]="formGroup.get(column.field)"
+                [maxlength]="commentsMaxLength"
+                >{{ dataItem.ContactComment? dataItem.ContactComment : ""  }}</textarea
+              ><br />
+              <div>&nbsp;</div>
+              <div class="charCount">
+                ({{ formGroup.get(column.field).value?.length }}/{{
+                  commentsMaxLength
+                }})
+              </div>
+            <!-- <button [ngClass]="{'saveDisabled' : formGroup.get(column.field).value?.trim().length == 0, 'save' : formGroup.get(column.field).value?.trim().length > 0}" [disabled]="formGroup.get(column.field).value?.trim().length == 0" (click)="saveClicked(dataItem, 'siteComments', grid)">Save</button> -->
+            <button
+            [ngClass]="{'saveDisabled' : formGroup.get(column.field).value?.trim().length == 0||dataItem.ContactComment==null&&!(formGroup.get(column.field).value?.trim().length>0), 'save' : formGroup.get(column.field).value?.trim().length > 0}"
+            [disabled]="formGroup.get(column.field).value == null || formGroup.get(column.field).value?.trim().length == 0 || dataItem.ContactComment == formGroup.get(column.field).value"
+            (click)="saveClicked(formGroup.get(column.field).value, 'siteComments', grid)">Save</button>
+              <button class="cancel" (click)="cancelChanges(grid)">Cancel</button><br />
+              <div>&nbsp;</div>
+              <div class="by" style="color: #b8b8b8">
+                Last edited by {{ dataItem.UpdatedBy }}
+              </div>
+              <div class="on" style="color: #b8b8b8">
+                {{ dataItem.LastUpdatedDate | date: "dd/MM/yyyy h:mm a" }}
+              </div>
+              <br />
+            </span>
+            <span class="audit">
+              <div class="by">Edited by {{ dataItem.UpdatedBy }}</div>
+              <div class="on">{{ dataItem.AddedDate | date: "dd/MM/yyyy h:mm a" }}</div>
+              <br />
+            </span>
+          </ng-template>
+        </kendo-grid-column>
+
+      </kendo-grid>
+    </div>
+  </section>
+  <div *ngIf="loading" aria-label="Loading page" class="k-i-loading"></div>
 </section>
