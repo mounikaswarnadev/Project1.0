@@ -24,10 +24,18 @@ async function addSamples(sample) {
       .input('UpdatedBy', sql.NVarChar, sample.UpdatedBy)
       .input('DateUpdated', sql.DateTime, sample.lastUpdated)
       .input('LastUpdatedDate', sql.DateTime, sample.LastUpdatedDate)
+      .input('AddedDate', sql.DateTime, sample.LastUpdatedDate)
+      // .query("SELECT ContactComment FROM dbo.ArtemisProjectPlanNaction_4Test WHERE ArtemisID=@ArtemisID")
+      // .query("UPDATE dbo.ArtemisProjectPlanNaction_4Test SET AddedDate=@AddedDate WHERE ArtemisID = @ArtemisID AND ContactComment IS NULL",(err,res)=>{
+      //   if(!err){
+
+      //   }
+      // })
       .query("UPDATE dbo.ArtemisProjectPlanNaction_4Test SET ContactComment= @ContactComment, UpdatedBy = @UpdatedBy,LastUpdatedDate=@LastUpdatedDate WHERE ArtemisID = @ArtemisID", (err,res) =>{
         console.log(res,'ress');
       })
       .query("SELECT ContactComment,DateUpdated,UpdatedBy,LastUpdatedDate,AddedDate,LastInScope FROM dbo.ArtemisProjectPlanNaction_4Test WHERE ArtemisID = @ArtemisID")
+      console.log(insertComment.recordset,'reco')
       return insertComment.recordset;
   }
   catch (err) {

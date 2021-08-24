@@ -32,6 +32,7 @@ export class HomeComponent implements OnInit {
   commentsDTO: Samples;
   sampleData: SampleDetails[] = [];
   public formGroup: FormGroup;
+  inpValue: any;
   public selectAllState: SelectAllCheckboxState = 'unchecked';
   public state: State = {
     skip: 0,
@@ -51,6 +52,7 @@ export class HomeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    debugger;
     this.loading = true;
     this.sampleService.getSamples();
     this.sampleSub = this.sampleService
@@ -61,6 +63,9 @@ export class HomeComponent implements OnInit {
         this.gridData = process(this.samples, this.state);
         this.loading = false;
         this.gridView = samples;
+        if(this.inpValue != null){
+        this.onFilter(this.inpValue);
+        }
         } else{
           this.loading = false;
           this.sampleData.length = 0;
@@ -206,10 +211,11 @@ export class HomeComponent implements OnInit {
               data.ContactComment = this.commentsDTO.ContactComment
               data.lastUpdated = this.commentsDTO.LastUpdatedDate
               data.LastUpdatedDate = this.commentsDTO.LastUpdatedDate
-              data.user = this.commentsDTO.user
+              data.user = this.commentsDTO.UpdatedBy
               }
             })
             grid.cancelCell();
+            this.ngOnInit();
             // this.toastService.success("Pearl site comments saved successfully.");
           },
           (error: any) => {
@@ -222,6 +228,7 @@ export class HomeComponent implements OnInit {
     }
   }
   public onFilter(inputValue: string): void {
+    this.inpValue = inputValue;
     this.gridView = process(this.samples, {
       filter: {
         logic: "or",
