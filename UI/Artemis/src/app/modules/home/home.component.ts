@@ -206,7 +206,7 @@ export class HomeComponent implements OnInit {
               data.ContactComment = this.commentsDTO.ContactComment
               data.lastUpdated = this.commentsDTO.LastUpdatedDate
               data.LastUpdatedDate = this.commentsDTO.LastUpdatedDate
-              data.user = this.commentsDTO.user
+              data.user = this.commentsDTO.UpdatedBy
               }
             })
             grid.cancelCell();
