@@ -52,7 +52,6 @@ export class HomeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    debugger;
     this.loading = true;
     this.sampleService.getSamples();
     this.sampleSub = this.sampleService
