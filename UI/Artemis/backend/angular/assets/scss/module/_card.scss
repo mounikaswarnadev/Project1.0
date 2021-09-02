@@ -1,0 +1,61 @@
+/*_header.scss*/
+
+#{$ar}-card{
+    position: relative;
+    //max-width: 300px;
+    padding: 15px 0;
+    padding-right: 110px;
+    &__title{
+        font-size: 18px;
+        font-weight: normal;
+        color:#323C47;
+        margin-bottom: 10px;
+    }
+
+    &__state{
+        position: absolute;
+        top:0;
+        left:0;
+        height: 4px;
+        background-color: #cccccc;
+        border-radius: 2px;
+        width:50px;
+
+        &--green{
+            background-color: #5BC62B;
+        }
+
+        &--orange{
+            background-color: #DD9A18;
+        }
+
+    }
+
+    &__content{
+        display: flex;
+        align-items: flex-start;
+    }
+
+    &__count{
+        font-size: 42px;
+        line-height: 42px;
+        color:#666666;
+        padding-right: 20px;
+    }
+
+    &__desc{
+        color: #737373;
+        line-height: 20px;
+    }
+
+    &--separator{
+        &:after{
+            content: "";
+            border-right:solid 1px #ccc;
+            position: absolute;
+            bottom: 15px;
+            top:15px;
+            right: 0;
+        }
+    }
+}

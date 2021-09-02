@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { CommentsDTO, Samples } from 'src/app/models/samples.model';
+import { Samples } from 'src/app/models/samples.model';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +21,14 @@ export class SamplesService {
       this.sampleUpdate.next([...this.samples]);
     })
   }
-
+  editSamples(samples){
+    this.http.post<{message: string}>('http://localhost:3000/api/editsamples', samples)
+    .subscribe(res => {
+      console.log(res.message);
+      this.samples.push(samples);
+      this.sampleUpdate.next([...this.samples]);
+    })
+  }
   addSamples(samples){
     this.http.post<{message: string}>('http://localhost:3000/api/samples', samples)
     .subscribe(res => {
@@ -32,6 +39,9 @@ export class SamplesService {
   }
   saveSiteComments(commentsDTO: Samples): Observable<any> {
     return this.http.post<any>('http://localhost:3000/api/samples', commentsDTO);
+  }
+  editSample(commentsDTO: Samples): Observable<any> {
+    return this.http.post<any>('http://localhost:3000/api/editsample', commentsDTO);
   }
 
   getSamplesUpdated(){

@@ -1,0 +1,16 @@
+/*_body.scss*/
+
+#{$ar}-body {
+    position: relative;
+    display: flex;
+    flex-flow: row nowrap;
+    height: calc(100% - 50px);
+    overflow-x: hidden;
+    &__content {
+        //padding: 0 60px 0 60px;
+        width: 100%;
+        background-color: #F4F8F9;
+        overflow: auto;
+        height: 100%;
+    }
+}

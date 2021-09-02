@@ -1,0 +1,71 @@
+/*_panel.scss*/
+
+#{$ar}-panel{
+    background-color: $white;
+    padding: 30px 20px;
+
+    &__header{
+        background: #E5E5E5;
+        // height: 30px;
+        // padding: 0 25px;
+
+        padding: 15px 25px;
+        height: 65px;
+
+
+        &--clean{
+            background-color: transparent;
+        }
+    }
+
+    &__title{
+        display: inline-block;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 30px;
+    }
+
+    &__body{
+        height: calc(100% - 65px);
+        overflow: auto;
+
+        &--md{
+            height: calc(100% - 140px);
+        }
+    }
+
+    &__footer{
+        padding: 15px 25px;
+        height: 75px;
+    }
+
+    &__actions{
+        $actions:&;
+        display: inline-flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        float: right;
+
+        &-item{
+            display: inline-block;
+            height: 30px;
+            padding: 0 8px;
+            border-left: solid 1px #ccc;
+            line-height: 30px;
+            text-align: center;
+            font-size: 12px;
+            cursor: pointer;
+
+        }
+
+        > li:last-child{
+            #{$actions}-item{
+                border-right: solid 1px #ccc;
+            }
+        }
+    }
+
+    &--fheight{
+        height: 100%;
+    }
+}

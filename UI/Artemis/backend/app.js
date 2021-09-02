@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const path = require("path");
 // const dbconn = require('./databse');
 const Samples = require('./model/samples');
 var Db = require('./contollers/dboperations');
@@ -9,6 +10,7 @@ var  router = express.Router()
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+// app.use("/", express.static(path.join(__dirname, "angular")));
 
 
 app.use((req, res, next) => {
@@ -24,6 +26,9 @@ app.use((req, res, next) => {
   // executeStatement();
   next();
 });
+// app.use((req, res, next) => {
+//   res.sendFile(path.join(__dirname, "angular", "index.html"));
+// });
 
 app.post('/api/samples',(req, res, next) => {
   const sample = req.body;
@@ -32,7 +37,14 @@ app.post('/api/samples',(req, res, next) => {
     res.status(201).json(result);
  })
 })
+app.post('/api/editsample',(req,res) =>{
+  const editdate = req.body;
+  console.log(editdate,'editdate');
 
+  dboperations.editsample(editdate).then(result =>{
+    res.status(201).json(result);
+  }) 
+})
 app.get('/api/samples',(req, res, next) =>{
   dboperations.getSamples().then(result => {
     if(result){

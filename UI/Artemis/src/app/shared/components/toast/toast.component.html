@@ -1,0 +1,16 @@
+<section
+  class="ar-toast ar-toast--active"
+  [ngClass]="alertType(alert)"
+  *ngFor="let alert of alerts"
+  style="z-index: 1000;"
+>
+  <span
+    class="ar-toast__close fas fa-times"
+    (click)="removeAlert(alert)"
+  ></span>
+  <span class="ar-toast__icn"><span [ngClass]="alertIcon(alert)"></span></span>
+  <div class="ar-toast__content" role="alert">
+    <h1 class="ar-toast__title">{{ alert.type }}</h1>
+    <p class="ar-toast__desc">{{ alert.message }}</p>
+  </div>
+</section>

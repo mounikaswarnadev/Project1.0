@@ -8,6 +8,7 @@ import {
 import { process, SortDescriptor, State } from '@progress/kendo-data-query';
 import { Subscription } from 'rxjs';
 import { SamplesService } from 'src/app/core/services/samples.service';
+import { ToastService } from 'src/app/core/services/toast/toast.service';
 import { UtilityService } from 'src/app/core/services/utility/utility.service';
 import { SampleDetails } from 'src/app/models/samples';
 import { CommentsDTO, Samples } from 'src/app/models/samples.model';
@@ -23,6 +24,8 @@ export class HomeComponent implements OnInit {
   gridData: any;
   isSelected = false;
   isDone: boolean = false;
+  dialog: boolean = false;
+  artemisId: any;
   updateDate: Date;
   public gridView: any[];
   public commentsMaxLength = 450;
@@ -48,29 +51,40 @@ export class HomeComponent implements OnInit {
   constructor(
     private sampleService: SamplesService,
     private utiltiyService: UtilityService,
+    private toastService: ToastService,
     private formBuilder: FormBuilder
   ) {}
 
   ngOnInit(): void {
+    this.loadItems();
+    // this.formGroup = this.createFormGroup(this.samples);
+  }
+  public gridDimension = {
+    height: 'calc(100vh - 140px)',
+    width: 'calc(100vw - 140px)',
+  };
+  private loadItems(): void {
     this.loading = true;
     this.sampleService.getSamples();
     this.sampleSub = this.sampleService
       .getSamplesUpdated()
       .subscribe((samples: Samples[]) => {
-        if(samples.length > 0){
-        this.samples = samples;
-        this.gridData = process(this.samples, this.state);
-        this.loading = false;
-        this.gridView = samples;
-        if(this.inpValue != null){
-        this.onFilter(this.inpValue);
-        }
-        } else{
+        if (samples.length > 0) {
+          this.samples = samples;
+          let records = samples.filter((sample) => sample.ArtemisID);
+          this.samples = records.filter((item, i, arr) => 
+            arr.findIndex((x) => (x.ArtemisID === item.ArtemisID)) === i)
+          this.gridData = process(this.samples, this.state);
+          this.loading = false;
+          this.gridView = this.samples;
+          if (this.inpValue != null) {
+            this.onFilter(this.inpValue);
+          }
+        } else {
           this.loading = false;
           this.sampleData.length = 0;
         }
-      })
-      // this.formGroup = this.createFormGroup(this.samples);
+      });
   }
   get canEditTeamComments(): boolean {
     return true;
@@ -83,6 +97,13 @@ export class HomeComponent implements OnInit {
   public sortChange(sort: SortDescriptor[]): void {
     this.sort = sort;
     //     this.buildSampleGrid();
+  }
+  public handleChange(value: Date) {
+    // Update the JSON birthDate string date
+    // this.model.birthDate = this.intl.formatDate(value, "yyyy-MM-dd");
+
+    // this.output = JSON.stringify(this.model);
+    // this.user = this.parse(this.model);
   }
   public onSelectAllChange(checkedState: SelectAllCheckboxState) {
     this.isSelected = true;
@@ -99,7 +120,10 @@ export class HomeComponent implements OnInit {
   }
   public onSelectedKeysChange(e: any) {
     this.isSelected = true;
-    var data = this.sampleData.filter((i) => i.artemisId == this.mySelection[0]);
+    this.artemisId = e;
+    var data = this.samples.filter(
+      (i) => i.ArtemisID == this.mySelection[0]
+    );
     const len = this.mySelection.length;
     if (len === 0) {
       this.selectAllState = 'unchecked';
@@ -132,11 +156,25 @@ export class HomeComponent implements OnInit {
     }
   }
   public createFormGroup(dataItem: any): FormGroup {
+    let formDate = new Date(dataItem.PlannedDate);
+    var options = {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    };
+    // let formatted = formDate.toLocaleDateString("en-US")
     return this.formBuilder.group({
       ArtemisID: dataItem.ArtemisID,
-      BusinessAppName : dataItem.BusinessAppName,
+      BusinessAppName: dataItem.BusinessAppName,
+      value: dataItem.value,
+      PlannedDate: formDate,
+      Move2Azure: dataItem.Move2Azure,
+      ContactFocalPoint: dataItem.ContactFocalPoint,
+      ConfirmedBusiness: dataItem.ConfirmedBusiness,
       siteComments: dataItem.ContactComment,
-      siteCommentsLastUpdatedOn: dataItem.ContactComment?.lastUpdated?.updatedOn,
+      siteCommentsLastUpdatedOn:
+        dataItem.ContactComment?.lastUpdated?.updatedOn,
 
       teamComments: dataItem.teamComments?.data,
       teamCommentsLastUpdatedOn: dataItem.teamComments?.lastUpdated?.updatedOn,
@@ -171,51 +209,111 @@ export class HomeComponent implements OnInit {
       this.formGroup = this.createFormGroup(dataItem);
       sender.editCell(rowIndex, columnIndex, this.formGroup);
     }
-    if (!isEdited && column.field == "BusinessAppName") {
+    if (
+      (!isEdited && column.field == 'PlannedDate') ||
+      column.field == 'value' ||
+      column.field == 'ConfirmedBusiness' ||
+      column.field == 'Move2Azure' || column.field == 'ContactFocalPoint'
+    ) {
+      this.formGroup = this.createFormGroup(dataItem);
       sender.editCell(rowIndex, columnIndex, this.createFormGroup(dataItem));
     }
-
   }
 
+  changePlanDate(data: any){
+    this.sampleService.editSample(this.commentsDTO).subscribe(
+      (args: any) => {
+        this.loading = false;
+        this.samples.filter((data) => {
+          if (data.ArtemisID === this.commentsDTO.ArtemisID) {
+           data.PlannedDate = this.commentsDTO.PlannedDate;
+          }
+          this.loadItems();
+        this.toastService.success('Value Changed successfully.');
+        }); 
+      }
+    )
+  }
+  public closeRefreshPopup(status) {
+    this.dialog = false;
+    if (status == 'yes') {
+      // this.loadItems();
+    }
+  }
   public cellCloseHandler(args: any) {
     const { formGroup, dataItem } = args;
-        if (!formGroup.valid) {
-            // prevent closing the edited cell if there are invalid values.
-            // args.preventDefault();
+    if (!formGroup.valid) {
+      // prevent closing the edited cell if there are invalid values.
+      // args.preventDefault();
+    } else if (formGroup.dirty) {
+      this.samples.filter((data) => {
+        this.commentsDTO = new Samples();
+        
+        if(formGroup?.controls?.ConfirmedBusiness?.value != null){
+        this.commentsDTO.ConfirmedBusiness =
+          formGroup?.controls?.ConfirmedBusiness?.value;
         }
-        else if (formGroup.dirty) {
-          this.samples.filter((data) => {
-            if(data.ArtemisID === formGroup?.controls?.ArtemisID?.value){
-            data.BusinessAppName = formGroup?.controls?.BusinessAppName?.value;
+        if(formGroup?.controls?.Move2Azure?.value != null){
+          this.commentsDTO.Move2Azure =
+            formGroup?.controls?.Move2Azure?.value;
+          }
+          if(formGroup?.controls?.PlannedDate?.value != null){
+            this.commentsDTO.PlannedDate =
+              formGroup?.controls?.PlannedDate?.value;
             }
-          })
+        this.commentsDTO.ArtemisID = formGroup?.controls?.ArtemisID?.value;
+        this.commentsDTO.ContactFocalPoint = formGroup?.controls?.ContactFocalPoint?.value;
+        if (data.ArtemisID === formGroup?.controls?.ArtemisID?.value) {
+          data.PlannedDate = formGroup?.controls?.PlannedDate?.value;
+          data.ConfirmedBusiness =
+            formGroup?.controls?.ConfirmedBusiness?.value;
+            data.Move2Azure = formGroup?.controls?.Move2Azure?.value;
+            data.ContactFocalPoint = formGroup?.controls?.ContactFocalPoint?.value;
         }
-
+        
+      });
+      if(this.commentsDTO.PlannedDate.toString() !== this.formGroup?.controls?.PlannedDate?.value.toString()){
+        this.dialog = true;
+        // this.changePlanDate(data);
+      }
+    if(this.commentsDTO.ConfirmedBusiness != this.formGroup?.controls?.ConfirmedBusiness?.value || this.commentsDTO.Move2Azure != this.formGroup?.controls?.Move2Azure?.value || this.commentsDTO.ContactFocalPoint != this.formGroup?.controls?.ContactFocalPoint?.value){
+      this.sampleService.editSample(this.commentsDTO).subscribe(
+        (args: any) => {
+          this.loading = false;       
+          this.loadItems();
+          this.toastService.success('Value Changed successfully.');
+        },
+        (error: any) => {
+          this.loading = false;
+          // this.HandleAPIError(error)
+        }
+      );
+    }
+    }
   }
   saveClicked(item, column, grid) {
+    let sam = [];
     this.loading = true;
     this.commentsDTO = new Samples();
     this.commentsDTO.ArtemisID = this.formGroup?.controls?.ArtemisID?.value;
+    this.samples.filter((x) =>{
+      x.ArtemisID = this.artemisId;
+      sam.push(x)
+    })
+    
     switch (column) {
       case 'siteComments': {
-        this.commentsDTO.ContactComment = this.formGroup?.controls?.siteComments?.value;
-        this.commentsDTO.UpdatedBy = "Rajesh D"
+        this.commentsDTO.ContactComment =
+          this.formGroup?.controls?.siteComments?.value;
+        this.commentsDTO.UpdatedBy = 'Rajesh D';
         // this.updateDate = new Date();
-        this.commentsDTO.LastUpdatedDate = new Date;
+        this.commentsDTO.LastUpdatedDate = new Date();
         this.sampleService.saveSiteComments(this.commentsDTO).subscribe(
           (args: any) => {
             this.loading = false;
-            this.samples.filter((data) => {
-              if(data.ArtemisID === this.commentsDTO.ArtemisID){
-              data.ContactComment = this.commentsDTO.ContactComment
-              data.lastUpdated = this.commentsDTO.LastUpdatedDate
-              data.LastUpdatedDate = this.commentsDTO.LastUpdatedDate
-              data.user = this.commentsDTO.UpdatedBy
-              }
-            })
             grid.cancelCell();
-            this.ngOnInit();
-            // this.toastService.success("Pearl site comments saved successfully.");
+            this.loadItems();
+            this.toastService.success('Comments saved successfully.');
           },
           (error: any) => {
             this.loading = false;
@@ -230,41 +328,256 @@ export class HomeComponent implements OnInit {
     this.inpValue = inputValue;
     this.gridView = process(this.samples, {
       filter: {
-        logic: "or",
+        logic: 'or',
         filters: [
           {
-            field: "ArtemisID",
-            operator: "contains",
+            field: 'ArtemisID',
+            operator: 'contains',
             value: inputValue,
           },
           {
-            field: "id",
-            operator: "contains",
+            field: 'ArtemisName',
+            operator: 'contains',
             value: inputValue,
           },
           {
-            field: "BusinessAppName",
-            operator: "contains",
+            field: 'ArtemisLoc',
+            operator: 'contains',
             value: inputValue,
           },
           {
-            field: "CorrelationID",
-            operator: "contains",
+            field: 'ConfirmedBusiness',
+            operator: 'contains',
             value: inputValue,
           },
           {
-            field: "installStatus",
-            operator: "contains",
+            field: 'tsCustBusiness',
+            operator: 'contains',
             value: inputValue,
           },
           {
-            field: "ServerName",
-            operator: "contains",
+            field: 'AptCOrganisation',
+            operator: 'contains',
             value: inputValue,
           },
           {
-            field: "AppContactName",
-            operator: "contains",
+            field: 'eMRFOwningBusiness',
+            operator: 'contains',
+            value: inputValue,
+          },
+          {
+            field: 'eMRFOperatingBusiness',
+            operator: 'contains',
+            value: inputValue,
+          },
+          {
+            field: 'SnowOperatingBusiness',
+            operator: 'contains',
+            value: inputValue,
+          },
+          {
+            field: 'eMRFAssetCIOwner',
+            operator: 'contains',
+            value: inputValue,
+          },
+          {
+            field: 'SnowAssetOwner',
+            operator: 'contains',
+            value: inputValue,
+          },
+          {
+            field: 'MigrationCompleted',
+            operator: 'contains',
+            value: inputValue,
+          },
+          {
+            field: 'ExitStrategy',
+            operator: 'contains',
+            value: inputValue,
+          },
+          {
+            field: 'ScopeGroup',
+            operator: 'contains',
+            value: inputValue,
+          },
+          {
+            field: 'ScopeSet',
+            operator: 'contains',
+            value: inputValue,
+          },
+          {
+            field: 'Bucket',
+            operator: 'contains',
+            value: inputValue,
+          },
+          {
+            field: 'Wave',
+            operator: 'contains',
+            value: inputValue,
+          },
+          {
+            field: 'HighestBucketPerDeployment',
+            operator: 'contains',
+            value: inputValue,
+          },
+          {
+            field: 'AptManufacturer',
+            operator: 'contains',
+            value: inputValue,
+          },
+          {
+            field: 'AptModel',
+            operator: 'contains',
+            value: inputValue,
+          },
+          {
+            field: 'AptModelInfo',
+            operator: 'contains',
+            value: inputValue,
+          },
+          {
+            field: 'AptAssetClass',
+            operator: 'contains',
+            value: inputValue,
+          },
+          {
+            field: 'AptCDeviceUse',
+            operator: 'contains',
+            value: inputValue,
+          },
+          {
+            field: 'tsUsage',
+            operator: 'contains',
+            value: inputValue,
+          },
+          {
+            field: 'tsComputerType',
+            operator: 'contains',
+            value: inputValue,
+          },
+          {
+            field: 'SnowClass',
+            operator: 'contains',
+            value: inputValue,
+          },
+          {
+            field: 'tsOperatingMode',
+            operator: 'contains',
+            value: inputValue,
+          },
+          {
+            field: 'tsVirtualization',
+            operator: 'contains',
+            value: inputValue,
+          },
+          {
+            field: 'tsPlatform',
+            operator: 'contains',
+            value: inputValue,
+          },
+          {
+            field: 'tsConsolidatedOS',
+            operator: 'contains',
+            value: inputValue,
+          },
+          {
+            field: 'AptRackName',
+            operator: 'contains',
+            value: inputValue,
+          },
+          {
+            field: 'AptSerialNumber',
+            operator: 'contains',
+            value: inputValue,
+          },
+          {
+            field: 'SnowSerialNumber',
+            operator: 'contains',
+            value: inputValue,
+          },
+          {
+            field: 'tsSystemStatus',
+            operator: 'contains',
+            value: inputValue,
+          },
+          {
+            field: 'AptCDeviceCondition',
+            operator: 'contains',
+            value: inputValue,
+          },
+          {
+            field: 'SnowStatus',
+            operator: 'contains',
+            value: inputValue,
+          },
+          {
+            field: 'tsService',
+            operator: 'contains',
+            value: inputValue,
+          },
+          {
+            field: 'tsSHELL_DeploymentID',
+            operator: 'contains',
+            value: inputValue,
+          },
+          {
+            field: 'eMRFDeploymentID',
+            operator: 'contains',
+            value: inputValue,
+          },
+          {
+            field: 'tsSHELL_DeploymentName',
+            operator: 'contains',
+            value: inputValue,
+          },
+          {
+            field: 'eMRFDeploymentName',
+            operator: 'contains',
+            value: inputValue,
+          },
+          {
+            field: 'eMRFDeploymentCIOwner',
+            operator: 'contains',
+            value: inputValue,
+          },
+          {
+            field: 'eMRFApplicationID',
+            operator: 'contains',
+            value: inputValue,
+          },
+          {
+            field: 'eMRFApplicationName',
+            operator: 'contains',
+            value: inputValue,
+          },
+          {
+            field: 'eMRFPortfolioName',
+            operator: 'contains',
+            value: inputValue,
+          },
+          {
+            field: 'eMRFPortfolioManager',
+            operator: 'contains',
+            value: inputValue,
+          },
+          {
+            field: 'tsAppl_LifeCycle',
+            operator: 'contains',
+            value: inputValue,
+          },
+          {
+            field: 'tsAppl_Business_Criticality',
+            operator: 'contains',
+            value: inputValue,
+          },
+          {
+            field: 'tsAppl_DR_Required',
+            operator: 'contains',
+            value: inputValue,
+          },
+          {
+            field: 'eMRFBusinessApplicationOwner',
+            operator: 'contains',
             value: inputValue,
           },
         ],
@@ -278,10 +591,7 @@ export class HomeComponent implements OnInit {
   }
 
   getIconBackground(dataItem: Samples) {
-    return this.utiltiyService.getStatusIcon(
-      dataItem.installStatus,
-      true
-    );
+    return this.utiltiyService.getStatusIcon(dataItem.installStatus, true);
   }
   ngOnDestroy(): void {
     //Called once, before the instance is destroyed.

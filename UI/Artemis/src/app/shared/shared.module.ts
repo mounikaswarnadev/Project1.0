@@ -7,6 +7,7 @@ import { AppRoutingModule } from '../app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { ToastComponent } from './components/toast/toast.component';
 
 
 
@@ -14,7 +15,8 @@ import { RouterModule } from '@angular/router';
   declarations: [
     HeaderComponent,
     NameFormatPipe,
-    AsideComponent
+    AsideComponent,
+    ToastComponent
   ],
   imports: [
     CommonModule,
@@ -27,7 +29,8 @@ import { RouterModule } from '@angular/router';
   exports:[
     HeaderComponent,
     NameFormatPipe,
-    AsideComponent
+    AsideComponent,
+    ToastComponent
   ]
 })
 export class SharedModule { }
