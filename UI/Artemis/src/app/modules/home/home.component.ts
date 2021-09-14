@@ -3,16 +3,26 @@ import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import {
   DataBindingDirective,
   DataStateChangeEvent,
+  FilterService,
   SelectAllCheckboxState,
 } from '@progress/kendo-angular-grid';
-import { process, SortDescriptor, State } from '@progress/kendo-data-query';
+import { CompositeFilterDescriptor, distinct, FilterDescriptor, process, SortDescriptor, State } from '@progress/kendo-data-query';
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { Subscription } from 'rxjs';
 import { SamplesService } from 'src/app/core/services/samples.service';
 import { ToastService } from 'src/app/core/services/toast/toast.service';
+import { UserNavigationControlService } from 'src/app/core/services/user-context/user.navigation-control.service';
 import { UtilityService } from 'src/app/core/services/utility/utility.service';
 import { SampleDetails } from 'src/app/models/samples';
 import { CommentsDTO, Samples } from 'src/app/models/samples.model';
 
+const flatten = filter => {
+  const filters = (filter || {}).filters;
+  if (filters) {
+    return filters.reduce((acc, curr) => acc.concat(curr.filters ? flatten(curr) : [curr]), []);
+  }
+  return [];
+};
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -20,6 +30,7 @@ import { CommentsDTO, Samples } from 'src/app/models/samples.model';
 })
 export class HomeComponent implements OnInit {
   @ViewChild(DataBindingDirective) dataBinding: DataBindingDirective;
+  dropdownSettings : IDropdownSettings;
   loading: boolean = true;
   gridData: any;
   isSelected = false;
@@ -31,15 +42,21 @@ export class HomeComponent implements OnInit {
   public commentsMaxLength = 450;
   public mySelection: string[] = [];
   samples: Samples[] = [];
+  selectedItems: any;
   private sampleSub: Subscription;
+  public microscopeFields: string[] = []
   commentsDTO: Samples;
   sampleData: SampleDetails[] = [];
+  colm: SampleDetails;
   public formGroup: FormGroup;
   inpValue: any;
+  private categoryFilter: any[] = [];
+columns:any[] = ['ArtemisID','MergedAssetTag','MergedLocation','ConfirmedBusiness','tsCustBusiness']
+
   public selectAllState: SelectAllCheckboxState = 'unchecked';
   public state: State = {
     skip: 0,
-    take: 30,
+    take: 10000,
   };
   sort: SortDescriptor[] = [
     {
@@ -52,12 +69,76 @@ export class HomeComponent implements OnInit {
     private sampleService: SamplesService,
     private utiltiyService: UtilityService,
     private toastService: ToastService,
+    private userNavigationControlService: UserNavigationControlService,
     private formBuilder: FormBuilder
   ) {}
 
   ngOnInit(): void {
+    this.selectedItems = this.columns;
     this.loadItems();
+    console.log(this.commentsDTO,'ccc');
+    this.dropdownSettings = {
+      singleSelection: false,
+      idField: 'id',
+      textField: 'text',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      itemsShowLimit: 1,
+      allowSearchFilter: true,
+      enableCheckAll: true,
+      limitSelection: -1,
+    };
     // this.formGroup = this.createFormGroup(this.samples);
+  }
+  public hiddenColumns: string[] = [];
+
+  public isHidden(columnName: string): boolean {
+    return this.hiddenColumns.indexOf(columnName) > -1;
+  }
+
+  public hideColumn(columnName: string): void {
+    const hiddenColumns = this.hiddenColumns;
+
+    if (!this.isHidden(columnName)) {
+      hiddenColumns.push(columnName);
+    } else {
+      hiddenColumns.splice(hiddenColumns.indexOf(columnName), 1);
+    }
+  }
+  onISelect(item: any) {
+    debugger;
+    this.hideColumn(item);
+    this.microscopeFields.push(item);
+  }
+  onISelectAll(items: any) {
+    debugger;
+    console.log(items);
+    this.microscopeFields.push(items);
+  }
+  onIDeSelect(item: any){
+    debugger;
+    this.hideColumn(item);
+    this.microscopeFields.slice(item)
+  }
+  onIDeSelectAll(items: any){
+    debugger;
+    this.microscopeFields.slice(items)
+  }
+  openView(sample: SampleDetails) {
+    if (sample) {
+      this.userNavigationControlService.navigateByAccess([
+        {
+          path: "viewsample",
+          params: {
+            queryParams: {
+              id: sample.artemisId,
+              sampleGuid: sample.artemisId,
+            },
+          },
+        },
+      ]);
+    }
+    return false;
   }
   public gridDimension = {
     height: 'calc(100vh - 140px)',
@@ -69,10 +150,11 @@ export class HomeComponent implements OnInit {
     this.sampleSub = this.sampleService
       .getSamplesUpdated()
       .subscribe((samples: Samples[]) => {
+        debugger;
         if (samples.length > 0) {
           this.samples = samples;
           let records = samples.filter((sample) => sample.ArtemisID);
-          this.samples = records.filter((item, i, arr) => 
+          this.samples = records.filter((item, i, arr) =>
             arr.findIndex((x) => (x.ArtemisID === item.ArtemisID)) === i)
           this.gridData = process(this.samples, this.state);
           this.loading = false;
@@ -93,10 +175,57 @@ export class HomeComponent implements OnInit {
     this.state = state;
     this.gridData = process(this.samples, state);
   }
+  public value: any = [];
 
+  public isChecked = false;
+
+  public get isIndet() {
+    return (
+      this.value.length !== 0 && this.value.length !== this.samples.length
+    );
+  }
+  public onValueChange(e) {
+    this.isChecked = this.value.length === this.samples.length;
+  }
+  public get toggleAllText() {
+    return this.isChecked ? "Deselect All" : "Select All";
+  }
+
+  public isItemSelected(item) {
+    return this.value.some((x) => x.value === item.value);
+  }
+
+  public onClick() {
+    debugger;
+    this.isChecked = !this.isChecked;
+    this.value = this.isChecked ? this.samples.slice() : [];
+  }
   public sortChange(sort: SortDescriptor[]): void {
     this.sort = sort;
     //     this.buildSampleGrid();
+  }
+
+  public distinctPrimitive(fieldName: string): any {
+    return distinct(this.samples, fieldName).map((item) => item[fieldName]);
+  }
+  public categoryFilters(filter: CompositeFilterDescriptor): FilterDescriptor[] {
+    debugger;
+    this.categoryFilter.splice(
+      0, this.categoryFilter.length,
+      ...flatten(filter).map(({ value }) => value)
+    );
+    return this.categoryFilter;
+  }
+  public categoryChange(values: any[], filterService: FilterService): void {
+    debugger;
+    filterService.filter({
+      filters: values.map(value => ({
+        field: 'tsCustBusiness',
+        operator: 'eq',
+        value
+      })),
+      logic: 'or'
+    });
   }
   public handleChange(value: Date) {
     // Update the JSON birthDate string date
@@ -170,6 +299,7 @@ export class HomeComponent implements OnInit {
       value: dataItem.value,
       PlannedDate: formDate,
       Move2Azure: dataItem.Move2Azure,
+      MigrationComment: dataItem.MigrationComment,
       ContactFocalPoint: dataItem.ContactFocalPoint,
       ConfirmedBusiness: dataItem.ConfirmedBusiness,
       siteComments: dataItem.ContactComment,
@@ -212,7 +342,7 @@ export class HomeComponent implements OnInit {
     if (
       (!isEdited && column.field == 'PlannedDate') ||
       column.field == 'value' ||
-      column.field == 'ConfirmedBusiness' ||
+      column.field == 'ConfirmedBusiness' || column.field == 'MigrationComment' ||
       column.field == 'Move2Azure' || column.field == 'ContactFocalPoint'
     ) {
       this.formGroup = this.createFormGroup(dataItem);
@@ -230,7 +360,7 @@ export class HomeComponent implements OnInit {
           }
           this.loadItems();
         this.toastService.success('Value Changed successfully.');
-        }); 
+        });
       }
     )
   }
@@ -248,11 +378,15 @@ export class HomeComponent implements OnInit {
     } else if (formGroup.dirty) {
       this.samples.filter((data) => {
         this.commentsDTO = new Samples();
-        
+
         if(formGroup?.controls?.ConfirmedBusiness?.value != null){
         this.commentsDTO.ConfirmedBusiness =
           formGroup?.controls?.ConfirmedBusiness?.value;
         }
+        if(formGroup?.controls?.MigrationComment?.value != null){
+          this.commentsDTO.MigrationComment =
+            formGroup?.controls?.MigrationComment?.value;
+          }
         if(formGroup?.controls?.Move2Azure?.value != null){
           this.commentsDTO.Move2Azure =
             formGroup?.controls?.Move2Azure?.value;
@@ -270,7 +404,7 @@ export class HomeComponent implements OnInit {
             data.Move2Azure = formGroup?.controls?.Move2Azure?.value;
             data.ContactFocalPoint = formGroup?.controls?.ContactFocalPoint?.value;
         }
-        
+
       });
       if(this.commentsDTO.PlannedDate.toString() !== this.formGroup?.controls?.PlannedDate?.value.toString()){
         this.dialog = true;
@@ -279,7 +413,7 @@ export class HomeComponent implements OnInit {
     if(this.commentsDTO.ConfirmedBusiness != this.formGroup?.controls?.ConfirmedBusiness?.value || this.commentsDTO.Move2Azure != this.formGroup?.controls?.Move2Azure?.value || this.commentsDTO.ContactFocalPoint != this.formGroup?.controls?.ContactFocalPoint?.value){
       this.sampleService.editSample(this.commentsDTO).subscribe(
         (args: any) => {
-          this.loading = false;       
+          this.loading = false;
           this.loadItems();
           this.toastService.success('Value Changed successfully.');
         },
@@ -300,7 +434,7 @@ export class HomeComponent implements OnInit {
       x.ArtemisID = this.artemisId;
       sam.push(x)
     })
-    
+
     switch (column) {
       case 'siteComments': {
         this.commentsDTO.ContactComment =
@@ -387,6 +521,11 @@ export class HomeComponent implements OnInit {
           },
           {
             field: 'MigrationCompleted',
+            operator: 'contains',
+            value: inputValue,
+          },
+          {
+            field: 'MigrationComment',
             operator: 'contains',
             value: inputValue,
           },

@@ -12,14 +12,18 @@ import { PopupModule } from "@progress/kendo-angular-popup";
 import { DropDownListModule } from "@progress/kendo-angular-dropdowns";
 import { DropDownsModule } from "@progress/kendo-angular-dropdowns";
 import { LayoutModule } from "@progress/kendo-angular-layout";
-import { GridModule } from '@progress/kendo-angular-grid';
+import { GridModule, ExcelModule } from '@progress/kendo-angular-grid';
 import { DateInputsModule } from '@progress/kendo-angular-dateinputs';
 import { IntlModule } from '@progress/kendo-angular-intl';
 import { DialogModule } from '@progress/kendo-angular-dialog';
+import { LabelModule } from '@progress/kendo-angular-label';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { ViewSampleComponent } from '../view-sample/view-sample.component';
 
 @NgModule({
   declarations: [
-    HomeComponent
+    HomeComponent,
+    ViewSampleComponent
   ],
   imports: [
     CommonModule,
@@ -33,16 +37,20 @@ import { DialogModule } from '@progress/kendo-angular-dialog';
     DropDownsModule,
     DialogModule,
     GridModule,
+    ExcelModule,
+    LabelModule,
     RouterModule,
     InputsModule,
     PopupModule,
     DateInputsModule,
     LayoutModule,
-    IntlModule
+    IntlModule,
+    NgMultiSelectDropDownModule.forRoot()
 
   ],
   exports: [
-    HomeComponent
+    HomeComponent,
+    ViewSampleComponent
   ]
 })
 export class HomeModule { }

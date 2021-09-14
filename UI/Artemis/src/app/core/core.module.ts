@@ -6,6 +6,7 @@ import { UtilityService } from './services/utility/utility.service';
 import { UsercontextService } from './services/user-context/usercontext.service';
 import { ToastService } from './services/toast/toast.service';
 import { INTERCEPTORS } from './interceptors';
+import { UserNavigationControlService } from './services/user-context/user.navigation-control.service';
 
 
 
@@ -21,7 +22,8 @@ import { INTERCEPTORS } from './interceptors';
     ToastService,
     // INTERCEPTORS,
     UtilityService,
-    UsercontextService
+    UsercontextService,
+    UserNavigationControlService
   ]
 })
 export class CoreModule { }

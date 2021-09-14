@@ -8,6 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ToastComponent } from './components/toast/toast.component';
+import { MultiCheckFilterComponent } from './components/multicheck-filter/multicheck-filter.component';
 
 
 
@@ -16,7 +17,8 @@ import { ToastComponent } from './components/toast/toast.component';
     HeaderComponent,
     NameFormatPipe,
     AsideComponent,
-    ToastComponent
+    ToastComponent,
+    MultiCheckFilterComponent
   ],
   imports: [
     CommonModule,
@@ -30,7 +32,8 @@ import { ToastComponent } from './components/toast/toast.component';
     HeaderComponent,
     NameFormatPipe,
     AsideComponent,
-    ToastComponent
+    ToastComponent,
+    MultiCheckFilterComponent
   ]
 })
 export class SharedModule { }

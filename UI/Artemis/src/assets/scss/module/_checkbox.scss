@@ -63,3 +63,14 @@
         }
     }
 }
+#{$ar}-drpdown{
+  width: 250px;
+background-color: #fff;
+.multiselect-dropdown .dropdown-btn{
+  border: 1px solid #DADADA !important;
+  padding: 9px 12px !important;
+  font-style: italic;
+  color: #ccc;
+  height: 40px;
+}
+}

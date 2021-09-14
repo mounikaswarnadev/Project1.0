@@ -11,6 +11,7 @@ var  router = express.Router()
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 // app.use("/", express.static(path.join(__dirname, "angular")));
+app.use(express.static(process.cwd()+"/Artemis1.0/dist/Artemis/"));
 
 
 app.use((req, res, next) => {
@@ -43,7 +44,7 @@ app.post('/api/editsample',(req,res) =>{
 
   dboperations.editsample(editdate).then(result =>{
     res.status(201).json(result);
-  }) 
+  })
 })
 app.get('/api/samples',(req, res, next) =>{
   dboperations.getSamples().then(result => {

@@ -12,7 +12,7 @@
         [pageSize]="state.take"
         [skip]="state.skip"
         [filter]="state.filter"
-        [pageable]="true"
+        [pageable]="false"
         [resizable]="true"
         [sortable]="{ allowUnsort: true, mode: 'single' }"
         [sort]="sort"
@@ -33,14 +33,29 @@
             >There are No Samples uploaded yet</span
           >
         </ng-template>
-        <ng-template kendoGridToolbarTemplate>
+
+        <ng-template kendoGridToolbarTemplate let-dataItem>
           <input
             class="ar-kinput"
             placeholder="Search in all columns..."
             kendoTextBox
             (input)="onFilter($event.target.value)"
           />
+          <kendo-grid-spacer></kendo-grid-spacer>
+
+          <ng-multiselect-dropdown class="ar-drpdown" [(ngModel)]="selectedItems" [placeholder]="'Select Columns'" name="microscope" [data]="colm" [settings]="dropdownSettings" (onDeSelect)="onIDeSelect($event)" (onDeSelectAll)="onIDeSelectAll($event)" (onSelect)="onISelect($event)" (onSelectAll)="onISelectAll($event)">
+          </ng-multiselect-dropdown>
+          <button
+            class="ar-kexport"
+            kendoGridExcelCommand
+            type="button"
+            icon="file-excel"
+          >
+            Export to Excel
+          </button>
+
         </ng-template>
+
         <kendo-grid-checkbox-column showSelectAll="true" width="80px">
           <ng-template kendoGridHeaderTemplate>
             <input
@@ -59,690 +74,150 @@
             <span title="{{ dataItem.id }}">{{ dataItem.id }}</span>
           </ng-template>
         </kendo-grid-column> -->
-        <kendo-grid-column field="ArtemisID"  [filterable]="true" title="Artemis ID" width="150px ">
-          <ng-template kendoGridCellTemplate let-dataItem let-filter>
-            <span title="{{ dataItem.ArtemisID }}">{{
-              dataItem.ArtemisID
-            }}</span>
-          </ng-template>
-        </kendo-grid-column>
         <kendo-grid-column
-          field="ArtemisName"
-          title="Merged Asset Tag"
-          width="200px "
-          [filterable]="true"
+          field="ArtemisID"
+          [filterable]="{ multi: true }"
+          title="Artemis ID"
+          width="150px "
+          *ngIf="!isHidden('ArtemisID')"
 
         >
-          <ng-template kendoGridCellTemplate let-dataItem>
-            <span [ngStyle]="(dataItem.ArtemisName ==null)?{'color': '#909090','font-style': 'italic'}:{}" title="{{ dataItem.ArtemisName }}">{{
-              dataItem.ArtemisName? dataItem.ArtemisName: "No records"
-            }}</span>
-          </ng-template>
-        </kendo-grid-column>
-        <kendo-grid-column
-          field="ArtemisLoc"
-          title="Merged Location"
-          width="180px "
-          [filterable]="true"
-        >
-          <ng-template kendoGridCellTemplate let-dataItem>
-            <span [ngStyle]="(dataItem.ArtemisLoc ==null)?{'color': '#909090','font-style': 'italic'}:{}" title="{{ dataItem.ArtemisLoc }}">{{
-              dataItem.ArtemisLoc? dataItem.ArtemisLoc : "No records"
-            }}</span>
+          <ng-template kendoGridCellTemplate let-dataItem let-filter>
+            <a href="javascript:void(0)"
+            class="ar-kgrid__cell-lnk"
+            (click)="openView(dataItem)"
+            title="{{ dataItem.ArtemisID }}">{{dataItem.ArtemisID}}</a>
           </ng-template>
         </kendo-grid-column>
         <kendo-grid-column
           field="ConfirmedBusiness"
           title="Confirmed Business"
-          width="200px "
-          [filterable]="true"
-        >
-          <ng-template kendoGridCellTemplate let-dataItem>
-            <span [ngStyle]="(dataItem.ConfirmedBusiness ==null)?{'color': '#909090','font-style': 'italic'}:{}" title="{{ dataItem.ConfirmedBusiness }}">{{
-              dataItem.ConfirmedBusiness? dataItem.ConfirmedBusiness :  "No records"
-            }}</span>
-          </ng-template>
-        </kendo-grid-column>
-        <kendo-grid-column
-          field="tsCustBusiness"
-          title="ts Cust Business"
           width="200px"
+          [headerStyle]="{
+            color: '#0575D1'
+          }"
           [filterable]="true"
         >
           <ng-template kendoGridCellTemplate let-dataItem>
-            <span [ngStyle]="(dataItem.tsCustBusiness ==null)?{'color': '#909090','font-style': 'italic'}:{}" title="{{ dataItem.tsCustBusiness }}">
-              {{ dataItem.tsCustBusiness? dataItem.tsCustBusiness :  "No records" }}</span
+            <span
+              [ngStyle]="
+                dataItem.ConfirmedBusiness == null
+                  ? { color: '#909090', 'font-style': 'italic' }
+                  : {}
+              "
+              title="{{ dataItem.ConfirmedBusiness }}"
+              >{{
+                dataItem.ConfirmedBusiness
+                  ? dataItem.ConfirmedBusiness
+                  : "No records"
+              }}</span
             >
           </ng-template>
         </kendo-grid-column>
         <kendo-grid-column
-        field="AptCOrganisation"
-        title="AptC Organisation"
-        width="250px"
-        [filterable]="true"
-      >
-        <ng-template kendoGridCellTemplate let-dataItem>
-          <span [ngStyle]="(dataItem.AptCOrganisation ==null)?{'color': '#909090','font-style': 'italic'}:{}" title="{{ dataItem.AptCOrganisation }}">
-            {{ dataItem.AptCOrganisation? dataItem.AptCOrganisation : "No records" }}</span
-          >
-        </ng-template>
-      </kendo-grid-column>
-       <kendo-grid-column
-          field="eMRFOwningBusiness"
-          title="eMRF Owning Business"
+          field="MigrationComment"
+          title="Migration Comment"
+          width="200px "
+          [headerStyle]="{
+            color: '#0575D1'
+          }"
+          [filterable]="true"
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span
+              [ngStyle]="
+                dataItem.MigrationComment == null
+                  ? { color: '#909090', 'font-style': 'italic' }
+                  : {}
+              "
+              title="{{ dataItem.MigrationComment }}"
+              >{{
+                dataItem.MigrationComment
+                  ? dataItem.MigrationComment
+                  : "No records"
+              }}</span
+            >
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="PlannedDate"
+          editor="date"
+          [headerStyle]="{
+            color: '#0575D1'
+          }"
+          title="Planned Date"
+          width="150px"
+          filter="date"
+        >
+          <ng-template let-dataItem="dataItem">
+            <div>
+              {{ dataItem.PlannedDate | kendoDate: "MM/dd/yyyy" }}
+            </div>
+            <kendo-datepicker
+              calendarType="infinite"
+              #planneddate
+              name="dataItem.PlannedDate"
+              (valueChange)="handleChange($event)"
+              [(ngModel)]="dataItem.PlannedDate"
+            ></kendo-datepicker>
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="Move2Azure"
+          title="Move To Azure"
+          width="150px"
+          [headerStyle]="{
+            color: '#0575D1'
+          }"
+          [filterable]="true"
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span
+              [ngStyle]="
+                dataItem.MoveToAzure == null
+                  ? { color: '#909090', 'font-style': 'italic' }
+                  : {}
+              "
+              title="{{ dataItem.Move2Azure }}"
+            >
+              {{
+                dataItem.Move2Azure ? dataItem.Move2Azure : "No records"
+              }}</span
+            >
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="ContactFocalPoint"
+          title="Contact Focal Point"
           width="250px"
+          [headerStyle]="{
+            color: '#0575D1'
+          }"
           [filterable]="true"
         >
           <ng-template kendoGridCellTemplate let-dataItem>
-            <span [ngStyle]="(dataItem.eMRFOwningBusiness ==null)?{'color': '#909090','font-style': 'italic'}:{}" title="{{ dataItem.eMRFOwningBusiness }}">
-              {{ dataItem.eMRFOwningBusiness? dataItem.eMRFOwningBusiness : "No records" }}</span
+            <span
+              [ngStyle]="
+                dataItem.ContactFocalPoint == null
+                  ? { color: '#909090', 'font-style': 'italic' }
+                  : {}
+              "
+              title="{{ dataItem.ContactFocalPoint }}"
+            >
+              {{
+                dataItem.ContactFocalPoint
+                  ? dataItem.ContactFocalPoint
+                  : "No records"
+              }}</span
             >
           </ng-template>
         </kendo-grid-column>
-        <kendo-grid-column
-        field="eMRFOperatingBusiness"
-        title="eMRF Operating Business"
-        width="250px"
-        [filterable]="true"
-      >
-        <ng-template kendoGridCellTemplate let-dataItem>
-          <span [ngStyle]="(dataItem.eMRFOperatingBusiness ==null)?{'color': '#909090','font-style': 'italic'}:{}" title="{{ dataItem.eMRFOperatingBusiness }}">
-            {{ dataItem.eMRFOperatingBusiness? dataItem.eMRFOperatingBusiness : "No records" }}</span
-          >
-        </ng-template>
-      </kendo-grid-column>
-      <kendo-grid-column
-      field="SnowOperatingBusiness"
-      title="Snow Operating Business"
-      width="250px"
-      [filterable]="true"
-    >
-      <ng-template kendoGridCellTemplate let-dataItem>
-        <span [ngStyle]="(dataItem.SnowOperatingBusiness ==null)?{'color': '#909090','font-style': 'italic'}:{}" title="{{ dataItem.SnowOperatingBusiness }}">
-          {{ dataItem.SnowOperatingBusiness? dataItem.SnowOperatingBusiness : "No records" }}</span
-        >
-      </ng-template>
-    </kendo-grid-column>
-    <kendo-grid-column
-    field="eMRFAssetCIOwner"
-    title="eMRF AssetCI Owner"
-    width="200px"
-    [filterable]="true"
-  >
-    <ng-template kendoGridCellTemplate let-dataItem>
-      <span [ngStyle]="(dataItem.eMRFAssetCIOwner ==null)?{'color': '#909090','font-style': 'italic'}:{}" title="{{ dataItem.eMRFAssetCIOwner }}">
-        {{ dataItem.eMRFAssetCIOwner? dataItem.eMRFAssetCIOwner : "No records" }}</span
-      >
-    </ng-template>
-  </kendo-grid-column>
-  <kendo-grid-column
-  field="SnowAssetOwner"
-  title="Snow Asset Owner"
-  width="200px"
-  [filterable]="true"
->
-  <ng-template kendoGridCellTemplate let-dataItem>
-    <span [ngStyle]="(dataItem.SnowAssetOwner ==null)?{'color': '#909090','font-style': 'italic'}:{}" title="{{ dataItem.SnowAssetOwner }}">
-      {{ dataItem.SnowAssetOwner? dataItem.SnowAssetOwner : "No records" }}</span
-    >
-  </ng-template>
-</kendo-grid-column>
-<kendo-grid-column
-field="MigrationCompleted"
-title="Migration Completed"
-width="200px"
-[filterable]="true"
->
-<ng-template kendoGridCellTemplate let-dataItem>
-  <span [ngStyle]="(dataItem.MigrationCompleted ==null)?{'color': '#909090','font-style': 'italic'}:{}" title="{{ dataItem.MigrationCompleted }}">
-    {{ dataItem.MigrationCompleted? dataItem.MigrationCompleted : "No records" }}</span
-  >
-</ng-template>
-</kendo-grid-column>
-<kendo-grid-column
-field="ExitStrategy"
-title="Exit Strategy"
-width="150px"
-[filterable]="true"
->
-<ng-template kendoGridCellTemplate let-dataItem>
-  <span [ngStyle]="(dataItem.ExitStrategy ==null)?{'color': '#909090','font-style': 'italic'}:{}" title="{{ dataItem.ExitStrategy }}">
-    {{ dataItem.ExitStrategy? dataItem.ExitStrategy : "No records" }}</span
-  >
-</ng-template>
-</kendo-grid-column>
-<kendo-grid-column
-field="ScopeGroup"
-title="Scope Group"
-width="150px"
-[filterable]="true"
->
-<ng-template kendoGridCellTemplate let-dataItem>
-  <span [ngStyle]="(dataItem.ScopeGroup ==null)?{'color': '#909090','font-style': 'italic'}:{}" title="{{ dataItem.ScopeGroup }}">
-    {{ dataItem.ScopeGroup? dataItem.ScopeGroup:"No records" }}</span
-  >
-</ng-template>
-</kendo-grid-column>
-<kendo-grid-column
-field="ScopeSet"
-title="Scope Set"
-width="150px"
-[filterable]="true"
->
-<ng-template kendoGridCellTemplate let-dataItem>
-  <span [ngStyle]="(dataItem.ScopeSet ==null)?{'color': '#909090','font-style': 'italic'}:{}" title="{{ dataItem.ScopeSet }}">
-    {{ dataItem.ScopeSet? dataItem.ScopeSet : "No records" }}</span
-  >
-</ng-template>
-</kendo-grid-column>
-<kendo-grid-column
-field="Bucket"
-title="Bucket"
-width="150px"
-[filterable]="true"
->
-<ng-template kendoGridCellTemplate let-dataItem>
-  <span [ngStyle]="(dataItem.Bucket ==null)?{'color': '#909090','font-style': 'italic'}:{}" title="{{ dataItem.Bucket }}">
-    {{ dataItem.Bucket? dataItem.Bucket : "No records" }}</span
-  >
-</ng-template>
-</kendo-grid-column>
-<kendo-grid-column
-field="Wave"
-title="Wave"
-width="150px"
-[filterable]="true"
->
-<ng-template kendoGridCellTemplate let-dataItem>
-  <span [ngStyle]="(dataItem.Wave ==null)?{'color': '#909090','font-style': 'italic'}:{}" title="{{ dataItem.Wave }}">
-    {{ dataItem.Wave? dataItem.Wave : "No records" }}</span
-  >
-</ng-template>
-</kendo-grid-column>
-<kendo-grid-column
-field="HighestBucketPerDeployment"
-title="Highest BucketPer Deployment"
-width="280px"
-[filterable]="true"
->
-<ng-template kendoGridCellTemplate let-dataItem>
-  <span [ngStyle]="(dataItem.HighestBucketPerDeployment ==null)?{'color': '#909090','font-style': 'italic'}:{}" title="{{ dataItem.HighestBucketPerDeployment }}">
-    {{ dataItem.HighestBucketPerDeployment? dataItem.HighestBucketPerDeployment : "No records" }}</span
-  >
-</ng-template>
-</kendo-grid-column>
-<kendo-grid-column
-field="PlannedDate"
-editor="date"
-title="Planned Date"
-width="150px"
-filter="date"
->
-<ng-template  let-dataItem="dataItem">
-  <div>
-  {{dataItem.PlannedDate | kendoDate :'MM/dd/yyyy'}}
-  </div>
-  <kendo-datepicker calendarType="infinite" #planneddate name="dataItem.PlannedDate" (valueChange)="handleChange($event)" [(ngModel)]="dataItem.PlannedDate"></kendo-datepicker>
-</ng-template>
-</kendo-grid-column>
-<kendo-grid-column
-field="AptManufacturer"
-title="Apt Manufacturer"
-width="200px"
-[filterable]="true"
->
-<ng-template kendoGridCellTemplate let-dataItem>
-  <span [ngStyle]="(dataItem.AptManufacturer ==null)?{'color': '#909090','font-style': 'italic'}:{}" title="{{ dataItem.AptManufacturer }}">
-    {{ dataItem.AptManufacturer? dataItem.AptManufacturer : "No records" }}</span
-  >
-</ng-template>
-</kendo-grid-column>
-<kendo-grid-column
-field="AptModel"
-title="Apt Model"
-width="150px"
-[filterable]="true"
->
-<ng-template kendoGridCellTemplate let-dataItem>
-  <span [ngStyle]="(dataItem.AptModel ==null)?{'color': '#909090','font-style': 'italic'}:{}" title="{{ dataItem.AptModel }}">
-    {{ dataItem.AptModel? dataItem.AptModel : "No records" }}</span
-  >
-</ng-template>
-</kendo-grid-column>
-<kendo-grid-column
-field="AptModelInfo"
-title="Apt Model Info"
-width="150px"
-[filterable]="true"
->
-<ng-template kendoGridCellTemplate let-dataItem>
-  <span [ngStyle]="(dataItem.AptModelInfo ==null)?{'color': '#909090','font-style': 'italic'}:{}" title="{{ dataItem.AptModelInfo }}">
-    {{ dataItem.AptModelInfo? dataItem.AptModelInfo : "No records" }}</span
-  >
-</ng-template>
-</kendo-grid-column>
-<kendo-grid-column
-field="AptAssetClass"
-title="Apt Asset Class"
-width="180px"
-[filterable]="true"
->
-<ng-template kendoGridCellTemplate let-dataItem>
-  <span [ngStyle]="(dataItem.AptAssetClass ==null)?{'color': '#909090','font-style': 'italic'}:{}" title="{{ dataItem.AptAssetClass }}">
-    {{ dataItem.AptAssetClass? dataItem.AptAssetClass : "No records" }}</span
-  >
-</ng-template>
-</kendo-grid-column>
-<kendo-grid-column
-field="AptCDeviceUse"
-title="AptC Device Use"
-width="180px"
-[filterable]="true"
->
-<ng-template kendoGridCellTemplate let-dataItem>
-  <span [ngStyle]="(dataItem.AptCDeviceUse ==null)?{'color': '#909090','font-style': 'italic'}:{}" title="{{ dataItem.AptCDeviceUse }}">
-    {{ dataItem.AptCDeviceUse? dataItem.AptCDeviceUse : "No records" }}</span
-  >
-</ng-template>
-</kendo-grid-column>
-<kendo-grid-column
-field="tsUsage"
-title="ts Usage"
-width="180px"
-[filterable]="true"
->
-<ng-template kendoGridCellTemplate let-dataItem>
-  <span [ngStyle]="(dataItem.tsUsage ==null)?{'color': '#909090','font-style': 'italic'}:{}" title="{{ dataItem.tsUsage }}">
-    {{ dataItem.tsUsage? dataItem.tsUsage : "No records" }}</span
-  >
-</ng-template>
-</kendo-grid-column>
-<kendo-grid-column
-field="tsComputerType"
-title="ts Computer Type"
-width="200px"
-[filterable]="true"
->
-<ng-template kendoGridCellTemplate let-dataItem>
-  <span [ngStyle]="(dataItem.tsComputerType ==null)?{'color': '#909090','font-style': 'italic'}:{}" title="{{ dataItem.tsComputerType }}">
-    {{ dataItem.tsComputerType? dataItem.tsComputerType : "No records" }}</span
-  >
-</ng-template>
-</kendo-grid-column>
-<kendo-grid-column
-field="SnowClass"
-title="Snow Class"
-width="150px"
-[filterable]="true"
->
-<ng-template kendoGridCellTemplate let-dataItem>
-  <span [ngStyle]="(dataItem.SnowClass ==null)?{'color': '#909090','font-style': 'italic'}:{}" title="{{ dataItem.SnowClass }}">
-    {{ dataItem.SnowClass? dataItem.SnowClass : "No records" }}</span
-  >
-</ng-template>
-</kendo-grid-column>
-<kendo-grid-column
-field="tsOperatingMode"
-title="ts Operating Mode"
-width="200px"
-[filterable]="true"
->
-<ng-template kendoGridCellTemplate let-dataItem>
-  <span [ngStyle]="(dataItem.tsOperatingMode ==null)?{'color': '#909090','font-style': 'italic'}:{}" title="{{ dataItem.tsOperatingMode }}">
-    {{ dataItem.tsOperatingMode? dataItem.tsOperatingMode : "No records" }}</span
-  >
-</ng-template>
-</kendo-grid-column>
-<kendo-grid-column
-field="tsVirtualization"
-title="ts Virtualization"
-width="180px"
-[filterable]="true"
->
-<ng-template kendoGridCellTemplate let-dataItem>
-  <span [ngStyle]="(dataItem.tsVirtualization ==null)?{'color': '#909090','font-style': 'italic'}:{}" title="{{ dataItem.tsVirtualization }}">
-    {{ dataItem.tsVirtualization? dataItem.tsVirtualization : "No records" }}</span
-  >
-</ng-template>
-</kendo-grid-column>
-<kendo-grid-column
-field="tsPlatform"
-title="ts Platform"
-width="150px"
-[filterable]="true"
->
-<ng-template kendoGridCellTemplate let-dataItem>
-  <span  [ngStyle]="(dataItem.tsPlatform ==null)?{'color': '#909090','font-style': 'italic'}:{}" title="{{ dataItem.tsPlatform }}">
-    {{ dataItem.tsPlatform? dataItem.tsPlatform : "No records" }}</span
-  >
-</ng-template>
-</kendo-grid-column>
-<kendo-grid-column
-field="tsConsolidatedOS"
-title="ts ConsolidatedOS"
-width="180px"
-[filterable]="true"
->
-<ng-template kendoGridCellTemplate let-dataItem>
-  <span [ngStyle]="(dataItem.tsConsolidatedOS ==null)?{'color': '#909090','font-style': 'italic'}:{}" title="{{ dataItem.tsConsolidatedOS }}">
-    {{ dataItem.tsConsolidatedOS? dataItem.tsConsolidatedOS : "No records" }}</span
-  >
-</ng-template>
-</kendo-grid-column>
-<kendo-grid-column
-field="AptRackName"
-title="Apt RackName"
-width="150px"
-[filterable]="true"
->
-<ng-template kendoGridCellTemplate let-dataItem>
-  <span [ngStyle]="(dataItem.AptRackName ==null)?{'color': '#909090','font-style': 'italic'}:{}" title="{{ dataItem.AptRackName }}">
-    {{ dataItem.AptRackName? dataItem.AptRackName : "No records" }}</span
-  >
-</ng-template>
-</kendo-grid-column>
-<kendo-grid-column
-field="Target"
-title="Target"
-width="150px"
-[filterable]="true"
->
-<ng-template kendoGridCellTemplate let-dataItem>
-  <span [ngStyle]="(dataItem.Target ==null)?{'color': '#909090','font-style': 'italic'}:{}" title="{{ dataItem.Target }}">
-    {{ dataItem.Target? dataItem.Target : "No records" }}</span
-  >
-</ng-template>
-</kendo-grid-column>
-<kendo-grid-column
-field="Move2Azure"
-title="Move To Azure"
-width="150px"
-[filterable]="true"
->
-<ng-template kendoGridCellTemplate let-dataItem>
-  <span [ngStyle]="(dataItem.MoveToAzure ==null)?{'color': '#909090','font-style': 'italic'}:{}" title="{{ dataItem.Move2Azure }}">
-    {{ dataItem.Move2Azure? dataItem.Move2Azure : "No records" }}</span
-  >
-</ng-template>
-</kendo-grid-column>
-<kendo-grid-column
-field="AptSerialNumber"
-title="Apt Serial Number"
-width="180px"
-[filterable]="true"
->
-<ng-template kendoGridCellTemplate let-dataItem>
-  <span [ngStyle]="(dataItem.AptSerialNumber ==null)?{'color': '#909090','font-style': 'italic'}:{}" title="{{ dataItem.AptSerialNumber }}">
-    {{ dataItem.AptSerialNumber? dataItem.AptSerialNumber : "No records" }}</span
-  >
-</ng-template>
-</kendo-grid-column>
-<kendo-grid-column
-field="SnowSerialNumber"
-title="Snow Serial Number"
-width="180px"
-[filterable]="true"
->
-<ng-template kendoGridCellTemplate let-dataItem>
-  <span [ngStyle]="(dataItem.SnowSerialNumber ==null)?{'color': '#909090','font-style': 'italic'}:{}" title="{{ dataItem.SnowSerialNumber }}">
-    {{ dataItem.SnowSerialNumber? dataItem.SnowSerialNumber : "No records" }}</span
-  >
-</ng-template>
-</kendo-grid-column>
-<kendo-grid-column
-field="tsSystemStatus"
-title="tsSystemStatus"
-width="180px"
-[filterable]="true"
->
-<ng-template kendoGridCellTemplate let-dataItem>
-  <span [ngStyle]="(dataItem.tsSystemStatus ==null)?{'color': '#909090','font-style': 'italic'}:{}" title="{{ dataItem.tsSystemStatus }}">
-    {{ dataItem.tsSystemStatus? dataItem.tsSystemStatus : "No records" }}</span
-  >
-</ng-template>
-</kendo-grid-column>
-<kendo-grid-column
-field="AptCDeviceCondition"
-title="AptC Device Condition"
-width="200px"
-[filterable]="true"
->
-<ng-template kendoGridCellTemplate let-dataItem>
-  <span [ngStyle]="(dataItem.AptCDeviceCondition ==null)?{'color': '#909090','font-style': 'italic'}:{}" title="{{ dataItem.AptCDeviceCondition }}">
-    {{ dataItem.AptCDeviceCondition? dataItem.AptCDeviceCondition : "No records" }}</span
-  >
-</ng-template>
-</kendo-grid-column>
-<kendo-grid-column
-field="SnowStatus"
-title="SnowStatus"
-width="150px"
-[filterable]="true"
->
-<ng-template kendoGridCellTemplate let-dataItem>
-  <span [ngStyle]="(dataItem.SnowStatus ==null)?{'color': '#909090','font-style': 'italic'}:{}" title="{{ dataItem.SnowStatus }}">
-    {{ dataItem.SnowStatus? dataItem.SnowStatus : "No records" }}</span
-  >
-</ng-template>
-</kendo-grid-column>
-<kendo-grid-column
-field="tsService"
-title="ts Service"
-width="150px"
-[filterable]="true"
->
-<ng-template kendoGridCellTemplate let-dataItem>
-  <span [ngStyle]="(dataItem.tsService ==null)?{'color': '#909090','font-style': 'italic'}:{}" title="{{ dataItem.tsService }}">
-    {{ dataItem.tsService? dataItem.tsService : "No records" }}</span
-  >
-</ng-template>
-</kendo-grid-column>
-<kendo-grid-column
-field="tsSpecialService"
-title="ts Special Service"
-width="180px"
-[filterable]="true"
->
-<ng-template kendoGridCellTemplate let-dataItem>
-  <span [ngStyle]="(dataItem.tsSpecialService ==null)?{'color': '#909090','font-style': 'italic'}:{}" title="{{ dataItem.tsSpecialService }}">
-    {{ dataItem.tsSpecialService? dataItem.tsSpecialService : "No records" }}</span
-  >
-</ng-template>
-</kendo-grid-column>
-<kendo-grid-column
-field="tsNetworkType"
-title="ts NetworkType"
-width="180px"
-[filterable]="true"
->
-<ng-template kendoGridCellTemplate let-dataItem>
-  <span [ngStyle]="(dataItem.tsNetworkType ==null)?{'color': '#909090','font-style': 'italic'}:{}" title="{{ dataItem.tsNetworkType }}">
-    {{ dataItem.tsNetworkType? dataItem.tsNetworkType : "No records" }}</span
-  >
-</ng-template>
-</kendo-grid-column>
-<kendo-grid-column
-field="tsDRS"
-title="ts DRS"
-width="150px"
-[filterable]="true"
->
-<ng-template kendoGridCellTemplate let-dataItem>
-  <span [ngStyle]="(dataItem.tsDRS ==null)?{'color': '#909090','font-style': 'italic'}:{}" title="{{ dataItem.tsDRS }}">
-    {{ dataItem.tsDRS? dataItem.tsDRS : "No records" }}</span
-  >
-</ng-template>
-</kendo-grid-column>
-<kendo-grid-column
-field="tsSHELL_DeploymentID"
-title="ts SHELL_DeploymentID"
-width="200px"
-[filterable]="true"
->
-<ng-template kendoGridCellTemplate let-dataItem>
-  <span [ngStyle]="(dataItem.tsSHELL_DeploymentID ==null)?{'color': '#909090','font-style': 'italic'}:{}" title="{{ dataItem.tsSHELL_DeploymentID }}">
-    {{ dataItem.tsSHELL_DeploymentID? dataItem.tsSHELL_DeploymentID : "No records" }}</span
-  >
-</ng-template>
-</kendo-grid-column>
-<kendo-grid-column
-field="eMRFDeploymentID"
-title="eMRF DeploymentID"
-width="200px"
-[filterable]="true"
->
-<ng-template kendoGridCellTemplate let-dataItem>
-  <span [ngStyle]="(dataItem.eMRFDeploymentID ==null)?{'color': '#909090','font-style': 'italic'}:{}" title="{{ dataItem.eMRFDeploymentID }}">
-    {{ dataItem.eMRFDeploymentID? dataItem.eMRFDeploymentID : "No records" }}</span
-  >
-</ng-template>
-</kendo-grid-column>
-<kendo-grid-column
-field="tsSHELL_DeploymentName"
-title="ts SHELL_DeploymentName"
-width="200px"
-[filterable]="true"
->
-<ng-template kendoGridCellTemplate let-dataItem>
-  <span [ngStyle]="(dataItem.tsSHELL_DeploymentName ==null)?{'color': '#909090','font-style': 'italic'}:{}" title="{{ dataItem.tsSHELL_DeploymentName }}">
-    {{ dataItem.tsSHELL_DeploymentName? dataItem.tsSHELL_DeploymentName : "No records" }}</span
-  >
-</ng-template>
-</kendo-grid-column>
-<kendo-grid-column
-field="eMRFDeploymentName"
-title="eMRF DeploymentName"
-width="200px"
-[filterable]="true"
->
-<ng-template kendoGridCellTemplate let-dataItem>
-  <span [ngStyle]="(dataItem.eMRFDeploymentName ==null)?{'color': '#909090','font-style': 'italic'}:{}" title="{{ dataItem.eMRFDeploymentName }}">
-    {{ dataItem.eMRFDeploymentName? dataItem.eMRFDeploymentName : "No records" }}</span
-  >
-</ng-template>
-</kendo-grid-column>
-<kendo-grid-column
-field="eMRFDeploymentCIOwner"
-title="eMRF DeploymentCIOwner"
-width="200px"
-[filterable]="true"
->
-<ng-template kendoGridCellTemplate let-dataItem>
-  <span [ngStyle]="(dataItem.eMRFDeploymentCIOwner ==null)?{'color': '#909090','font-style': 'italic'}:{}" title="{{ dataItem.eMRFDeploymentCIOwner }}">
-    {{ dataItem.eMRFDeploymentCIOwner? dataItem.eMRFDeploymentCIOwner : "No records" }}</span
-  >
-</ng-template>
-</kendo-grid-column>
-<kendo-grid-column
-field="eMRFApplicationID"
-title="eMRF ApplicationID"
-width="180px"
-[filterable]="true"
->
-<ng-template kendoGridCellTemplate let-dataItem>
-  <span [ngStyle]="(dataItem.eMRFApplicationID ==null)?{'color': '#909090','font-style': 'italic'}:{}" title="{{ dataItem.eMRFApplicationID }}">
-    {{ dataItem.eMRFApplicationID? dataItem.eMRFApplicationID : "No records" }}</span
-  >
-</ng-template>
-</kendo-grid-column>
-<kendo-grid-column
-field="eMRFApplicationName"
-title="eMRF ApplicationName"
-width="180px"
-[filterable]="true"
->
-<ng-template kendoGridCellTemplate let-dataItem>
-  <span [ngStyle]="(dataItem.eMRFApplicationName ==null)?{'color': '#909090','font-style': 'italic'}:{}" title="{{ dataItem.eMRFApplicationName }}">
-    {{ dataItem.eMRFApplicationName? dataItem.eMRFApplicationName : "No records" }}</span
-  >
-</ng-template>
-</kendo-grid-column>
-<kendo-grid-column
-field="eMRFPortfolioName"
-title="eMRF PortfolioName"
-width="180px"
-[filterable]="true"
->
-<ng-template kendoGridCellTemplate let-dataItem>
-  <span [ngStyle]="(dataItem.eMRFPortfolioName ==null)?{'color': '#909090','font-style': 'italic'}:{}" title="{{ dataItem.eMRFPortfolioName }}">
-    {{ dataItem.eMRFPortfolioName? dataItem.eMRFPortfolioName : "No records" }}</span
-  >
-</ng-template>
-</kendo-grid-column>
-<kendo-grid-column
-field="eMRF PortfolioManager"
-title="eMRF PortfolioManager"
-width="200px"
-[filterable]="true"
->
-<ng-template kendoGridCellTemplate let-dataItem>
-  <span [ngStyle]="(dataItem.eMRFPortfolioManager ==null)?{'color': '#909090','font-style': 'italic'}:{}" title="{{ dataItem.eMRFPortfolioManager }}">
-    {{ dataItem.eMRFPortfolioManager? dataItem.eMRFPortfolioManager : "No records" }}</span
-  >
-</ng-template>
-</kendo-grid-column>
-<kendo-grid-column
-field="tsAppl_LifeCycle"
-title="ts Appl_LifeCycle"
-width="200px"
-[filterable]="true"
->
-<ng-template kendoGridCellTemplate let-dataItem>
-  <span [ngStyle]="(dataItem.tsAppl_LifeCycle ==null)?{'color': '#909090','font-style': 'italic'}:{}" title="{{ dataItem.tsAppl_LifeCycle }}">
-    {{ dataItem.tsAppl_LifeCycle? dataItem.tsAppl_LifeCycle : "No records" }}</span
-  >
-</ng-template>
-</kendo-grid-column>
-<kendo-grid-column
-field="tsAppl_Business_Criticality"
-title="tsAppl_Business_Criticality"
-width="220px"
-[filterable]="true"
->
-<ng-template kendoGridCellTemplate let-dataItem>
-  <span [ngStyle]="(dataItem.tsAppl_Business_Criticality ==null)?{'color': '#909090','font-style': 'italic'}:{}" title="{{ dataItem.tsAppl_Business_Criticality }}">
-    {{ dataItem.tsAppl_Business_Criticality? dataItem.tsAppl_Business_Criticality : "No records" }}</span
-  >
-</ng-template>
-</kendo-grid-column>
-<kendo-grid-column
-field="tsAppl_DR_Required"
-title="ts Appl_DR_Required"
-width="180px"
-[filterable]="true"
->
-<ng-template kendoGridCellTemplate let-dataItem>
-  <span [ngStyle]="(dataItem.tsAppl_DR_Required ==null)?{'color': '#909090','font-style': 'italic'}:{}" title="{{ dataItem.tsAppl_DR_Required }}">
-    {{ dataItem.tsAppl_DR_Required? dataItem.tsAppl_DR_Required : "No records" }}</span
-  >
-</ng-template>
-</kendo-grid-column>
-<kendo-grid-column
-field="eMRFBusinessApplicationOwner"
-title="eMRF Business Application Owner"
-width="220px"
-[filterable]="true"
->
-<ng-template kendoGridCellTemplate let-dataItem>
-  <span [ngStyle]="(dataItem.eMRFBusinessApplicationOwner ==null)?{'color': '#909090','font-style': 'italic'}:{}" title="{{ dataItem.eMRFBusinessApplicationOwner }}">
-    {{ dataItem.eMRFBusinessApplicationOwner? dataItem.eMRFBusinessApplicationOwner : "No records" }}</span
-  >
-</ng-template>
-</kendo-grid-column>
-<kendo-grid-column
-field="ContactFocalPoint"
-title="Contact Focal Point"
-width="180px"
-[filterable]="true"
->
-<ng-template kendoGridCellTemplate let-dataItem>
-  <span [ngStyle]="(dataItem.ContactFocalPoint ==null)?{'color': '#909090','font-style': 'italic'}:{}" title="{{ dataItem.ContactFocalPoint }}">
-    {{ dataItem.ContactFocalPoint? dataItem.ContactFocalPoint : "No records" }}</span
-  >
-</ng-template>
-</kendo-grid-column>
+
         <kendo-grid-column
           field="siteComments"
+          [headerStyle]="{
+            color: '#0575D1'
+          }"
           title="Contact Comment"
           [width]="400"
           [sortable]="false"
@@ -754,11 +229,22 @@ width="180px"
             class="ar-kgrid__cell-lnk"
           >
             <span class="comments">
-              <div [ngClass]="{ 'editEnabled': !isDone, 'editDisabled': isDone }">
+              <div [ngClass]="{ editEnabled: !isDone, editDisabled: isDone }">
                 <i *ngIf="canEditTeamComments" class="fas fa-edit editIcon"></i>
               </div>
-              <p class="line-break" [ngStyle]="(dataItem.ContactComment ==null)?{'color': '#0575D1','font-style': 'italic'}:{}">
-                {{ dataItem.ContactComment? dataItem.ContactComment : 'Add Comment here' }}
+              <p
+                class="line-break"
+                [ngStyle]="
+                  dataItem.ContactComment == null
+                    ? { color: '#0575D1', 'font-style': 'italic' }
+                    : {}
+                "
+              >
+                {{
+                  dataItem.ContactComment
+                    ? dataItem.ContactComment
+                    : "Add Comment here"
+                }}
               </p>
               <div>&nbsp;</div>
               <div class="by" style="color: #b8b8b8">
@@ -771,7 +257,9 @@ width="180px"
             </span>
             <span class="audit">
               <div class="by">Added by {{ dataItem.UpdatedBy }}</div>
-              <div class="on">{{ dataItem.AddedDate | date: "dd/MM/yyyy h:mm a" }}</div>
+              <div class="on">
+                {{ dataItem.AddedDate | date: "dd/MM/yyyy h:mm a" }}
+              </div>
               <br />
             </span>
           </ng-template>
@@ -785,13 +273,15 @@ width="180px"
           >
             <span class="comments">
               <textarea
-              #input
+                #input
                 name="siteComments"
                 class="k-textbox"
                 required
                 [formControl]="formGroup.get(column.field)"
                 [maxlength]="commentsMaxLength"
-                >{{ dataItem.ContactComment? dataItem.ContactComment : ""  }}</textarea
+                >{{
+                  dataItem.ContactComment ? dataItem.ContactComment : ""
+                }}</textarea
               ><br />
               <div>&nbsp;</div>
               <div class="charCount">
@@ -799,14 +289,39 @@ width="180px"
                   commentsMaxLength
                 }})
               </div>
-            <!-- <button [ngClass]="{'saveDisabled' : formGroup.get(column.field).value?.trim().length == 0, 'save' : formGroup.get(column.field).value?.trim().length > 0}" [disabled]="formGroup.get(column.field).value?.trim().length == 0" (click)="saveClicked(dataItem, 'siteComments', grid)">Save</button> -->
-            <button
-            [ngClass]="{'saveDisabled' : formGroup.get(column.field).value?.trim().length == 0||dataItem.ContactComment==null&&!(formGroup.get(column.field).value?.trim().length>0), 'save' : formGroup.get(column.field).value?.trim().length > 0}"
-            [disabled]="formGroup.get(column.field).value == null || formGroup.get(column.field).value?.trim().length == 0 || dataItem.ContactComment == formGroup.get(column.field).value"
-            (click)="saveClicked(formGroup.get(column.field).value, 'siteComments', grid)">Save</button>
-              <button class="cancel" (click)="cancelChanges(grid)">Cancel</button><br />
+              <!-- <button [ngClass]="{'saveDisabled' : formGroup.get(column.field).value?.trim().length == 0, 'save' : formGroup.get(column.field).value?.trim().length > 0}" [disabled]="formGroup.get(column.field).value?.trim().length == 0" (click)="saveClicked(dataItem, 'siteComments', grid)">Save</button> -->
+              <button
+                [ngClass]="{
+                  saveDisabled:
+                    formGroup.get(column.field).value?.trim().length == 0 ||
+                    (dataItem.ContactComment == null &&
+                      !(formGroup.get(column.field).value?.trim().length > 0)),
+                  save: formGroup.get(column.field).value?.trim().length > 0
+                }"
+                [disabled]="
+                  formGroup.get(column.field).value == null ||
+                  formGroup.get(column.field).value?.trim().length == 0 ||
+                  dataItem.ContactComment == formGroup.get(column.field).value
+                "
+                (click)="
+                  saveClicked(
+                    formGroup.get(column.field).value,
+                    'siteComments',
+                    grid
+                  )
+                "
+              >
+                Save
+              </button>
+              <button class="cancel" (click)="cancelChanges(grid)">
+                Cancel</button
+              ><br />
               <div>&nbsp;</div>
-              <div *ngIf="dataItem.ContactComment !=null" class="by" style="color: #b8b8b8">
+              <div
+                *ngIf="dataItem.ContactComment != null"
+                class="by"
+                style="color: #b8b8b8"
+              >
                 Last edited by {{ dataItem.UpdatedBy }}
               </div>
               <div class="on" style="color: #b8b8b8">
@@ -816,22 +331,1266 @@ width="180px"
             </span>
             <span class="audit">
               <div class="by">Added by {{ dataItem.UpdatedBy }}</div>
-              <div class="on">{{ dataItem.AddedDate | date: "dd/MM/yyyy h:mm a" }}</div>
+              <div class="on">
+                {{ dataItem.AddedDate | date: "dd/MM/yyyy h:mm a" }}
+              </div>
               <br />
             </span>
-        </ng-template>
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="ArtemisName"
+          title="Merged Asset Tag"
+          width="200px "
+          [filterable]="{ multi: true }"
+        >
+          <ng-template
+            kendoGridFilterMenuTemplate
+            let-column="column"
+            let-filter="filter"
+            let-filterService="filterService"
+          >
+            <multicheck-filter
+              [isPrimitive]="true"
+              [field]="column.field"
+              [filterService]="filterService"
+              [currentFilter]="filter"
+              [data]="distinctPrimitive(column.field)"
+            ></multicheck-filter>
+          </ng-template>
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span
+              [ngStyle]="
+                dataItem.ArtemisName == null
+                  ? { color: '#909090', 'font-style': 'italic' }
+                  : {}
+              "
+              title="{{ dataItem.ArtemisName }}"
+              >{{
+                dataItem.ArtemisName ? dataItem.ArtemisName : "No records"
+              }}</span
+            >
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="ArtemisLoc"
+          title="Merged Location"
+          width="180px "
+        >
+          <ng-template
+            kendoGridFilterMenuTemplate
+            let-column="column"
+            let-filter="filter"
+            let-filterService="filterService"
+          >
+            <!-- <multicheck-filter
+              [isPrimitive]="true"
+              [field]="column.field"
+              [filterService]="filterService"
+              [currentFilter]="filter"
+              [data]="distinctPrimitive(column.field)"
+            ></multicheck-filter> -->
+            <ng-multiselect-dropdown class="ar-drpdown" (valueChange)="categoryChange($event, filterService)" [placeholder]="'Select Columns'" name="microscope" [data]="distinctPrimitive(column.field)" [settings]="dropdownSettings" (onDeSelect)="onIDeSelect($event)" (onDeSelectAll)="onIDeSelectAll($event)" (onSelect)="onISelect($event)" (onSelectAll)="onISelectAll($event)">
+            </ng-multiselect-dropdown>
+          </ng-template>
+          <ng-template kendoGridCellTemplate let-dataItem>
+            {{ dataItem.ArtemisLoc }}
+          </ng-template>
+          <!-- <ng-template kendoGridCellTemplate let-dataItem>
+            <span [ngStyle]="(dataItem.ArtemisLoc ==null)?{'color': '#909090','font-style': 'italic'}:{}" title="{{ dataItem.ArtemisLoc }}">{{
+              dataItem.ArtemisLoc? dataItem.ArtemisLoc : "No records"
+            }}</span>
+          </ng-template> -->
         </kendo-grid-column>
 
+        <kendo-grid-column
+          field="tsCustBusiness"
+          title="ts Cust Business"
+          width="200px"
+          [filterable]="true"
+        >
+          <ng-template
+            kendoGridFilterMenuTemplate
+            let-column="column"
+            let-filter="filter"
+            let-filterService="filterService"
+          >
+            <!-- <kendo-multiselect
+                    [autoClose]="false"
+                    [data]="distinctPrimitive(column.field)"
+                    [(ngModel)]="value"
+                  >
+                  <ng-template kendoMultiSelectItemTemplate let-dataItem>
+                    <span>
+                      <kendo-label for="chk-{{ dataItem }}">
+                        <input
+                          type="checkbox"
+                          kendoCheckBox
+                          id="chk-{{ dataItem }}"
+                          class="k-checkbox"
+                          [checked]="isItemSelected(dataItem)"
+                        />
+                      </kendo-label>
+                    </span>
+                    <span>{{ dataItem }}</span>
+                  </ng-template>
+                </kendo-multiselect> -->
+            <kendo-multiselect
+              style="width: 190px"
+              [autoClose]="false"
+              [filterable]="true"
+              [data]="distinctPrimitive(column.field)"
+              [valuePrimitive]="true"
+              [value]="categoryFilters(filter)"
+              (valueChange)="categoryChange($event, filterService)"
+            >
+              <ng-template kendoMultiSelectHeaderTemplate>
+                <span style="margin-left: 11px">
+                  <input
+                    type="checkbox"
+                    id="chk"
+                    class="k-checkbox"
+                    [checked]="isChecked"
+                    [indeterminate]="isIndet"
+                    (click)="onClick()"
+                  />
+                  <kendo-label for="chk">{{ toggleAllText }}</kendo-label>
+                </span>
+              </ng-template>
+
+              <ng-template kendoMultiSelectItemTemplate let-dataItem>
+                <span>
+                  <kendo-label for="chk-{{ dataItem.value }}">
+                    <input
+                      type="checkbox"
+                      kendoCheckBox
+                      id="chk-{{ dataItem.value }}"
+                      class="k-checkbox"
+                      [checked]="isItemSelected(dataItem)"
+                    />
+                  </kendo-label>
+                </span>
+                <span>{{ dataItem }}</span>
+              </ng-template>
+            </kendo-multiselect>
+          </ng-template>
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span
+              [ngStyle]="
+                dataItem.tsCustBusiness == null
+                  ? { color: '#909090', 'font-style': 'italic' }
+                  : {}
+              "
+              title="{{ dataItem.tsCustBusiness }}"
+            >
+              {{
+                dataItem.tsCustBusiness ? dataItem.tsCustBusiness : "No records"
+              }}</span
+            >
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="AptCOrganisation"
+          title="AptC Organisation"
+          width="250px"
+          [filterable]="true"
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span
+              [ngStyle]="
+                dataItem.AptCOrganisation == null
+                  ? { color: '#909090', 'font-style': 'italic' }
+                  : {}
+              "
+              title="{{ dataItem.AptCOrganisation }}"
+            >
+              {{
+                dataItem.AptCOrganisation
+                  ? dataItem.AptCOrganisation
+                  : "No records"
+              }}</span
+            >
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="eMRFOwningBusiness"
+          title="eMRF Owning Business"
+          width="250px"
+          [filterable]="true"
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span
+              [ngStyle]="
+                dataItem.eMRFOwningBusiness == null
+                  ? { color: '#909090', 'font-style': 'italic' }
+                  : {}
+              "
+              title="{{ dataItem.eMRFOwningBusiness }}"
+            >
+              {{
+                dataItem.eMRFOwningBusiness
+                  ? dataItem.eMRFOwningBusiness
+                  : "No records"
+              }}</span
+            >
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="eMRFOperatingBusiness"
+          title="eMRF Operating Business"
+          width="250px"
+          [filterable]="true"
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span
+              [ngStyle]="
+                dataItem.eMRFOperatingBusiness == null
+                  ? { color: '#909090', 'font-style': 'italic' }
+                  : {}
+              "
+              title="{{ dataItem.eMRFOperatingBusiness }}"
+            >
+              {{
+                dataItem.eMRFOperatingBusiness
+                  ? dataItem.eMRFOperatingBusiness
+                  : "No records"
+              }}</span
+            >
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="SnowOperatingBusiness"
+          title="Snow Operating Business"
+          width="250px"
+          [filterable]="true"
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span
+              [ngStyle]="
+                dataItem.SnowOperatingBusiness == null
+                  ? { color: '#909090', 'font-style': 'italic' }
+                  : {}
+              "
+              title="{{ dataItem.SnowOperatingBusiness }}"
+            >
+              {{
+                dataItem.SnowOperatingBusiness
+                  ? dataItem.SnowOperatingBusiness
+                  : "No records"
+              }}</span
+            >
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="eMRFAssetCIOwner"
+          title="eMRF AssetCI Owner"
+          width="200px"
+          [filterable]="true"
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span
+              [ngStyle]="
+                dataItem.eMRFAssetCIOwner == null
+                  ? { color: '#909090', 'font-style': 'italic' }
+                  : {}
+              "
+              title="{{ dataItem.eMRFAssetCIOwner }}"
+            >
+              {{
+                dataItem.eMRFAssetCIOwner
+                  ? dataItem.eMRFAssetCIOwner
+                  : "No records"
+              }}</span
+            >
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="SnowAssetOwner"
+          title="Snow Asset Owner"
+          width="200px"
+          [filterable]="true"
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span
+              [ngStyle]="
+                dataItem.SnowAssetOwner == null
+                  ? { color: '#909090', 'font-style': 'italic' }
+                  : {}
+              "
+              title="{{ dataItem.SnowAssetOwner }}"
+            >
+              {{
+                dataItem.SnowAssetOwner ? dataItem.SnowAssetOwner : "No records"
+              }}</span
+            >
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="MigrationCompleted"
+          title="Migration Completed"
+          width="200px"
+          [filterable]="true"
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span
+              [ngStyle]="
+                dataItem.MigrationCompleted == null
+                  ? { color: '#909090', 'font-style': 'italic' }
+                  : {}
+              "
+              title="{{ dataItem.MigrationCompleted }}"
+            >
+              {{
+                dataItem.MigrationCompleted
+                  ? dataItem.MigrationCompleted
+                  : "No records"
+              }}</span
+            >
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="ExitStrategy"
+          title="Exit Strategy"
+          width="150px"
+          [filterable]="true"
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span
+              [ngStyle]="
+                dataItem.ExitStrategy == null
+                  ? { color: '#909090', 'font-style': 'italic' }
+                  : {}
+              "
+              title="{{ dataItem.ExitStrategy }}"
+            >
+              {{
+                dataItem.ExitStrategy ? dataItem.ExitStrategy : "No records"
+              }}</span
+            >
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="ScopeGroup"
+          title="Scope Group"
+          width="150px"
+          [filterable]="true"
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span
+              [ngStyle]="
+                dataItem.ScopeGroup == null
+                  ? { color: '#909090', 'font-style': 'italic' }
+                  : {}
+              "
+              title="{{ dataItem.ScopeGroup }}"
+            >
+              {{
+                dataItem.ScopeGroup ? dataItem.ScopeGroup : "No records"
+              }}</span
+            >
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="ScopeSet"
+          title="Scope Set"
+          width="150px"
+          [filterable]="true"
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span
+              [ngStyle]="
+                dataItem.ScopeSet == null
+                  ? { color: '#909090', 'font-style': 'italic' }
+                  : {}
+              "
+              title="{{ dataItem.ScopeSet }}"
+            >
+              {{ dataItem.ScopeSet ? dataItem.ScopeSet : "No records" }}</span
+            >
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="Bucket"
+          title="Bucket"
+          width="150px"
+          [filterable]="true"
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span
+              [ngStyle]="
+                dataItem.Bucket == null
+                  ? { color: '#909090', 'font-style': 'italic' }
+                  : {}
+              "
+              title="{{ dataItem.Bucket }}"
+            >
+              {{ dataItem.Bucket ? dataItem.Bucket : "No records" }}</span
+            >
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="Wave"
+          title="Wave"
+          width="150px"
+          [filterable]="true"
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span
+              [ngStyle]="
+                dataItem.Wave == null
+                  ? { color: '#909090', 'font-style': 'italic' }
+                  : {}
+              "
+              title="{{ dataItem.Wave }}"
+            >
+              {{ dataItem.Wave ? dataItem.Wave : "No records" }}</span
+            >
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="HighestBucketPerDeployment"
+          title="Highest BucketPer Deployment"
+          width="280px"
+          [filterable]="true"
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span
+              [ngStyle]="
+                dataItem.HighestBucketPerDeployment == null
+                  ? { color: '#909090', 'font-style': 'italic' }
+                  : {}
+              "
+              title="{{ dataItem.HighestBucketPerDeployment }}"
+            >
+              {{
+                dataItem.HighestBucketPerDeployment
+                  ? dataItem.HighestBucketPerDeployment
+                  : "No records"
+              }}</span
+            >
+          </ng-template>
+        </kendo-grid-column>
+
+        <kendo-grid-column
+          field="AptManufacturer"
+          title="Apt Manufacturer"
+          width="200px"
+          [filterable]="true"
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span
+              [ngStyle]="
+                dataItem.AptManufacturer == null
+                  ? { color: '#909090', 'font-style': 'italic' }
+                  : {}
+              "
+              title="{{ dataItem.AptManufacturer }}"
+            >
+              {{
+                dataItem.AptManufacturer
+                  ? dataItem.AptManufacturer
+                  : "No records"
+              }}</span
+            >
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="AptModel"
+          title="Apt Model"
+          width="150px"
+          [filterable]="true"
+        >
+          <ng-template
+            kendoGridFilterMenuTemplate
+            let-column="column"
+            let-filter="filter"
+            let-filterService="filterService"
+          >
+            <multicheck-filter
+              [isPrimitive]="true"
+              [field]="column.field"
+              [filterService]="filterService"
+              [currentFilter]="filter"
+              [data]="distinctPrimitive(column.field)"
+            ></multicheck-filter>
+          </ng-template>
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span
+              [ngStyle]="
+                dataItem.AptModel == null
+                  ? { color: '#909090', 'font-style': 'italic' }
+                  : {}
+              "
+              title="{{ dataItem.AptModel }}"
+            >
+              {{ dataItem.AptModel ? dataItem.AptModel : "No records" }}</span
+            >
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="AptModelInfo"
+          title="Apt Model Info"
+          width="150px"
+          [filterable]="true"
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span
+              [ngStyle]="
+                dataItem.AptModelInfo == null
+                  ? { color: '#909090', 'font-style': 'italic' }
+                  : {}
+              "
+              title="{{ dataItem.AptModelInfo }}"
+            >
+              {{
+                dataItem.AptModelInfo ? dataItem.AptModelInfo : "No records"
+              }}</span
+            >
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="AptAssetClass"
+          title="Apt Asset Class"
+          width="180px"
+          [filterable]="true"
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span
+              [ngStyle]="
+                dataItem.AptAssetClass == null
+                  ? { color: '#909090', 'font-style': 'italic' }
+                  : {}
+              "
+              title="{{ dataItem.AptAssetClass }}"
+            >
+              {{
+                dataItem.AptAssetClass ? dataItem.AptAssetClass : "No records"
+              }}</span
+            >
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="AptCDeviceUse"
+          title="AptC Device Use"
+          width="180px"
+          [filterable]="true"
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span
+              [ngStyle]="
+                dataItem.AptCDeviceUse == null
+                  ? { color: '#909090', 'font-style': 'italic' }
+                  : {}
+              "
+              title="{{ dataItem.AptCDeviceUse }}"
+            >
+              {{
+                dataItem.AptCDeviceUse ? dataItem.AptCDeviceUse : "No records"
+              }}</span
+            >
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="tsUsage"
+          title="ts Usage"
+          width="180px"
+          [filterable]="true"
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span
+              [ngStyle]="
+                dataItem.tsUsage == null
+                  ? { color: '#909090', 'font-style': 'italic' }
+                  : {}
+              "
+              title="{{ dataItem.tsUsage }}"
+            >
+              {{ dataItem.tsUsage ? dataItem.tsUsage : "No records" }}</span
+            >
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="tsComputerType"
+          title="ts Computer Type"
+          width="200px"
+          [filterable]="true"
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span
+              [ngStyle]="
+                dataItem.tsComputerType == null
+                  ? { color: '#909090', 'font-style': 'italic' }
+                  : {}
+              "
+              title="{{ dataItem.tsComputerType }}"
+            >
+              {{
+                dataItem.tsComputerType ? dataItem.tsComputerType : "No records"
+              }}</span
+            >
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="SnowClass"
+          title="Snow Class"
+          width="150px"
+          [filterable]="true"
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span
+              [ngStyle]="
+                dataItem.SnowClass == null
+                  ? { color: '#909090', 'font-style': 'italic' }
+                  : {}
+              "
+              title="{{ dataItem.SnowClass }}"
+            >
+              {{ dataItem.SnowClass ? dataItem.SnowClass : "No records" }}</span
+            >
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="tsOperatingMode"
+          title="ts Operating Mode"
+          width="200px"
+          [filterable]="true"
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span
+              [ngStyle]="
+                dataItem.tsOperatingMode == null
+                  ? { color: '#909090', 'font-style': 'italic' }
+                  : {}
+              "
+              title="{{ dataItem.tsOperatingMode }}"
+            >
+              {{
+                dataItem.tsOperatingMode
+                  ? dataItem.tsOperatingMode
+                  : "No records"
+              }}</span
+            >
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="tsVirtualization"
+          title="ts Virtualization"
+          width="180px"
+          [filterable]="true"
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span
+              [ngStyle]="
+                dataItem.tsVirtualization == null
+                  ? { color: '#909090', 'font-style': 'italic' }
+                  : {}
+              "
+              title="{{ dataItem.tsVirtualization }}"
+            >
+              {{
+                dataItem.tsVirtualization
+                  ? dataItem.tsVirtualization
+                  : "No records"
+              }}</span
+            >
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="tsPlatform"
+          title="ts Platform"
+          width="150px"
+          [filterable]="true"
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span
+              [ngStyle]="
+                dataItem.tsPlatform == null
+                  ? { color: '#909090', 'font-style': 'italic' }
+                  : {}
+              "
+              title="{{ dataItem.tsPlatform }}"
+            >
+              {{
+                dataItem.tsPlatform ? dataItem.tsPlatform : "No records"
+              }}</span
+            >
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="tsConsolidatedOS"
+          title="ts ConsolidatedOS"
+          width="180px"
+          [filterable]="true"
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span
+              [ngStyle]="
+                dataItem.tsConsolidatedOS == null
+                  ? { color: '#909090', 'font-style': 'italic' }
+                  : {}
+              "
+              title="{{ dataItem.tsConsolidatedOS }}"
+            >
+              {{
+                dataItem.tsConsolidatedOS
+                  ? dataItem.tsConsolidatedOS
+                  : "No records"
+              }}</span
+            >
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="AptRackName"
+          title="Apt RackName"
+          width="150px"
+          [filterable]="true"
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span
+              [ngStyle]="
+                dataItem.AptRackName == null
+                  ? { color: '#909090', 'font-style': 'italic' }
+                  : {}
+              "
+              title="{{ dataItem.AptRackName }}"
+            >
+              {{
+                dataItem.AptRackName ? dataItem.AptRackName : "No records"
+              }}</span
+            >
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="Target"
+          title="Target"
+          width="150px"
+          [filterable]="true"
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span
+              [ngStyle]="
+                dataItem.Target == null
+                  ? { color: '#909090', 'font-style': 'italic' }
+                  : {}
+              "
+              title="{{ dataItem.Target }}"
+            >
+              {{ dataItem.Target ? dataItem.Target : "No records" }}</span
+            >
+          </ng-template>
+        </kendo-grid-column>
+
+        <kendo-grid-column
+          field="AptSerialNumber"
+          title="Apt Serial Number"
+          width="180px"
+          [filterable]="true"
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span
+              [ngStyle]="
+                dataItem.AptSerialNumber == null
+                  ? { color: '#909090', 'font-style': 'italic' }
+                  : {}
+              "
+              title="{{ dataItem.AptSerialNumber }}"
+            >
+              {{
+                dataItem.AptSerialNumber
+                  ? dataItem.AptSerialNumber
+                  : "No records"
+              }}</span
+            >
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="SnowSerialNumber"
+          title="Snow Serial Number"
+          width="180px"
+          [filterable]="true"
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span
+              [ngStyle]="
+                dataItem.SnowSerialNumber == null
+                  ? { color: '#909090', 'font-style': 'italic' }
+                  : {}
+              "
+              title="{{ dataItem.SnowSerialNumber }}"
+            >
+              {{
+                dataItem.SnowSerialNumber
+                  ? dataItem.SnowSerialNumber
+                  : "No records"
+              }}</span
+            >
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="tsSystemStatus"
+          title="tsSystemStatus"
+          width="180px"
+          [filterable]="true"
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span
+              [ngStyle]="
+                dataItem.tsSystemStatus == null
+                  ? { color: '#909090', 'font-style': 'italic' }
+                  : {}
+              "
+              title="{{ dataItem.tsSystemStatus }}"
+            >
+              {{
+                dataItem.tsSystemStatus ? dataItem.tsSystemStatus : "No records"
+              }}</span
+            >
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="AptCDeviceCondition"
+          title="AptC Device Condition"
+          width="200px"
+          [filterable]="true"
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span
+              [ngStyle]="
+                dataItem.AptCDeviceCondition == null
+                  ? { color: '#909090', 'font-style': 'italic' }
+                  : {}
+              "
+              title="{{ dataItem.AptCDeviceCondition }}"
+            >
+              {{
+                dataItem.AptCDeviceCondition
+                  ? dataItem.AptCDeviceCondition
+                  : "No records"
+              }}</span
+            >
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="SnowStatus"
+          title="SnowStatus"
+          width="150px"
+          [filterable]="true"
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span
+              [ngStyle]="
+                dataItem.SnowStatus == null
+                  ? { color: '#909090', 'font-style': 'italic' }
+                  : {}
+              "
+              title="{{ dataItem.SnowStatus }}"
+            >
+              {{
+                dataItem.SnowStatus ? dataItem.SnowStatus : "No records"
+              }}</span
+            >
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="tsService"
+          title="ts Service"
+          width="150px"
+          [filterable]="true"
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span
+              [ngStyle]="
+                dataItem.tsService == null
+                  ? { color: '#909090', 'font-style': 'italic' }
+                  : {}
+              "
+              title="{{ dataItem.tsService }}"
+            >
+              {{ dataItem.tsService ? dataItem.tsService : "No records" }}</span
+            >
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="tsSpecialService"
+          title="ts Special Service"
+          width="180px"
+          [filterable]="true"
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span
+              [ngStyle]="
+                dataItem.tsSpecialService == null
+                  ? { color: '#909090', 'font-style': 'italic' }
+                  : {}
+              "
+              title="{{ dataItem.tsSpecialService }}"
+            >
+              {{
+                dataItem.tsSpecialService
+                  ? dataItem.tsSpecialService
+                  : "No records"
+              }}</span
+            >
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="tsNetworkType"
+          title="ts NetworkType"
+          width="180px"
+          [filterable]="true"
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span
+              [ngStyle]="
+                dataItem.tsNetworkType == null
+                  ? { color: '#909090', 'font-style': 'italic' }
+                  : {}
+              "
+              title="{{ dataItem.tsNetworkType }}"
+            >
+              {{
+                dataItem.tsNetworkType ? dataItem.tsNetworkType : "No records"
+              }}</span
+            >
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="tsDRS"
+          title="ts DRS"
+          width="150px"
+          [filterable]="true"
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span
+              [ngStyle]="
+                dataItem.tsDRS == null
+                  ? { color: '#909090', 'font-style': 'italic' }
+                  : {}
+              "
+              title="{{ dataItem.tsDRS }}"
+            >
+              {{ dataItem.tsDRS ? dataItem.tsDRS : "No records" }}</span
+            >
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="tsSHELL_DeploymentID"
+          title="ts SHELL_DeploymentID"
+          width="200px"
+          [filterable]="true"
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span
+              [ngStyle]="
+                dataItem.tsSHELL_DeploymentID == null
+                  ? { color: '#909090', 'font-style': 'italic' }
+                  : {}
+              "
+              title="{{ dataItem.tsSHELL_DeploymentID }}"
+            >
+              {{
+                dataItem.tsSHELL_DeploymentID
+                  ? dataItem.tsSHELL_DeploymentID
+                  : "No records"
+              }}</span
+            >
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="eMRFDeploymentID"
+          title="eMRF DeploymentID"
+          width="200px"
+          [filterable]="true"
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span
+              [ngStyle]="
+                dataItem.eMRFDeploymentID == null
+                  ? { color: '#909090', 'font-style': 'italic' }
+                  : {}
+              "
+              title="{{ dataItem.eMRFDeploymentID }}"
+            >
+              {{
+                dataItem.eMRFDeploymentID
+                  ? dataItem.eMRFDeploymentID
+                  : "No records"
+              }}</span
+            >
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="tsSHELL_DeploymentName"
+          title="ts SHELL_DeploymentName"
+          width="200px"
+          [filterable]="true"
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span
+              [ngStyle]="
+                dataItem.tsSHELL_DeploymentName == null
+                  ? { color: '#909090', 'font-style': 'italic' }
+                  : {}
+              "
+              title="{{ dataItem.tsSHELL_DeploymentName }}"
+            >
+              {{
+                dataItem.tsSHELL_DeploymentName
+                  ? dataItem.tsSHELL_DeploymentName
+                  : "No records"
+              }}</span
+            >
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="eMRFDeploymentName"
+          title="eMRF DeploymentName"
+          width="200px"
+          [filterable]="true"
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span
+              [ngStyle]="
+                dataItem.eMRFDeploymentName == null
+                  ? { color: '#909090', 'font-style': 'italic' }
+                  : {}
+              "
+              title="{{ dataItem.eMRFDeploymentName }}"
+            >
+              {{
+                dataItem.eMRFDeploymentName
+                  ? dataItem.eMRFDeploymentName
+                  : "No records"
+              }}</span
+            >
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="eMRFDeploymentCIOwner"
+          title="eMRF DeploymentCIOwner"
+          width="200px"
+          [filterable]="true"
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span
+              [ngStyle]="
+                dataItem.eMRFDeploymentCIOwner == null
+                  ? { color: '#909090', 'font-style': 'italic' }
+                  : {}
+              "
+              title="{{ dataItem.eMRFDeploymentCIOwner }}"
+            >
+              {{
+                dataItem.eMRFDeploymentCIOwner
+                  ? dataItem.eMRFDeploymentCIOwner
+                  : "No records"
+              }}</span
+            >
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="eMRFApplicationID"
+          title="eMRF ApplicationID"
+          width="180px"
+          [filterable]="true"
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span
+              [ngStyle]="
+                dataItem.eMRFApplicationID == null
+                  ? { color: '#909090', 'font-style': 'italic' }
+                  : {}
+              "
+              title="{{ dataItem.eMRFApplicationID }}"
+            >
+              {{
+                dataItem.eMRFApplicationID
+                  ? dataItem.eMRFApplicationID
+                  : "No records"
+              }}</span
+            >
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="eMRFApplicationName"
+          title="eMRF ApplicationName"
+          width="180px"
+          [filterable]="true"
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span
+              [ngStyle]="
+                dataItem.eMRFApplicationName == null
+                  ? { color: '#909090', 'font-style': 'italic' }
+                  : {}
+              "
+              title="{{ dataItem.eMRFApplicationName }}"
+            >
+              {{
+                dataItem.eMRFApplicationName
+                  ? dataItem.eMRFApplicationName
+                  : "No records"
+              }}</span
+            >
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="eMRFPortfolioName"
+          title="eMRF PortfolioName"
+          width="180px"
+          [filterable]="true"
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span
+              [ngStyle]="
+                dataItem.eMRFPortfolioName == null
+                  ? { color: '#909090', 'font-style': 'italic' }
+                  : {}
+              "
+              title="{{ dataItem.eMRFPortfolioName }}"
+            >
+              {{
+                dataItem.eMRFPortfolioName
+                  ? dataItem.eMRFPortfolioName
+                  : "No records"
+              }}</span
+            >
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="eMRFPortfolioManager"
+          title="eMRF PortfolioManager"
+          width="200px"
+          [filterable]="true"
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span
+              [ngStyle]="
+                dataItem.eMRFPortfolioManager == null
+                  ? { color: '#909090', 'font-style': 'italic' }
+                  : {}
+              "
+              title="{{ dataItem.eMRFPortfolioManager }}"
+            >
+              {{
+                dataItem.eMRFPortfolioManager
+                  ? dataItem.eMRFPortfolioManager
+                  : "No records"
+              }}</span
+            >
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="tsAppl_LifeCycle"
+          title="ts Appl_LifeCycle"
+          width="200px"
+          [filterable]="true"
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span
+              [ngStyle]="
+                dataItem.tsAppl_LifeCycle == null
+                  ? { color: '#909090', 'font-style': 'italic' }
+                  : {}
+              "
+              title="{{ dataItem.tsAppl_LifeCycle }}"
+            >
+              {{
+                dataItem.tsAppl_LifeCycle
+                  ? dataItem.tsAppl_LifeCycle
+                  : "No records"
+              }}</span
+            >
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="tsAppl_Business_Criticality"
+          title="tsAppl_Business_Criticality"
+          width="220px"
+          [filterable]="true"
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span
+              [ngStyle]="
+                dataItem.tsAppl_Business_Criticality == null
+                  ? { color: '#909090', 'font-style': 'italic' }
+                  : {}
+              "
+              title="{{ dataItem.tsAppl_Business_Criticality }}"
+            >
+              {{
+                dataItem.tsAppl_Business_Criticality
+                  ? dataItem.tsAppl_Business_Criticality
+                  : "No records"
+              }}</span
+            >
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="tsAppl_DR_Required"
+          title="ts Appl_DR_Required"
+          width="180px"
+          [filterable]="true"
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span
+              [ngStyle]="
+                dataItem.tsAppl_DR_Required == null
+                  ? { color: '#909090', 'font-style': 'italic' }
+                  : {}
+              "
+              title="{{ dataItem.tsAppl_DR_Required }}"
+            >
+              {{
+                dataItem.tsAppl_DR_Required
+                  ? dataItem.tsAppl_DR_Required
+                  : "No records"
+              }}</span
+            >
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="eMRFBusinessApplicationOwner"
+          title="eMRF Business Application Owner"
+          width="220px"
+          [filterable]="true"
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span
+              [ngStyle]="
+                dataItem.eMRFBusinessApplicationOwner == null
+                  ? { color: '#909090', 'font-style': 'italic' }
+                  : {}
+              "
+              title="{{ dataItem.eMRFBusinessApplicationOwner }}"
+            >
+              {{
+                dataItem.eMRFBusinessApplicationOwner
+                  ? dataItem.eMRFBusinessApplicationOwner
+                  : "No records"
+              }}</span
+            >
+          </ng-template>
+        </kendo-grid-column>
+
+        <kendo-grid-excel fileName="Artemis_data.xlsx"></kendo-grid-excel>
       </kendo-grid>
-      <kendo-dialog title="Planned Date Change" *ngIf="dialog" (close)="closeRefreshPopup('no')" [minWidth]="250" [width]="835" [height]="455" class="p-a-2 p-t-0">
+      <kendo-dialog
+        title="Planned Date Change"
+        *ngIf="dialog"
+        (close)="closeRefreshPopup('no')"
+        [minWidth]="250"
+        [width]="835"
+        [height]="455"
+        class="p-a-2 p-t-0"
+      >
         <p class="">Please Add Comments for Changing the Planned Date</p>
         <span class="comments">
-          <textarea
-          #input
-            name="siteComments"
-            class="k-textbox"
-            required
-            >{{ this.commentsDTO.ContactComment? this.commentsDTO.ContactComment : ""  }}</textarea
+          <textarea #input name="siteComments" class="k-textbox" required>{{
+            this.commentsDTO.ContactComment
+              ? this.commentsDTO.ContactComment
+              : ""
+          }}</textarea
           ><br />
           <div>&nbsp;</div>
           <!-- <div class="charCount">
@@ -839,17 +1598,23 @@ width="180px"
               commentsMaxLength
             }})
           </div> -->
-        <!-- <button [ngClass]="{'saveDisabled' : formGroup.get(column.field).value?.trim().length == 0, 'save' : formGroup.get(column.field).value?.trim().length > 0}" [disabled]="formGroup.get(column.field).value?.trim().length == 0" (click)="saveClicked(dataItem, 'siteComments', grid)">Save</button> -->
-        <!-- <button
+          <!-- <button [ngClass]="{'saveDisabled' : formGroup.get(column.field).value?.trim().length == 0, 'save' : formGroup.get(column.field).value?.trim().length > 0}" [disabled]="formGroup.get(column.field).value?.trim().length == 0" (click)="saveClicked(dataItem, 'siteComments', grid)">Save</button> -->
+          <!-- <button
         [ngClass]="{'saveDisabled' : formGroup.get(column.field).value?.trim().length == 0||this.commentsDTO.ContactComment==null&&!(formGroup.get(column.field).value?.trim().length>0), 'save' : formGroup.get(column.field).value?.trim().length > 0}"
         [disabled]="formGroup.get(column.field).value == null || formGroup.get(column.field).value?.trim().length == 0 || this.commentsDTO.ContactComment == formGroup.get(column.field).value"
         (click)="saveClicked(formGroup.get(column.field).value, 'siteComments', grid)">Save</button> -->
-        <div style="float:right">
-        <button class="saveDisabled" [disabled]>Save</button>
-          <button class="cancel" (click)="closeRefreshPopup('no')">Cancel</button><br />
-        </div>
+          <div style="float: right">
+            <button class="saveDisabled" [disabled]>Save</button>
+            <button class="cancel" (click)="closeRefreshPopup('no')">
+              Cancel</button
+            ><br />
+          </div>
           <div>&nbsp;</div>
-          <div *ngIf="this.commentsDTO.ContactComment" class="by" style="color: #b8b8b8">
+          <div
+            *ngIf="this.commentsDTO.ContactComment"
+            class="by"
+            style="color: #b8b8b8"
+          >
             Last edited by {{ this.commentsDTO.UpdatedBy }}
           </div>
           <div class="on" style="color: #b8b8b8">
@@ -861,7 +1626,6 @@ width="180px"
           <!-- <button class="vce-btn vce-btn--sm vce-btn--blu" (click)="closeRefreshPopup('yes')">REFRESH</button> -->
           <!-- <button class="vce-btn vce-btn--sm" (click)="closeRefreshPopup('no')">CANCEL</button> -->
         </kendo-dialog-actions>
-    
       </kendo-dialog>
     </div>
   </section>

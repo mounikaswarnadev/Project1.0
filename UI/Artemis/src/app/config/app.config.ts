@@ -15,5 +15,12 @@ export const APP_CONFIG_VALUE: AppConfig = {
   businessEntity: "ARTEMIS",
   businessSubEntity: "Migration Programme",
   enablePing: appIps.enablePing,
-  landingPageUrl: appIps.diracHomeUrl,
+  landingPageUrl: "",
+  apiUrls: {
+    sampleUrl:{
+      getsamples: `${appIps.appIP}/api/samples`,
+      addsamples:`${appIps.appIP}/api/samples`,
+      editsamples:`${appIps.appIP}/api/editsample`
+    }
+  }
 }

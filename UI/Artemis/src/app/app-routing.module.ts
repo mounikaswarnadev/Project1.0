@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './modules/home/home.component';
+import { ViewSampleComponent } from './modules/view-sample/view-sample.component';
 
 const routes: Routes = [
   {
@@ -11,6 +12,9 @@ const routes: Routes = [
   {
     path: "home",
     component: HomeComponent
+  },
+  {
+    path:'viewsample', component: ViewSampleComponent
   },
   {
     path: "**",
