@@ -1,0 +1,11 @@
+{
+  "platformIP": "https://artemisdbwebapp.azurewebsites.net/",
+  "appIP": "http://localhost:3000",
+  "enablePing": false,
+  "issuer": "https://sso-dev.shell.com",
+  "redirectUri": "https://artemisdbwebapp.azurewebsites.net",
+  "clientId": "201f1114-8973-4e08-8769-0da10892efa4",
+  "responseType": "code",
+  "scope": "openid profile email offline_access",
+  "regionToDeploy" : "USA"
+}

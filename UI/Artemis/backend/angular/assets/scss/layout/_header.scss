@@ -1,0 +1,53 @@
+/*_header.scss*/
+
+#{$ar}-header {
+    display: flex;
+    height: pxToRem(50);
+    background: #fff;
+    padding: 0 15px;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: inset 0px -1px 0px #E4E8EB;
+    &__left,
+    &__right {
+        display: inline-flex;
+    }
+    &__logo {
+        height: 36px;
+        margin-right: 20px;
+        img {
+            height: 100%;
+        }
+    }
+    &__title {
+        font-size: 25px;
+        font-weight: 900;
+        text-transform: uppercase;
+    }
+    &__subtitle {
+        font-weight: 400;
+        color: #DB4437;
+        text-transform: capitalize;
+        margin-left: 15px;
+    }
+    &__info {
+        display: inline-flex;
+        &-item {
+            position: relative;
+            padding: 0 20px;
+            border-right: solid 1px #ccc;
+            font-size: 12px;
+            line-height: 20px;
+            &:last-child {
+                padding-right: 0;
+                border-right: none;
+            }
+            &--lnk {
+                cursor: pointer;
+                &:hover {
+                    color: $black;
+                }
+            }
+        }
+    }
+}

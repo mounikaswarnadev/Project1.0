@@ -1,0 +1,56 @@
+/*_flyout.scss*/
+
+#{$ar}-flyout{
+    $flyout:&;
+    //display: none;
+    position: absolute;
+    right: -1000px;
+    top: 0;
+    bottom: 0;
+    height: 100%;
+    background: $nc-pale-gray;
+    width: 360px;
+    border-left: 1px solid #ddd;
+    box-shadow: -5px 0px 4px rgba(0, 0, 0, 0.05);
+    transition: all .5s;
+    &__content{
+        position: relative;
+        height: 100%;
+    }
+
+    &__header{
+        padding: 15px;
+        background: #EDEDED;
+        height: 48px;
+    }
+
+    &__body{
+        height: calc(100% - 48px);
+    }
+
+    &__title{
+        font-size:18px;
+        font-weight: 600;
+    }
+
+    &__close{
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        font-size: 18px;
+        cursor: pointer;
+        color:$nc-mid-gray;
+        &:hover{
+            color:$nc-dk-gray;
+        }
+    }
+
+    &__body{
+
+    }
+
+    &--show{
+        //display: block;
+        right: 0;
+    }
+}

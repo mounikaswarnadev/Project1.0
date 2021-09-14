@@ -1,0 +1,63 @@
+/*_toggler.scss*/
+
+#{$ar}-switch{
+	$swBtn:&;
+	display:inline-block;
+	background: #ebebeb;
+	border-radius: 4px;
+
+	#{$swBtn}__checkbox{
+		position: absolute;
+		visibility: hidden;
+
+		~ #{$swBtn}__on, ~ #{$swBtn}__off{
+			display: inline-block;
+			color: $font-color;
+			line-height: 25px;
+			height: 25px;
+			width: 30px;
+			border-radius: 4px;
+			text-align: center;
+			background: transparent;
+			text-transform: uppercase;
+			cursor: pointer;
+		}
+
+		~ #{$swBtn}__on{
+			background: #4b4b4b;
+			color: $white;
+		}
+
+		&:checked{
+			~ #{$swBtn}__on{
+				background: transparent;
+				color: $font-color;
+			}
+
+			~ #{$swBtn}__off{
+				background: #4b4b4b;
+				color: $white;
+			}
+		}
+	}
+
+	&--tabs{
+		#{$swBtn}__item{
+			display: inline-block;
+			color: #4d4d4d;
+			line-height: 25px;
+			height: 25px;
+			width: 30px;
+			border-radius: 4px;
+			text-align: center;
+			background: transparent;
+			text-transform: uppercase;
+			cursor: pointer;
+
+			&.active{
+				background: #4b4b4b;
+				color: $white;
+			}
+		}
+	}
+}

@@ -1,0 +1,37 @@
+<header class="ar-header">
+  <div
+    class="ar-header__left"
+    (keypress)="navigateToDiracHome()"
+    (click)="navigateToDiracHome()"
+  >
+    <span class="ar-header__logo" tabindex="0">
+      <img
+        src="./../../../../assets/shell_logo.png"
+        alt="shell logo"
+      />
+    </span>
+    <h1 class="ar-header__title" tabindex="0">
+      <span
+        >{{ businessEntity }}</span
+      ><span  class="ar-header__subtitle">{{
+        businessSubEntity
+      }}</span>
+    </h1>
+  </div>
+  <div *ngIf="isLoggedIn" class="ar-header__right">
+    <ul class="ar-header__info">
+      <li tabindex="0" class="ar-header__info-item">
+        {{ user | nameFormat }}
+      </li>
+      <!-- <li
+        tabindex="0"
+        class="ar-header__info-item ar-header__info-item--lnk"
+        (keypress)="logout()"
+        (click)="logout()"
+        *ngIf="isPingDisabled"
+      >
+        Logout
+      </li> -->
+    </ul>
+  </div>
+</header>

@@ -1,0 +1,45 @@
+/* _colors.scss */
+
+//Shell Primary Colors
+$pc-shell-yellow:#FFD300;
+$pc-shell-red:#E30613;
+$pc-shell-white:#FFFFFF;
+//Shell Secondary Colors
+$sc-lt-blue:#8FD1E3;
+$sc-md-blue:#008FC3;
+$sc-dk-blue:#005092;
+$sc-lilac:#D1B3D6;
+$sc-purple:#771469;
+$sc-shell-yellow:#FFEECA;
+$sc-orange:#F49600;
+$sc-brown:#7D3E00;
+$sc-lt-green:#CAD400;
+$sc-dk-green:#007E48;
+//Shell Neutral Colors
+$nc-black:#000000;
+$nc-v-dk-gray:#404040;
+$nc-dk-gray:#575756;
+$nc-mid-gray:#878787;
+$nc-lt-gray:#B3B2B2;
+$nc-pale-gray:#F7F7F7;
+//
+$error: #a94442;
+$warning: #8a6d3b;
+$success: #23A43B;
+$info:#31708f;
+$link:#2F80ED;
+$lt-link: #02729b;
+$link--red:#E21B18;
+$white:#fff;
+$black:#000;
+$black-6:#666;
+$gray:#ccc;
+$lt-gray:#a6a6a6;
+$green:#2db92d;
+$red:#ED1C24;
+.fas,
+.far {
+    &--gray {
+        color: #aaa
+    }
+}

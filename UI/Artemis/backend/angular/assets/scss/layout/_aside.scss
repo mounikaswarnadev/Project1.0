@@ -1,0 +1,117 @@
+/*_aside.scss*/
+
+#{$ar}-aside{
+    $aside:&;
+    position: relative;
+    height: 100%;
+    width:60px;
+    background-color: #2C2C2C;
+    overflow: hidden;
+    transition: width .5s;
+
+    &__list{
+
+        &-item{
+            position: relative;
+            display: flex;
+            padding: 13px 20px;
+            color: #909191;
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 14px;
+            height: 39px;
+            //text-align: center;
+            &:hover{
+                background: #444;
+                color:#fff;
+            }
+
+            &.active{
+                background-color: #FBD336;
+                color: #101010;
+                &:hover{
+                    background-color: #FBD336;
+                    color: #101010;
+                }
+
+                &:after{
+                    content: "";
+                    border-left: solid 3px $pc-shell-red;
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    bottom: 0;
+                }
+            }
+
+            &-txt{
+                display: none;
+            }
+
+            &-icn{
+                display: inline-block;
+                width: 20px;
+                text-align: center;
+            }
+
+            &--toggler{
+                background: #444;
+                cursor: pointer;
+            }
+        }
+    }
+
+    &__toggler{
+        display: inline-block;
+        width: 100%;
+        height: 48px;
+        padding: 0 25px;
+        line-height: 48px;
+        background: #444;
+        color: $white;
+        position: absolute;
+        bottom: 0;
+        cursor: pointer;
+        &:hover{
+            background: #666;
+        }
+    }
+
+    &__copyright{
+        display: none;
+        padding: 14px 0px;
+        color: #999;
+        font-size: 12px;
+        position: absolute;
+        bottom: 0;
+        left: 25px;
+        right: 25px;
+        border-top: solid 1px #444;
+    }
+
+    &--expanded{
+        width: 250px;
+
+        #{$aside}__list{
+            &-item{
+                &-txt{
+                    padding-left:20px;
+                    display: inline-block;
+                    @extend .ellipsis;
+                    vertical-align: bottom;
+                }
+
+            }
+        }
+
+        #{$aside}__toggler{
+            .fa-angle-double-right{
+                transform: rotate(180deg);
+            }
+        }
+
+        #{$aside}__copyright{
+            display: block;
+        }
+    }
+}

@@ -1,0 +1,104 @@
+/*_kendo_window.scss*/
+
+.createWorkflowPop .k-window-content {
+    padding: 0 !important;
+}
+
+#{$ar}-kwindow {
+    $kwindow: &;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    max-height: 90%;
+    .k-window {
+        max-height: 100%;
+        top: 30px !important;
+        &-titlebar {
+            background-color: #f7f7f7;
+            color: $black-6;
+            padding: 5px 30px;
+        }
+        &-title {
+            text-transform: uppercase;
+            font-size: 16px;
+        }
+        &-content {
+            padding: 20px 30px;
+        }
+    }
+    &--w600 {
+        .k-window {
+            width: 600px;
+        }
+    }
+    &--w90p {
+        .k-window {
+            width: 90%;
+        }
+    }
+    &--samplew90p {
+        .k-window {
+            width: 50%;
+        }
+    }
+    &--padless {
+        .k-window {
+            &-content {
+                padding: 0;
+            }
+        }
+    }
+}
+
+#{$ar}-kwindowcompare {
+    $kwindow: &;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    max-height: 90%;
+    .k-window {
+        max-height: 100%;
+        &-titlebar {
+            background-color: #f7f7f7;
+            color: $black-6;
+            padding: 5px 30px;
+        }
+        &-title {
+            text-transform: uppercase;
+            font-size: 16px;
+        }
+        &-content {
+            padding: 20px 30px;
+        }
+    }
+    &--w600 {
+        .k-window {
+            width: 600px;
+        }
+    }
+    &--w90p {
+        .k-window {
+            width: 90%;
+        }
+    }
+    &--samplew90p {
+        .k-window {
+            width: 50%;
+        }
+    }
+    &--padless {
+        .k-window {
+            &-content {
+                padding: 0;
+            }
+        }
+    }
+}

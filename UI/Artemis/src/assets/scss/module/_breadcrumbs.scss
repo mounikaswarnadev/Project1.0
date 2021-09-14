@@ -1,0 +1,47 @@
+/*_breadcrumbs.scss*/
+
+#{$ar}-breadcrumbs{
+    $br:&;
+    display: inline-flex;
+    margin-left: 15px;
+    vertical-align: middle;
+
+    >li {
+        position: relative;
+
+        &:last-of-type .ar-breadcrumbs__item{
+          max-width: 100%;
+          color: #666666;
+        }
+    }
+    &__item{
+
+        display: inline-block;
+        padding: 0 15px;
+        color: $lt-link;
+        font-size: 14px;
+        max-width: 150px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+
+        &:after{
+            content: "";
+            position: absolute;
+            border-left: solid 1px $lt-gray;
+            height: 15px;
+            left: 0;
+            top: 2px;
+            transform: rotate(25deg);
+        }
+    }
+
+    li:first-child{
+        #{$br}__item{
+            &:after{
+                transform: rotate(25deg);
+            }
+        }
+
+    }
+}

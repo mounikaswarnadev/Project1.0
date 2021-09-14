@@ -1,0 +1,200 @@
+/*_kendo_grid.scss*/
+
+// #{$dr}-kpanelbar{
+//     $kpbar:&;
+//     border:none;
+//     &.k-panelbar{
+//         #{$kpbar}__item{
+//             border:none;
+//             border-bottom: solid 1px #cdcdcd;
+//             .k-header{
+//                 background-color: transparent;
+//                 color:$font-color;
+//                 padding: 8px 20px;
+//                 cursor: pointer;
+//                &.k-state-selected{
+//                    &:hover{
+//                        background-color: transparent;
+//                        box-shadow: none;
+//                    }
+//                }
+//             }
+//             &.k-state-expanded{
+//                 .k-header{
+//                     background-color: transparent;
+//                     color: $sc-md-blue;
+//                     font-weight: 700;
+//                     box-shadow: none;
+//                 }
+//             }
+//         }
+//         .k-content{
+//             background: transparent;
+//         }
+//         #{$kpbar}__content{
+//             padding: 20px;
+//         }
+//     }
+//     &--primary{
+//         &.k-panelbar{
+//             #{$kpbar}__item{
+//                 .k-header{
+//                     padding: 12px 20px;
+//                     border-left: solid 3px transparent;
+//                    &.k-state-selected{
+//                        &:hover{
+//                             background-color: #DFDFDF;
+//                        }
+//                    }
+//                 }
+//                 &.k-state-expanded{
+//                     .k-header{
+//                         background-color: #DFDFDF;
+//                         font-weight: 600;
+//                         color:$font-color;
+//                         border-left: solid 3px $pc-shell-yellow;
+//                     }
+//                 }
+//             }
+//             #{$kpbar}__content{
+//                 padding: 0;
+//             }
+//         }
+//     }
+// }
+
+/*_kendo_panelbar.scss*/
+
+.k-panelbar {
+    background-color: #f9f9f9;
+    & .k-panelbar-expand,
+    & .k-panelbar-collapse {
+        left: 20px;
+    }
+    &>.k-item>.k-link {
+        background-color: transparent;
+        padding: 10px 25px 10px 40px;
+        color: #666666;
+        & .k-icon {
+            font-size: 18px;
+            &.k-i-arrow-s {
+                transform: rotate(-90deg);
+            }
+            &.k-i-arrow-n {
+                transform: rotate(180deg);
+            }
+        }
+        &.k-state-selected {
+            background-color: #F3F1F1;
+            border: none;
+            color: #666666;
+            box-shadow: none;
+            &:hover,
+            &.k-state-hover {
+                background-color: #F3F1F1;
+                border: none;
+                color: #666666;
+            }
+            &::before {
+                content: " ";
+                display: inline-block;
+                width: 4px;
+                height: 40px;
+                background-color: #FBD336;
+                position: absolute;
+                left: 0;
+            }
+        }
+    }
+    & .k-group>.k-item>.k-link {
+        padding: 10px 25px 10px 40px;
+        &.k-state-selected {
+            background-color: #eee;
+            border: none;
+            color: #666666;
+            font-weight: bold;
+            box-shadow: none;
+            &:hover,
+            &.k-state-hover {
+                background-color: #F3F1F1;
+                border: none;
+                color: #666666;
+            }
+            &::before {
+                content: " ";
+                display: inline-block;
+                width: 4px;
+                height: 40px;
+                background-color: #FBD336;
+                position: absolute;
+                left: 0;
+            }
+        }
+    }
+    & .k-item .k-content {
+        padding: 10px 25px 10px 40px;
+    }
+}
+
+#{$ar}-kpanelbar {
+    $kpbar: &;
+    border: none;
+    &.k-panelbar {
+        #{$kpbar}__item {
+            border: none;
+            border-bottom: solid 1px #cdcdcd;
+            .k-header {
+                background-color: transparent;
+                color: $font-color;
+                padding: 8px 20px;
+                cursor: pointer;
+                &.k-state-selected {
+                    &:hover {
+                        background-color: transparent;
+                        box-shadow: none;
+                    }
+                }
+            }
+            &.k-state-expanded {
+                .k-header {
+                    background-color: transparent;
+                    color: $lt-link;
+                    font-weight: 700;
+                    box-shadow: none;
+                }
+            }
+        }
+        .k-content {
+            background: transparent;
+        }
+        #{$kpbar}__content {
+            padding: 20px;
+        }
+    }
+    &--primary {
+        &.k-panelbar {
+            #{$kpbar}__item {
+                .k-header {
+                    padding: 12px 20px;
+                    border-left: solid 3px transparent;
+                    &.k-state-selected {
+                        &:hover {
+                            //background-color: #DFDFDF;
+                        }
+                    }
+                }
+                &.k-state-expanded {
+                    .k-header {
+                        //background-color: #DFDFDF;
+                        font-weight: 600;
+                        color: $font-color;
+                        border-left: solid 3px $pc-shell-yellow;
+                    }
+                }
+            }
+            #{$kpbar}__content {
+                padding: 0;
+            }
+        }
+    }
+}

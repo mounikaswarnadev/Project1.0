@@ -1,0 +1,65 @@
+/*_checkbox.scss*/
+
+#{$ar}-checkbox{
+    $chk:&;
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    cursor: pointer;
+
+    &__check{
+        position: absolute;
+        visibility: hidden;
+
+        &[checked] ,&:checked{
+            + #{$chk}__lbl{
+                &:after{
+                    content: "";
+                    border-color: $sc-md-blue;
+                    border-width: 0 2px 2px 0;
+                    border-style: solid;
+                    height: 10px;
+                    width: 5px;
+                    display: inline-block;
+                    position: absolute;
+                    top: 0;
+                    left: 5px;
+                    transform: rotate(45deg);
+
+
+                }
+            }
+        }
+    }
+
+    &__lbl{
+        border: solid 1px #969696;
+        @include mix-square(pxToRem(16));
+        display: inline-block;
+    }
+
+    &__txt{
+        margin-left:10px;
+        @extend .ellipsis;
+        max-width: calc(100% - 40px);
+    }
+
+    &-group{
+        display: flex;
+        flex-flow: row wrap;
+
+        #{$chk}{
+            display: flex;
+            width: 100%;
+            margin-bottom:15px;
+        }
+
+        &--3col{
+            #{$chk}{
+                display: inline-flex;
+                width:33%;
+                margin-bottom:15px;
+            }
+        }
+    }
+}

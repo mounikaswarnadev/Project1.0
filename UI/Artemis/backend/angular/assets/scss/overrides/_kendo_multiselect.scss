@@ -1,0 +1,21 @@
+/*_kendo_multiselect.scss*/
+
+#{$ar}-kmultiselect{
+    $kmselect:&;
+    .k-multiselect-wrap{
+        min-height: 40px;
+        border:solid 1px $nc-lt-gray;
+        border-radius: 3px;
+        font-size: 14px;
+        padding: 5px;
+
+        &:hover,&:active{
+            outline: none;
+            border:solid 1px $nc-mid-gray;
+        }
+
+        &:focus-within {
+            border:solid 1px $pc-shell-yellow;
+        }
+    }
+}

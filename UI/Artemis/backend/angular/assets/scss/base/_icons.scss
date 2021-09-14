@@ -1,0 +1,92 @@
+/* _colors.scss */
+
+$asset: "/../../images/icons";
+#{$ar}-icn {
+    background: url(#{$asset}/dr_sprite.svg) no-repeat;
+    &--filter {
+        width: 23px;
+        height: 30px;
+        display: inline-block;
+        background-position: -4px 0;
+    }
+    &--crop {
+        width: 32px;
+        height: 31px;
+        display: inline-block;
+        background-position: -62px 0;
+    }
+    &--volumetrics {
+        width: 27px;
+        height: 31px;
+        display: inline-block;
+        background-position: -185px 0;
+    }
+    &--grain {
+        width: 31px;
+        height: 31px;
+        display: inline-block;
+        background-position: -286px 0;
+    }
+    &--simulate {
+        width: 32px;
+        height: 31px;
+        display: inline-block;
+        background-position: -228px 0;
+    }
+    &--post-simulate {
+        width: 32px;
+        height: 28px;
+        display: inline-block;
+        background-position: -344px -2px;
+    }
+    &--segment {
+        width: 29px;
+        height: 31px;
+        display: inline-block;
+        background-position: -469px 0;
+    }
+    &--post-segment {
+        width: 31px;
+        height: 31px;
+        display: inline-block;
+        background-position: -124px 0;
+    }
+    &--transform {
+        width: 32px;
+        height: 31px;
+        display: inline-block;
+        background-position: -406px 0;
+    }
+}
+
+.fas,
+.far,
+.fa {
+    &--inprogress {
+        color: #0575D1;
+    }
+    &--completed {
+        color: $success;
+    }
+    &--notstarted {
+        color: #CCCCCC;
+    }
+    &--success {
+        color: $success;
+    }
+    &--info {
+        color: $info;
+    }
+    &--lt-gray {
+        color: #dadada;
+    }
+    &--notif-new {
+        color: #009EB4;
+    }
+    &--clock {
+        color: #EB8705;
+    }
+    &--error {
+        color: $error;
+    }
+}

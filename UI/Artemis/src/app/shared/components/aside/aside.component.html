@@ -1,0 +1,19 @@
+<div class="ar-aside" [ngClass]="{ 'ar-aside--expanded': isAsideExpanded }">
+  <ul class="ar-aside__list">
+      <li>
+          <a class="ar-aside__list-item ar-aside__list-item--toggler" (click)="toggleAside()">
+              <i class="ar-aside__list-item-icn fas fa-bars"></i>
+          </a>
+      </li>
+      <li>
+          <a routerLink="/home" routerLinkActive="active" class="ar-aside__list-item" *ngIf="isVisible">
+              <i class="ar-aside__list-item-icn fas fa-dice-d6"></i>
+              <span class="ar-aside__list-item-txt">Samples</span>
+          </a>
+      </li>
+      <li>
+  </ul>
+  <p class="ar-aside__copyright">
+      &copy; Shell 2020
+  </p>
+</div>

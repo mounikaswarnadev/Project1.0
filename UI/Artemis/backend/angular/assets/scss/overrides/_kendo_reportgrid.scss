@@ -1,0 +1,403 @@
+/*_kendo_grid.scss*/
+
+#{$ar}-kreportgrid {
+    $kgrid: &;
+    height: 94%;
+    .k-grid {
+        border: none;
+        height: 100%;
+        tr,
+        tr.k-alt {
+            background-color: $white;
+            &:hover {
+                background-color: #f7f7f7;
+            }
+        }
+    }
+    .k-grid-aria-root {}
+    .k-grid-header {
+        padding-right: 0px !important;
+        font-weight: bold;
+        border-bottom: solid 1px $gray;
+        .k-header {
+            background: $white;
+            font-size: 12px;
+            padding: 8px 25px;
+            color: $black-6;
+            border: none;
+            text-align: center;
+        }
+    }
+    .k-grid-filter {
+        .k-icon {
+            font-size: 12px;
+            color: $nc-lt-gray;
+        }
+    }
+    .k-grid-container {}
+    .k-grid-content {
+        overflow-y: hidden;
+        .k-grid-table {}
+        td {
+            position: relative;
+            border: none;
+            padding: 12px 25px;
+            // @extend .ellipsis;
+            text-align: center;
+            border-bottom: solid 1px #efefef;
+        }
+    }
+    .k-grid-pager {
+        background: $white;
+        border-top: solid 1px #ccc;
+    }
+    &--h165 {
+        height: calc(100% - 165px);
+    }
+    &--headless {
+        .k-grid-header {
+            display: none;
+        }
+    }
+    &--thumbnails {
+        .k-grid-content {
+            padding: 25px;
+            overflow-y: auto;
+            td {
+                padding: 0;
+                border: none;
+            }
+            tr {
+                display: inline-block;
+                background: transparent !important;
+            }
+        }
+    }
+    &--thumbnail {
+        .k-grid-content {
+            padding: 10px;
+            overflow-y: hidden;
+            td {
+                padding: 0;
+                padding-left: 35px;
+                border: none;
+            }
+            tr {
+                background: transparent !important;
+            }
+        }
+    }
+    &--thumbnailss {
+        .k-grid-content {
+            // padding: 0px;
+            overflow-y: hidden;
+            td {
+                padding: 0;
+                // padding-left: 35px;
+                border: none;
+            }
+            tr {
+                background: transparent !important;
+            }
+        }
+    }
+    #{$kgrid}__cell {
+        $cell: &;
+        &-lnk {
+            color: $link;
+            cursor: pointer;
+            &--red {
+                color: $link--red;
+            }
+            &--uline {
+                text-decoration: underline;
+            }
+        }
+        &-img {
+            display: inline-block;
+            // @include mix-square(30px);
+            background-color: #eee;
+            border-radius: 100%;
+            position: absolute;
+            top: 6px;
+            overflow: hidden;
+            #{$kgrid}__cell-icn {
+                font-size: 30px;
+                color: #ccc;
+            }
+            img {
+                height: 100%;
+                width: 100%;
+            }
+        }
+    }
+}
+
+
+/*_kendo_grid.scss*/
+
+#{$ar}-kreportgrids {
+    $kgrid: &;
+    height: 94%;
+    .k-grid {
+        border: none;
+        height: 100%;
+        tr,
+        tr.k-alt {
+            background-color: $white;
+            &:hover {
+                background-color: #f7f7f7;
+            }
+        }
+    }
+    .k-grid-aria-root {}
+    .k-grid-header {
+        padding-right: 0px !important;
+        font-weight: bold;
+        border-bottom: solid 1px $gray;
+        .k-header {
+            background: $white;
+            font-size: 12px;
+            padding: 8px 25px;
+            color: $black-6;
+            border: none;
+            text-align: center;
+        }
+    }
+    .k-grid-filter {
+        .k-icon {
+            font-size: 12px;
+            color: $nc-lt-gray;
+        }
+    }
+    .k-grid-container {}
+    .k-grid-content {
+        overflow-y: hidden;
+        .k-grid-table {}
+        td {
+            position: relative;
+            border: none;
+            padding: 0 5px;
+            // @extend .ellipsis;
+            text-align: center;
+            border-bottom: solid 1px #efefef;
+        }
+    }
+    .k-grid-pager {
+        background: $white;
+        border-top: solid 1px #ccc;
+    }
+    &--h165 {
+        height: calc(100% - 165px);
+    }
+    &--headless {
+        .k-grid-header {
+            display: none;
+        }
+    }
+    &--thumbnails {
+        .k-grid-content {
+            padding: 25px;
+            overflow-y: auto;
+            td {
+                padding: 0;
+                border: none;
+            }
+            tr {
+                display: inline-block;
+                background: transparent !important;
+            }
+        }
+    }
+    &--thumbnail {
+        .k-grid-content {
+            padding: 10px;
+            overflow-y: hidden;
+            td {
+                padding: 0;
+                padding-left: 35px;
+                border: none;
+            }
+            tr {
+                background: transparent !important;
+            }
+        }
+    }
+    &--thumbnailss {
+        .k-grid-content {
+            // padding: 0px;
+            overflow-y: hidden;
+            td {
+                padding: 0;
+                // padding-left: 35px;
+                border: none;
+            }
+            tr {
+                background: transparent !important;
+            }
+        }
+    }
+    #{$kgrid}__cell {
+        $cell: &;
+        &-lnk {
+            color: $link;
+            cursor: pointer;
+            &--red {
+                color: $link--red;
+            }
+            &--uline {
+                text-decoration: underline;
+            }
+        }
+        &-img {
+            display: inline-block;
+            // @include mix-square(30px);
+            background-color: #eee;
+            border-radius: 100%;
+            position: absolute;
+            top: 6px;
+            overflow: hidden;
+            #{$kgrid}__cell-icn {
+                font-size: 30px;
+                color: #ccc;
+            }
+            img {
+                height: 100%;
+                width: 100%;
+            }
+        }
+    }
+}
+
+#{$ar}-kreportgridss {
+    $kgrid: &;
+    height: 94%;
+    .k-grid {
+        border: none;
+        height: 100%;
+        tr,
+        tr.k-alt {
+            background-color: $white;
+            &:hover {
+                background-color: #f7f7f7;
+            }
+        }
+    }
+    .k-grid-aria-root {}
+    .k-grid-header {
+        padding-right: 0px !important;
+        font-weight: bold;
+        border-bottom: solid 1px $gray;
+        .k-header {
+            background: $white;
+            font-size: 12px;
+            padding: 8px 25px;
+            color: $black-6;
+            border: none;
+            text-align: center;
+        }
+    }
+    .k-grid-filter {
+        .k-icon {
+            font-size: 12px;
+            color: $nc-lt-gray;
+        }
+    }
+    .k-grid-container {}
+    .k-grid-content {
+        overflow-y: hidden;
+        .k-grid-table {}
+        td {
+            position: relative;
+            border: none;
+            padding: 20px 40px;
+            // @extend .ellipsis;
+            text-align: center;
+            border-bottom: solid 1px #efefef;
+        }
+    }
+    .k-grid-pager {
+        background: $white;
+        border-top: solid 1px #ccc;
+    }
+    &--h165 {
+        height: calc(100% - 165px);
+    }
+    &--headless {
+        .k-grid-header {
+            display: none;
+        }
+    }
+    &--thumbnails {
+        .k-grid-content {
+            padding: 25px;
+            overflow-y: auto;
+            td {
+                padding: 0;
+                border: none;
+            }
+            tr {
+                display: inline-block;
+                background: transparent !important;
+            }
+        }
+    }
+    &--thumbnail {
+        .k-grid-content {
+            padding: 10px;
+            overflow-y: hidden;
+            td {
+                padding: 0;
+                padding-left: 35px;
+                border: none;
+            }
+            tr {
+                background: transparent !important;
+            }
+        }
+    }
+    &--thumbnailss {
+        .k-grid-content {
+            // padding: 0px;
+            overflow-y: hidden;
+            td {
+                padding: 0;
+                // padding-left: 35px;
+                border: none;
+            }
+            tr {
+                background: transparent !important;
+            }
+        }
+    }
+    #{$kgrid}__cell {
+        $cell: &;
+        &-lnk {
+            color: $link;
+            cursor: pointer;
+            &--red {
+                color: $link--red;
+            }
+            &--uline {
+                text-decoration: underline;
+            }
+        }
+        &-img {
+            display: inline-block;
+            // @include mix-square(30px);
+            background-color: #eee;
+            border-radius: 100%;
+            position: absolute;
+            top: 6px;
+            overflow: hidden;
+            #{$kgrid}__cell-icn {
+                font-size: 30px;
+                color: #ccc;
+            }
+            img {
+                height: 100%;
+                width: 100%;
+            }
+        }
+    }
+}
