@@ -51,8 +51,8 @@ export class HomeComponent implements OnInit {
   public formGroup: FormGroup;
   inpValue: any;
   private categoryFilter: any[] = [];
-// columns:any[] = ['ArtemisID','MergedAssetTag','MergedLocation','ConfirmedBusiness','tsCustBusiness']
-columns: Samples[];
+columns:any[] = ['ArtemisID','ConfirmedBusiness','MigrationComment','PlannedDate','Move2Azure','ContactFocalPoint','siteComments','MergedAssetTag','MergedLocation','tsCustBusiness']
+// columns: Samples[];
   public selectAllState: SelectAllCheckboxState = 'unchecked';
   public state: State = {
     skip: 0,

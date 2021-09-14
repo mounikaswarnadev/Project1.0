@@ -43,7 +43,7 @@
           />
           <kendo-grid-spacer></kendo-grid-spacer>
 
-          <ng-multiselect-dropdown class="ar-drpdown" [(ngModel)]="selectedItems" [placeholder]="'Select Columns'" name="microscope" [data]="colm" [settings]="dropdownSettings" (onDeSelect)="onIDeSelect($event)" (onDeSelectAll)="onIDeSelectAll($event)" (onSelect)="onISelect($event)" (onSelectAll)="onISelectAll($event)">
+          <ng-multiselect-dropdown class="ar-drpdown" [(ngModel)]="selectedItems" [placeholder]="'Select Columns'" name="microscope" [data]="columns" [settings]="dropdownSettings" (onDeSelect)="onIDeSelect($event)" (onDeSelectAll)="onIDeSelectAll($event)" (onSelect)="onISelect($event)" (onSelectAll)="onISelectAll($event)">
           </ng-multiselect-dropdown>
           <button
             class="ar-kexport"
@@ -97,6 +97,8 @@
             color: '#0575D1'
           }"
           [filterable]="true"
+          *ngIf="!isHidden('ConfirmedBusiness')"
+
         >
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
@@ -122,6 +124,7 @@
             color: '#0575D1'
           }"
           [filterable]="true"
+          *ngIf="!isHidden('MigrationComment')"
         >
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
@@ -148,6 +151,8 @@
           title="Planned Date"
           width="150px"
           filter="date"
+          *ngIf="!isHidden('PlannedDate')"
+
         >
           <ng-template let-dataItem="dataItem">
             <div>
@@ -170,6 +175,8 @@
             color: '#0575D1'
           }"
           [filterable]="true"
+          *ngIf="!isHidden('Move2Azure')"
+
         >
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
@@ -194,6 +201,8 @@
             color: '#0575D1'
           }"
           [filterable]="true"
+          *ngIf="!isHidden('ContactFocalPoint')"
+
         >
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
@@ -222,6 +231,8 @@
           [width]="400"
           [sortable]="false"
           [columnMenu]="false"
+          *ngIf="!isHidden('siteComments')"
+
         >
           <ng-template
             kendoGridCellTemplate
