@@ -75,6 +75,83 @@ export class Samples {
   ContactFocalPoint : string;
   }
 
+  export const Columns = [
+
+    "ArtemisID",
+    "BusinessAppName",
+    "CorrelationID",
+    "ServerName",
+    "AppContactName",
+    "installStatus",
+    "siteComments",
+    "LastInScope",
+    "lastUpdated",
+    "UpdatedBy",
+    "ContactComment",
+    "DateUpdated",
+    "user",
+    "lastInScope",
+    "AddedDate",
+    "LastUpdatedDate",
+    "ArtemisName",
+    "ArtemisLoc",
+    "ConfirmedBusiness",
+    "tsCustBusiness",
+    "AptCOrganisation",
+    "eMRFOwningBusiness",
+    "eMRFOperatingBusiness",
+    "SnowOperatingBusiness",
+    "eMRFAssetCIOwner",
+    "SnowAssetOwner",
+    "MigrationCompleted",
+    // ExitStrategy: string;
+    // ScopeGroup: string;
+    // ScopeSet: string;
+    // Bucket: string;
+    // Wave: string;
+    // MigrationComment: string;
+    // HighestBucketPerDeployment: string;
+    // PlannedDate: Date;
+    // AptManufacturer: string;
+    // AptModel: string;
+    // AptModelInfo: string;
+    // AptAssetClass: string;
+    // AptCDeviceUse: string;
+    // tsUsage: string;
+    // tsComputerType: string;
+    // SnowClass: string;
+    // tsOperatingMode: string;
+    // tsVirtualization: string;
+    // tsPlatform: string;
+    // tsConsolidatedOS: string;
+    // AptRackName: string;
+    // Target: string;
+    // Move2Azure: string;
+    // AptSerialNumber: string;
+    // SnowSerialNumber: string;
+    // tsSystemStatus: string;
+    // AptCDeviceCondition: string;
+    // SnowStatus: string;
+    // tsService: string;
+    // tsSpecialService: string;
+    // tsNetworkType: string;
+    // tsDRS : string;
+    // tsSHELL_DeploymentID : string;
+    // eMRFDeploymentID : string;
+    // tsSHELL_DeploymentName : string;
+    // eMRFDeploymentName : string;
+    // eMRFDeploymentCIOwner : string;
+    // eMRFApplicationID : string;
+    // eMRFApplicationName : string;
+    // eMRFPortfolioName : string;
+    // eMRFPortfolioManager : string;
+    // tsAppl_LifeCycle : string;
+    // tsAppl_Business_Criticality : string;
+    // tsAppl_DR_Required : string;
+    // eMRFBusinessApplicationOwner : string;
+    // ContactFocalPoint : string;
+
+  ]
 export class Comments {
   data: any;
 }

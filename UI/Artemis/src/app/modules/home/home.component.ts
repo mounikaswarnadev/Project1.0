@@ -14,7 +14,7 @@ import { ToastService } from 'src/app/core/services/toast/toast.service';
 import { UserNavigationControlService } from 'src/app/core/services/user-context/user.navigation-control.service';
 import { UtilityService } from 'src/app/core/services/utility/utility.service';
 import { SampleDetails } from 'src/app/models/samples';
-import { CommentsDTO, Samples } from 'src/app/models/samples.model';
+import {  CommentsDTO, Samples } from 'src/app/models/samples.model';
 
 const flatten = filter => {
   const filters = (filter || {}).filters;
@@ -47,12 +47,12 @@ export class HomeComponent implements OnInit {
   public microscopeFields: string[] = []
   commentsDTO: Samples;
   sampleData: SampleDetails[] = [];
-  colm: SampleDetails;
+  colm: Samples[];
   public formGroup: FormGroup;
   inpValue: any;
   private categoryFilter: any[] = [];
-columns:any[] = ['ArtemisID','MergedAssetTag','MergedLocation','ConfirmedBusiness','tsCustBusiness']
-
+// columns:any[] = ['ArtemisID','MergedAssetTag','MergedLocation','ConfirmedBusiness','tsCustBusiness']
+columns: Samples[];
   public selectAllState: SelectAllCheckboxState = 'unchecked';
   public state: State = {
     skip: 0,
@@ -154,6 +154,7 @@ columns:any[] = ['ArtemisID','MergedAssetTag','MergedLocation','ConfirmedBusines
         if (samples.length > 0) {
           this.samples = samples;
           let records = samples.filter((sample) => sample.ArtemisID);
+
           this.samples = records.filter((item, i, arr) =>
             arr.findIndex((x) => (x.ArtemisID === item.ArtemisID)) === i)
           this.gridData = process(this.samples, this.state);
