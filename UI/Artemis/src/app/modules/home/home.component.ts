@@ -48,10 +48,11 @@ export class HomeComponent implements OnInit {
   commentsDTO: Samples;
   sampleData: SampleDetails[] = [];
   colm: Samples[];
+  select: boolean = false;
   public formGroup: FormGroup;
   inpValue: any;
   private categoryFilter: any[] = [];
-columns:any[] = ['ArtemisID','ConfirmedBusiness','MigrationComment','PlannedDate','Move2Azure','ContactFocalPoint','siteComments','MergedAssetTag','MergedLocation','tsCustBusiness']
+columns:any[] = ['ArtemisID','ConfirmedBusiness','PlannedDate','Move2Azure','ContactFocalPoint','siteComments','MergedAssetTag','MergedLocation','tsCustBusiness','AptCOrganisation','eMRFOwningBusiness','eMRFOperatingBusiness','SnowOperatingBusiness','eMRFAssetCIOwner','SnowAssetOwner','MigrationCompleted','ExitStrategy','ScopeGroup','ScopeSet','Bucket','Wave','HighestBucketPerDeployment','AptManufacturer','AptModel','AptModelInfo','AptAssetClass','AptCDeviceUse','tsUsage','tsComputerType','SnowClass','tsOperatingMode','tsVirtualization','tsPlatform','tsConsolidatedOS','AptRackName','Target','AptSerialNumber','SnowSerialNumber','tsSystemStatus','AptCDeviceCondition','SnowStatus','tsService','tsSpecialService','tsNetworkType','tsDRS','tsSHELL_DeploymentID','eMRFDeploymentID','tsSHELL_DeploymentName','eMRFDeploymentName','eMRFDeploymentCIOwner','eMRFApplicationID','eMRFApplicationName','eMRFPortfolioName','eMRFPortfolioManager','tsAppl_LifeCycle','tsAppl_Business_Criticality','tsAppl_DR_Required','eMRFBusinessApplicationOwner']
 // columns: Samples[];
   public selectAllState: SelectAllCheckboxState = 'unchecked';
   public state: State = {
@@ -85,8 +86,7 @@ columns:any[] = ['ArtemisID','ConfirmedBusiness','MigrationComment','PlannedDate
       unSelectAllText: 'UnSelect All',
       itemsShowLimit: 1,
       allowSearchFilter: true,
-      enableCheckAll: true,
-      limitSelection: -1,
+      enableCheckAll: true
     };
     // this.formGroup = this.createFormGroup(this.samples);
   }
@@ -95,10 +95,35 @@ columns:any[] = ['ArtemisID','ConfirmedBusiness','MigrationComment','PlannedDate
   public isHidden(columnName: string): boolean {
     return this.hiddenColumns.indexOf(columnName) > -1;
   }
+  public hideColumns(columnName: any): void{
+    const hiddenColumns = this.hiddenColumns;
+    let cName;
+    if(columnName.length > 1){
+    for(let i=0; i< columnName.length; i++){
+      cName = columnName[i]
+      if(this.select == false){
+        if (!this.isHidden(cName)) {
+          hiddenColumns.push(cName);
+          }}
+             if(this.select == true) {
+               if (this.isHidden(cName)) {
+                hiddenColumns.splice(hiddenColumns.indexOf(cName), 1);
+          }
+        }
+      }
+    //   else{
+    //   if (this.isHidden(cName)) {
+    //   hiddenColumns.push(cName);
+    //   } else {
+    //     hiddenColumns.splice(hiddenColumns.indexOf(cName), 1);
+    //   }
+    // }
+    }
+  }
+
 
   public hideColumn(columnName: string): void {
     const hiddenColumns = this.hiddenColumns;
-
     if (!this.isHidden(columnName)) {
       hiddenColumns.push(columnName);
     } else {
@@ -112,6 +137,8 @@ columns:any[] = ['ArtemisID','ConfirmedBusiness','MigrationComment','PlannedDate
   }
   onISelectAll(items: any) {
     debugger;
+    this.select = true;
+    this.hideColumns(items);
     console.log(items);
     this.microscopeFields.push(items);
   }
@@ -122,17 +149,21 @@ columns:any[] = ['ArtemisID','ConfirmedBusiness','MigrationComment','PlannedDate
   }
   onIDeSelectAll(items: any){
     debugger;
+    this.select = false;
+    this.hideColumns(this.selectedItems);
     this.microscopeFields.slice(items)
   }
   openView(sample: SampleDetails) {
+    debugger;
     if (sample) {
       this.userNavigationControlService.navigateByAccess([
         {
           path: "viewsample",
+
           params: {
             queryParams: {
-              id: sample.artemisId,
-              sampleGuid: sample.artemisId,
+              id: sample.ArtemisID,
+              sampleGuid: sample.ArtemisID,
             },
           },
         },
@@ -332,6 +363,7 @@ columns:any[] = ['ArtemisID','ConfirmedBusiness','MigrationComment','PlannedDate
     dataItem,
     isEdited,
   }) {
+    debugger;
     if (
       this.isEditable(column.field, dataItem) &&
       this.userCanEdit(column.field)
@@ -372,10 +404,14 @@ columns:any[] = ['ArtemisID','ConfirmedBusiness','MigrationComment','PlannedDate
     }
   }
   public cellCloseHandler(args: any) {
+    debugger;
     const { formGroup, dataItem } = args;
+    if(args.column.field !== "ContactFocalPoint" ||args.column.field !== "Move2Azure" || args.column.field !== "PlannedDate" || args.column.field !== "ConfirmedBusiness"){
+      args.preventDefault();
+    }
     if (!formGroup.valid) {
-      // prevent closing the edited cell if there are invalid values.
-      // args.preventDefault();
+    //   // prevent closing the edited cell if there are invalid values.
+
     } else if (formGroup.dirty) {
       this.samples.filter((data) => {
         this.commentsDTO = new Samples();

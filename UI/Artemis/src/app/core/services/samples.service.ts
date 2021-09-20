@@ -41,7 +41,7 @@ export class SamplesService {
     })
   }
   saveSiteComments(commentsDTO: Samples): Observable<any> {
-    return this.http.post<any>(``, commentsDTO);
+    return this.http.post<any>(`${this.appConfig.apiUrls.sampleUrl.getsamples}`, commentsDTO);
   }
   editSample(commentsDTO: Samples): Observable<any> {
     return this.http.post<any>(`${this.appConfig.apiUrls.sampleUrl.editsamples}`, commentsDTO);

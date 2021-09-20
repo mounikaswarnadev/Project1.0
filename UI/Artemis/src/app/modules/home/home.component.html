@@ -26,7 +26,6 @@
         [selectedKeys]="mySelection"
         [kendoGridSelectBy]="selectedCallback"
         id="home_grid"
-        [columnMenu]="{ filter: true }"
       >
         <ng-template kendoGridNoRecordsTemplate>
           <span *ngIf="!loading && sampleData.length === 0"
@@ -76,7 +75,7 @@
         </kendo-grid-column> -->
         <kendo-grid-column
           field="ArtemisID"
-          [filterable]="{ multi: true }"
+          [filterable]="true"
           title="Artemis ID"
           width="150px "
           *ngIf="!isHidden('ArtemisID')"
@@ -116,7 +115,7 @@
             >
           </ng-template>
         </kendo-grid-column>
-        <kendo-grid-column
+        <!-- <kendo-grid-column
           field="MigrationComment"
           title="Migration Comment"
           width="200px "
@@ -129,7 +128,7 @@
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
               [ngStyle]="
-                dataItem.MigrationComment == null
+                dataItem.MigrationComment == nul
                   ? { color: '#909090', 'font-style': 'italic' }
                   : {}
               "
@@ -141,7 +140,7 @@
               }}</span
             >
           </ng-template>
-        </kendo-grid-column>
+        </kendo-grid-column> -->
         <kendo-grid-column
           field="PlannedDate"
           editor="date"
@@ -349,11 +348,14 @@
             </span>
           </ng-template>
         </kendo-grid-column>
+
         <kendo-grid-column
           field="ArtemisName"
           title="Merged Asset Tag"
           width="200px "
-          [filterable]="{ multi: true }"
+          [filterable]="true"
+          *ngIf="!isHidden('MergedAssetTag')"
+
         >
           <ng-template
             kendoGridFilterMenuTemplate
@@ -387,6 +389,8 @@
           field="ArtemisLoc"
           title="Merged Location"
           width="180px "
+          *ngIf="!isHidden('MergedLocation')"
+
         >
           <ng-template
             kendoGridFilterMenuTemplate
@@ -419,6 +423,8 @@
           title="ts Cust Business"
           width="200px"
           [filterable]="true"
+          *ngIf="!isHidden('tsCustBusiness')"
+
         >
           <ng-template
             kendoGridFilterMenuTemplate
@@ -505,6 +511,7 @@
           title="AptC Organisation"
           width="250px"
           [filterable]="true"
+          *ngIf="!isHidden('AptCOrganisation')"
         >
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
@@ -528,6 +535,7 @@
           title="eMRF Owning Business"
           width="250px"
           [filterable]="true"
+          *ngIf="!isHidden('eMRFOwningBusiness')"
         >
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
@@ -551,6 +559,7 @@
           title="eMRF Operating Business"
           width="250px"
           [filterable]="true"
+          *ngIf="!isHidden('eMRFOperatingBusiness')"
         >
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
@@ -574,6 +583,7 @@
           title="Snow Operating Business"
           width="250px"
           [filterable]="true"
+          *ngIf="!isHidden('SnowOperatingBusiness')"
         >
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
@@ -597,6 +607,7 @@
           title="eMRF AssetCI Owner"
           width="200px"
           [filterable]="true"
+          *ngIf="!isHidden('eMRFAssetCIOwner')"
         >
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
@@ -620,6 +631,7 @@
           title="Snow Asset Owner"
           width="200px"
           [filterable]="true"
+          *ngIf="!isHidden('SnowAssetOwner')"
         >
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
@@ -641,6 +653,7 @@
           title="Migration Completed"
           width="200px"
           [filterable]="true"
+          *ngIf="!isHidden('MigrationCompleted')"
         >
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
@@ -664,6 +677,7 @@
           title="Exit Strategy"
           width="150px"
           [filterable]="true"
+          *ngIf="!isHidden('ExitStrategy')"
         >
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
@@ -685,6 +699,7 @@
           title="Scope Group"
           width="150px"
           [filterable]="true"
+          *ngIf="!isHidden('ScopeGroup')"
         >
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
@@ -706,6 +721,7 @@
           title="Scope Set"
           width="150px"
           [filterable]="true"
+          *ngIf="!isHidden('ScopeSet')"
         >
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
@@ -725,6 +741,7 @@
           title="Bucket"
           width="150px"
           [filterable]="true"
+          *ngIf="!isHidden('Bucket')"
         >
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
@@ -744,6 +761,7 @@
           title="Wave"
           width="150px"
           [filterable]="true"
+          *ngIf="!isHidden('Wave')"
         >
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
@@ -763,6 +781,7 @@
           title="Highest BucketPer Deployment"
           width="280px"
           [filterable]="true"
+          *ngIf="!isHidden('HighestBucketPerDeployment')"
         >
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
@@ -787,6 +806,7 @@
           title="Apt Manufacturer"
           width="200px"
           [filterable]="true"
+          *ngIf="!isHidden('AptManufacturer')"
         >
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
@@ -810,6 +830,7 @@
           title="Apt Model"
           width="150px"
           [filterable]="true"
+          *ngIf="!isHidden('AptModel')"
         >
           <ng-template
             kendoGridFilterMenuTemplate
@@ -843,6 +864,7 @@
           title="Apt Model Info"
           width="150px"
           [filterable]="true"
+          *ngIf="!isHidden('AptModelInfo')"
         >
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
@@ -864,6 +886,7 @@
           title="Apt Asset Class"
           width="180px"
           [filterable]="true"
+          *ngIf="!isHidden('AptAssetClass')"
         >
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
@@ -885,6 +908,7 @@
           title="AptC Device Use"
           width="180px"
           [filterable]="true"
+          *ngIf="!isHidden('AptCDeviceUse')"
         >
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
@@ -906,6 +930,7 @@
           title="ts Usage"
           width="180px"
           [filterable]="true"
+          *ngIf="!isHidden('tsUsage')"
         >
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
@@ -925,6 +950,7 @@
           title="ts Computer Type"
           width="200px"
           [filterable]="true"
+          *ngIf="!isHidden('tsComputerType')"
         >
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
@@ -946,6 +972,7 @@
           title="Snow Class"
           width="150px"
           [filterable]="true"
+          *ngIf="!isHidden('SnowClass')"
         >
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
@@ -965,6 +992,7 @@
           title="ts Operating Mode"
           width="200px"
           [filterable]="true"
+          *ngIf="!isHidden('tsOperatingMode')"
         >
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
@@ -988,6 +1016,7 @@
           title="ts Virtualization"
           width="180px"
           [filterable]="true"
+          *ngIf="!isHidden('tsVirtualization')"
         >
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
@@ -1011,6 +1040,7 @@
           title="ts Platform"
           width="150px"
           [filterable]="true"
+          *ngIf="!isHidden('tsPlatform')"
         >
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
@@ -1032,6 +1062,7 @@
           title="ts ConsolidatedOS"
           width="180px"
           [filterable]="true"
+          *ngIf="!isHidden('tsConsolidatedOS')"
         >
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
@@ -1055,6 +1086,7 @@
           title="Apt RackName"
           width="150px"
           [filterable]="true"
+          *ngIf="!isHidden('AptRackName')"
         >
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
@@ -1076,6 +1108,7 @@
           title="Target"
           width="150px"
           [filterable]="true"
+          *ngIf="!isHidden('Target')"
         >
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
@@ -1096,6 +1129,7 @@
           title="Apt Serial Number"
           width="180px"
           [filterable]="true"
+          *ngIf="!isHidden('AptSerialNumber')"
         >
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
@@ -1119,6 +1153,7 @@
           title="Snow Serial Number"
           width="180px"
           [filterable]="true"
+          *ngIf="!isHidden('SnowSerialNumber')"
         >
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
@@ -1142,6 +1177,7 @@
           title="tsSystemStatus"
           width="180px"
           [filterable]="true"
+          *ngIf="!isHidden('tsSystemStatus')"
         >
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
@@ -1163,6 +1199,7 @@
           title="AptC Device Condition"
           width="200px"
           [filterable]="true"
+          *ngIf="!isHidden('AptCDeviceCondition')"
         >
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
@@ -1186,6 +1223,7 @@
           title="SnowStatus"
           width="150px"
           [filterable]="true"
+          *ngIf="!isHidden('SnowStatus')"
         >
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
@@ -1207,6 +1245,7 @@
           title="ts Service"
           width="150px"
           [filterable]="true"
+          *ngIf="!isHidden('tsService')"
         >
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
@@ -1226,6 +1265,7 @@
           title="ts Special Service"
           width="180px"
           [filterable]="true"
+          *ngIf="!isHidden('tsSpecialService')"
         >
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
@@ -1249,6 +1289,7 @@
           title="ts NetworkType"
           width="180px"
           [filterable]="true"
+          *ngIf="!isHidden('tsNetworkType')"
         >
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
@@ -1270,6 +1311,7 @@
           title="ts DRS"
           width="150px"
           [filterable]="true"
+          *ngIf="!isHidden('tsDRS')"
         >
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
@@ -1289,6 +1331,7 @@
           title="ts SHELL_DeploymentID"
           width="200px"
           [filterable]="true"
+          *ngIf="!isHidden('tsSHELL_DeploymentID')"
         >
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
@@ -1312,6 +1355,7 @@
           title="eMRF DeploymentID"
           width="200px"
           [filterable]="true"
+          *ngIf="!isHidden('eMRFDeploymentID')"
         >
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
@@ -1335,6 +1379,8 @@
           title="ts SHELL_DeploymentName"
           width="200px"
           [filterable]="true"
+          *ngIf="!isHidden('tsSHELL_DeploymentName')"
+
         >
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
@@ -1358,6 +1404,7 @@
           title="eMRF DeploymentName"
           width="200px"
           [filterable]="true"
+          *ngIf="!isHidden('eMRFDeploymentName')"
         >
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
@@ -1381,6 +1428,7 @@
           title="eMRF DeploymentCIOwner"
           width="200px"
           [filterable]="true"
+          *ngIf="!isHidden('eMRFDeploymentCIOwner')"
         >
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
@@ -1404,6 +1452,7 @@
           title="eMRF ApplicationID"
           width="180px"
           [filterable]="true"
+          *ngIf="!isHidden('eMRFApplicationID')"
         >
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
@@ -1427,6 +1476,7 @@
           title="eMRF ApplicationName"
           width="180px"
           [filterable]="true"
+          *ngIf="!isHidden('eMRFApplicationName')"
         >
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
@@ -1450,6 +1500,7 @@
           title="eMRF PortfolioName"
           width="180px"
           [filterable]="true"
+          *ngIf="!isHidden('eMRFPortfolioName')"
         >
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
@@ -1473,6 +1524,7 @@
           title="eMRF PortfolioManager"
           width="200px"
           [filterable]="true"
+          *ngIf="!isHidden('eMRFPortfolioManager')"
         >
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
@@ -1496,6 +1548,7 @@
           title="ts Appl_LifeCycle"
           width="200px"
           [filterable]="true"
+          *ngIf="!isHidden('tsAppl_LifeCycle')"
         >
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
@@ -1519,6 +1572,7 @@
           title="tsAppl_Business_Criticality"
           width="220px"
           [filterable]="true"
+          *ngIf="!isHidden('tsAppl_Business_Criticality')"
         >
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
@@ -1542,6 +1596,7 @@
           title="ts Appl_DR_Required"
           width="180px"
           [filterable]="true"
+          *ngIf="!isHidden('tsAppl_DR_Required')"
         >
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
@@ -1565,6 +1620,8 @@
           title="eMRF Business Application Owner"
           width="220px"
           [filterable]="true"
+          *ngIf="!isHidden('eMRFBusinessApplicationOwner')"
+
         >
           <ng-template kendoGridCellTemplate let-dataItem>
             <span

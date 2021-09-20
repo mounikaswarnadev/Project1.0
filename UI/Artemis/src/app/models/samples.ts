@@ -10,7 +10,7 @@ export class SampleDetails {
   id: string;
   @JsonProperty('ArtemisID')
   @JsonElementType(String)
-  artemisId: string;
+  ArtemisID: string;
   @JsonProperty('BusinessAppName')
   @JsonElementType(String)
   bussinessAppName: string;
