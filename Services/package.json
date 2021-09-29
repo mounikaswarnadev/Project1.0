@@ -9,12 +9,17 @@
         "mysql": "^2.18.1",
         "mysql2": "^2.2.5",
         "nodemon": "^2.0.12",
-        "tedious": "^11.4.0"
+        "tedious": "^11.4.0",
+        "webpack": "^5.55.0"
     },
-    "devDependencies": {},
+    "devDependencies": {
+        "webpack-cli": "^4.8.0"
+    },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "nodemon server.js"
+        "dev": "nodemon ./server.js localhost 3000",
+        "build": "webpack",
+        "start": "nodemon server.bundle.js"
     },
     "keywords": [],
     "author": "",
