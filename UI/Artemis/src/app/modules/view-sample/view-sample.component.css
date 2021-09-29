@@ -1,0 +1,14 @@
+.k-i-loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  font-size: 50px;
+  background-color: transparent;
+  color: #eadf46;
+}
+.limitTextHeight {
+  line-height: 2;
+  overflow: hidden;
+}

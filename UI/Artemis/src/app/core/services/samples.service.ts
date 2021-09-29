@@ -2,7 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { APP_CONFIG } from 'src/app/config';
-import { Samples } from 'src/app/models/samples.model';
+import { SampleDetails } from 'src/app/models/samples';
+import { Comments, Samples } from 'src/app/models/samples.model';
 import { AppConfig } from 'src/app/shared/models/app-config/app-config.interface';
 
 @Injectable({
@@ -11,6 +12,9 @@ import { AppConfig } from 'src/app/shared/models/app-config/app-config.interface
 export class SamplesService {
   samples: Samples[] = [];
   sampleUpdate = new Subject<Samples[]>();
+  sampleDetails: SampleDetails;
+  commentUpdate = new Subject<Comments[]>();
+  comments: Comments[] = [];
 
   constructor(
     private http: HttpClient,
@@ -23,6 +27,14 @@ export class SamplesService {
       this.samples = sampleData.samples;
       this.sampleUpdate.next([...this.samples]);
     })
+  }
+  getSampleDetails(sampleId: string){
+    return this.http.get<{message: string, samples: SampleDetails, comments: Comments[]}>(`${this.appConfig.apiUrls.sampleUrl.getsampledetails}/${sampleId}`)
+    // .subscribe((sam) => {
+    //   this.sampleDetails = sam.samples;
+    //   this.comments = sam.comments;
+    //   this.commentUpdate.next([...this.comments])
+    // })
   }
   editSamples(samples){
     this.http.post<{message: string}>(`${this.appConfig.apiUrls.sampleUrl.editsamples}`, samples)

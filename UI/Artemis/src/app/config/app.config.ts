@@ -20,7 +20,8 @@ export const APP_CONFIG_VALUE: AppConfig = {
     sampleUrl:{
       getsamples: `${appIps.appIP}/api/samples`,
       addsamples:`${appIps.appIP}/api/samples`,
-      editsamples:`${appIps.appIP}/api/editsample`
+      editsamples:`${appIps.appIP}/api/editsample`,
+      getsampledetails: `${appIps.appIP}/api/samples`
     }
   }
 }

@@ -59,10 +59,24 @@ app.get('/api/samples',(req, res, next) =>{
         message: "Not fetched",
         samples: []
       })
-    }
+    };
  });
 
 });
+
+app.get('/api/samples/:ArtemisID', (req, res) =>{
+  dboperations.getSample(req.params.ArtemisID).then((data) =>{
+    dboperations.getComments(req.params.ArtemisID).then((comments) => {
+      if(comments){
+        res.status(200).json({
+          comments: comments[0],
+          message: "Posts fetched successfully!",
+          samples: data[0]
+        });
+      }
+    })
+  })
+})
 
 app.use((req,res) =>{
   res.send('halo');

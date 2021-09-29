@@ -18,4 +18,5 @@ export interface SampleUrl{
   getsamples: string;
   addsamples: string;
   editsamples: string;
+  getsampledetails: string;
 }

@@ -9,6 +9,7 @@ import {
 import { CompositeFilterDescriptor, distinct, FilterDescriptor, process, SortDescriptor, State } from '@progress/kendo-data-query';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { Subscription } from 'rxjs';
+import { CacheService } from 'src/app/core/services/cache-service/cache.service';
 import { SamplesService } from 'src/app/core/services/samples.service';
 import { ToastService } from 'src/app/core/services/toast/toast.service';
 import { UserNavigationControlService } from 'src/app/core/services/user-context/user.navigation-control.service';
@@ -50,6 +51,9 @@ export class HomeComponent implements OnInit {
   colm: Samples[];
   select: boolean = false;
   public formGroup: FormGroup;
+  public filterService: FilterService;
+  public isPrimitive: boolean;
+  public currentFilter: any;
   inpValue: any;
   private categoryFilter: any[] = [];
 columns:any[] = ['ArtemisID','ConfirmedBusiness','PlannedDate','Move2Azure','ContactFocalPoint','siteComments','MergedAssetTag','MergedLocation','tsCustBusiness','AptCOrganisation','eMRFOwningBusiness','eMRFOperatingBusiness','SnowOperatingBusiness','eMRFAssetCIOwner','SnowAssetOwner','MigrationCompleted','ExitStrategy','ScopeGroup','ScopeSet','Bucket','Wave','HighestBucketPerDeployment','AptManufacturer','AptModel','AptModelInfo','AptAssetClass','AptCDeviceUse','tsUsage','tsComputerType','SnowClass','tsOperatingMode','tsVirtualization','tsPlatform','tsConsolidatedOS','AptRackName','Target','AptSerialNumber','SnowSerialNumber','tsSystemStatus','AptCDeviceCondition','SnowStatus','tsService','tsSpecialService','tsNetworkType','tsDRS','tsSHELL_DeploymentID','eMRFDeploymentID','tsSHELL_DeploymentName','eMRFDeploymentName','eMRFDeploymentCIOwner','eMRFApplicationID','eMRFApplicationName','eMRFPortfolioName','eMRFPortfolioManager','tsAppl_LifeCycle','tsAppl_Business_Criticality','tsAppl_DR_Required','eMRFBusinessApplicationOwner']
@@ -70,6 +74,7 @@ columns:any[] = ['ArtemisID','ConfirmedBusiness','PlannedDate','Move2Azure','Con
     private sampleService: SamplesService,
     private utiltiyService: UtilityService,
     private toastService: ToastService,
+    private cacheService: CacheService,
     private userNavigationControlService: UserNavigationControlService,
     private formBuilder: FormBuilder
   ) {}
@@ -135,10 +140,25 @@ columns:any[] = ['ArtemisID','ConfirmedBusiness','PlannedDate','Move2Azure','Con
     this.hideColumn(item);
     this.microscopeFields.push(item);
   }
+  onSelect(item: any) {
+    debugger;
+    this.onClick();
+    this.isItemSelected(item);
+    // this.hideColumn(item);
+    this.microscopeFields.push(item);
+  }
   onISelectAll(items: any) {
     debugger;
     this.select = true;
     this.hideColumns(items);
+    console.log(items);
+    this.microscopeFields.push(items);
+  }
+  onSelectAll(items: any) {
+    debugger;
+    this.select = true;
+    this.isItemSelected(items);
+    // this.hideColumns(items);
     console.log(items);
     this.microscopeFields.push(items);
   }
@@ -151,6 +171,19 @@ columns:any[] = ['ArtemisID','ConfirmedBusiness','PlannedDate','Move2Azure','Con
     debugger;
     this.select = false;
     this.hideColumns(this.selectedItems);
+    this.microscopeFields.slice(items)
+  }
+  onDeSelect(item: any){
+    debugger;
+    this.isItemSelected(item);
+    // this.hideColumn(item);
+    this.microscopeFields.slice(item)
+  }
+  onDeSelectAll(items: any){
+    debugger;
+    this.select = false;
+    this.isItemSelected(items)
+    // this.hideColumns(this.selectedItems);
     this.microscopeFields.slice(items)
   }
   openView(sample: SampleDetails) {
@@ -176,12 +209,15 @@ columns:any[] = ['ArtemisID','ConfirmedBusiness','PlannedDate','Move2Azure','Con
     width: 'calc(100vw - 140px)',
   };
   private loadItems(): void {
+    debugger;
+    // this.samples = this.cacheService.get("allsamples");
+    // if (this.samples == undefined) {
+      this.samples = [];
     this.loading = true;
     this.sampleService.getSamples();
     this.sampleSub = this.sampleService
       .getSamplesUpdated()
       .subscribe((samples: Samples[]) => {
-        debugger;
         if (samples.length > 0) {
           this.samples = samples;
           let records = samples.filter((sample) => sample.ArtemisID);
@@ -191,6 +227,7 @@ columns:any[] = ['ArtemisID','ConfirmedBusiness','PlannedDate','Move2Azure','Con
           this.gridData = process(this.samples, this.state);
           this.loading = false;
           this.gridView = this.samples;
+          // this.cacheService.put("allsamples", this.samples);
           if (this.inpValue != null) {
             this.onFilter(this.inpValue);
           }
@@ -199,6 +236,18 @@ columns:any[] = ['ArtemisID','ConfirmedBusiness','PlannedDate','Move2Azure','Con
           this.sampleData.length = 0;
         }
       });
+    // }
+    // else {
+    //   this.loading = false;
+    //       let records = this.samples.filter((sample) => sample.ArtemisID);
+
+    //       this.samples = records.filter((item, i, arr) =>
+    //         arr.findIndex((x) => (x.ArtemisID === item.ArtemisID)) === i)
+    //   this.gridData = process(this.samples, this.state);
+    //   this.gridView = this.samples;
+
+    // }
+
   }
   get canEditTeamComments(): boolean {
     return true;
@@ -241,7 +290,6 @@ columns:any[] = ['ArtemisID','ConfirmedBusiness','PlannedDate','Move2Azure','Con
     return distinct(this.samples, fieldName).map((item) => item[fieldName]);
   }
   public categoryFilters(filter: CompositeFilterDescriptor): FilterDescriptor[] {
-    debugger;
     this.categoryFilter.splice(
       0, this.categoryFilter.length,
       ...flatten(filter).map(({ value }) => value)
@@ -249,7 +297,6 @@ columns:any[] = ['ArtemisID','ConfirmedBusiness','PlannedDate','Move2Azure','Con
     return this.categoryFilter;
   }
   public categoryChange(values: any[], filterService: FilterService): void {
-    debugger;
     filterService.filter({
       filters: values.map(value => ({
         field: 'tsCustBusiness',
@@ -406,7 +453,7 @@ columns:any[] = ['ArtemisID','ConfirmedBusiness','PlannedDate','Move2Azure','Con
   public cellCloseHandler(args: any) {
     debugger;
     const { formGroup, dataItem } = args;
-    if(args.column.field !== "ContactFocalPoint" ||args.column.field !== "Move2Azure" || args.column.field !== "PlannedDate" || args.column.field !== "ConfirmedBusiness"){
+    if(args.column.field !== "ContactFocalPoint" && args.column.field !== "Move2Azure" && args.column.field !== "PlannedDate" && args.column.field !== "ConfirmedBusiness"){
       args.preventDefault();
     }
     if (!formGroup.valid) {

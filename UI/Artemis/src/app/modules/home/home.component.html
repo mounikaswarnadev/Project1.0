@@ -155,7 +155,7 @@
         >
           <ng-template let-dataItem="dataItem">
             <div>
-              {{ dataItem.PlannedDate | kendoDate: "MM/dd/yyyy" }}
+              {{ dataItem.PlannedDate | date: "dd/MM/yyyy h:mm a"  }}
             </div>
             <kendo-datepicker
               calendarType="infinite"
@@ -405,7 +405,7 @@
               [currentFilter]="filter"
               [data]="distinctPrimitive(column.field)"
             ></multicheck-filter> -->
-            <ng-multiselect-dropdown class="ar-drpdown" (valueChange)="categoryChange($event, filterService)" [placeholder]="'Select Columns'" name="microscope" [data]="distinctPrimitive(column.field)" [settings]="dropdownSettings" (onDeSelect)="onIDeSelect($event)" (onDeSelectAll)="onIDeSelectAll($event)" (onSelect)="onISelect($event)" (onSelectAll)="onISelectAll($event)">
+            <ng-multiselect-dropdown  class="ar-drpdown" (valueChange)="categoryChange($event, filterService)" [placeholder]="'Select Data'" name="microscope" [data]="distinctPrimitive(column.field)" [settings]="dropdownSettings" (onDeSelect)="onDeSelect($event)" (onDeSelectAll)="onDeSelectAll($event)" (onSelect)="onSelect($event)" (onSelectAll)="onSelectAll($event)">
             </ng-multiselect-dropdown>
           </ng-template>
           <ng-template kendoGridCellTemplate let-dataItem>

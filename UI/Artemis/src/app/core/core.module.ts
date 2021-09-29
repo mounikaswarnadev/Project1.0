@@ -7,6 +7,7 @@ import { UsercontextService } from './services/user-context/usercontext.service'
 import { ToastService } from './services/toast/toast.service';
 import { INTERCEPTORS } from './interceptors';
 import { UserNavigationControlService } from './services/user-context/user.navigation-control.service';
+import { CacheService } from './services/cache-service/cache.service';
 
 
 
@@ -20,6 +21,7 @@ import { UserNavigationControlService } from './services/user-context/user.navig
     SamplesService,
     UtilityService,
     ToastService,
+    CacheService,
     // INTERCEPTORS,
     UtilityService,
     UsercontextService,

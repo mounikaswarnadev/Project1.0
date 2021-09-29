@@ -154,6 +154,10 @@ export class Samples {
   ]
 export class Comments {
   data: any;
+  ArtemisID: string;
+  UpdateBy: string;
+  ContactComment: string;
+  DateUpdated: Date;
 }
 export class CommentsDTO
 {

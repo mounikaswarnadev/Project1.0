@@ -2,17 +2,204 @@
   <header class="ar-section__header">
       <h1 class="ar-section__title cursor-pointer" routerLink="/home">Samples</h1>
       <ul class="ar-breadcrumbs">
-          <li><a class="ar-breadcrumbs__item" href="javascript:void(0)" (keypress)="refresh()" (click)="refresh()" *ngIf="!loading && metadata">{{sampleId}}</a></li>
+          <li><a class="ar-breadcrumbs__item" href="javascript:void(0)" (keypress)="refresh()" (click)="refresh()" *ngIf="!loading && sampleDetails">{{sampleId}}</a></li>
       </ul>
       <span class="float-r d-none">
 </span>
   </header>
   <section class="ar-section__content p-t-2" style="padding: 0px;">
-    <div>
-      <p>
-        {{metadata}}
-      </p>
+    <div class="ar-panel ">
+      <form class="ar-form " *ngIf="sampleDetails">
+          <div class="row ">
+              <div class="col-md-6 ">
+                  <div class="ar-form__group ">
+                      <label class="ar-label ar-label--lined ar-label--linedbar ">Artemis ID</label>
+                      <div class="ar-data ">
+                          {{ sampleDetails.ArtemisID }}
+                      </div>
+                  </div>
+                  <div class="ar-form__group ">
+                      <label class="ar-label ar-label--lined ar-label--linedbar ">Merged Asset Tag</label>
+                      <div class="ar-data ">
+                          {{ sampleDetails.ArtemisName }}
+                      </div>
+                  </div>
+                  <div class="ar-form__group ">
+                      <label class="ar-label ar-label--lined ar-label--linedbar ">Merged Location
+                          Description</label>
+                      <div class="ar-data ">
+                          {{ sampleDetails.ArtemisLoc }}
+                      </div>
+                  </div>
+                  <div class="ar-form__group ">
+                    <label class="ar-label ar-label--lined ar-label--linedbar ">Confirmed Business</label>
+                    <div class="ar-data ">
+                        {{sampleDetails.ConfirmedBusiness}}
+                    </div>
+                </div>
+                <div class="ar-form__group ">
+                    <label class="ar-label ar-label--lined ar-label--linedbar ">ts Cust Business</label>
+                    <div class="ar-data ">
+                        {{ sampleDetails.tsCustBusiness }}
+                    </div>
+                </div>
+                <div class="ar-form__group ">
+                  <label class="ar-label ar-label--lined ar-label--linedbar ">AptC Organisation</label>
+                  <div class="ar-data ">
+                      {{sampleDetails.AptCOrganisation}}
+                  </div>
+              </div>
+              <div class="ar-form__group ">
+                  <label class="ar-label ar-label--lined ar-label--linedbar ">eMRF Owning Business</label>
+                  <div class="ar-data ">
+                      {{ sampleDetails.eMRFOwningBusiness }}
+                  </div>
+              </div>
+              <div class="ar-form__group ">
+                <label class="ar-label ar-label--lined ar-label--linedbar ">eMRF Operating Business</label>
+                <div class="ar-data ">
+                    {{sampleDetails.eMRFOperatingBusiness}}
+                </div>
+            </div>
+            <div class="ar-form__group ">
+                <label class="ar-label ar-label--lined ar-label--linedbar ">Snow Operating Business</label>
+                <div class="ar-data ">
+                    {{ sampleDetails.SnowOperatingBusiness }}
+                </div>
+            </div>
+            <div class="ar-form__group ">
+              <label class="ar-label ar-label--lined ar-label--linedbar ">eMRF Asset CIOwner</label>
+              <div class="ar-data ">
+                  {{sampleDetails.eMRFAssetCIOwner}}
+              </div>
+          </div>
+          <div class="ar-form__group ">
+              <label class="ar-label ar-label--lined ar-label--linedbar ">Snow Asset Owner</label>
+              <div class="ar-data ">
+                  {{ sampleDetails.SnowAssetOwner }}
+              </div>
+          </div>
+          <div class="ar-form__group ">
+            <label class="ar-label ar-label--lined ar-label--linedbar ">Exit Strategy</label>
+            <div class="ar-data ">
+                {{sampleDetails.ExitStrategy}}
+            </div>
+        </div>
+        <div class="ar-form__group ">
+            <label class="ar-label ar-label--lined ar-label--linedbar ">Scope Group</label>
+            <div class="ar-data ">
+                {{ sampleDetails.ScopeGroup }}
+            </div>
+        </div>
+        <div class="ar-form__group ">
+          <label class="ar-label ar-label--lined ar-label--linedbar ">Scope Set</label>
+          <div class="ar-data ">
+              {{sampleDetails.ScopeSet}}
+          </div>
+      </div>
+      <div class="ar-form__group ">
+          <label class="ar-label ar-label--lined ar-label--linedbar ">Bucket</label>
+          <div class="ar-data ">
+              {{ sampleDetails.Bucket }}
+          </div>
+      </div>
+      <div class="ar-form__group ">
+        <label class="ar-label ar-label--lined ar-label--linedbar ">Wave</label>
+        <div class="ar-data ">
+            {{sampleDetails.Wave}}
+        </div>
     </div>
-      <!-- <div *ngIf="loading" aria-label="Loading page" class="k-i-loading"></div> -->
+    <div class="ar-form__group ">
+        <label class="ar-label ar-label--lined ar-label--linedbar ">Highest Bucket PerDeployment</label>
+        <div class="ar-data ">
+            {{ sampleDetails.HighestBucketPerDeployment }}
+        </div>
+    </div>
+    <div class="ar-form__group ">
+      <label class="ar-label ar-label--lined ar-label--linedbar ">Planned</label>
+      <div class="ar-data ">
+          {{sampleDetails.Planned}}
+      </div>
+  </div>
+  <div class="ar-form__group ">
+      <label class="ar-label ar-label--lined ar-label--linedbar ">Apt Manufacturer</label>
+      <div class="ar-data ">
+          {{ sampleDetails.AptManufacturer }}
+      </div>
+  </div>
+  <div class="ar-form__group ">
+    <label class="ar-label ar-label--lined ar-label--linedbar ">Apt Model</label>
+    <div class="ar-data ">
+        {{sampleDetails.AptModel}}
+    </div>
+</div>
+<div class="ar-form__group ">
+    <label class="ar-label ar-label--lined ar-label--linedbar ">Apt Model Info</label>
+    <div class="ar-data ">
+        {{ sampleDetails.AptModelInfo }}
+    </div>
+</div>
+<div class="ar-form__group ">
+  <label class="ar-label ar-label--lined ar-label--linedbar ">Apt Asset Class</label>
+  <div class="ar-data ">
+      {{sampleDetails.AptAssetClass}}
+  </div>
+</div>
+<div class="ar-form__group ">
+  <label class="ar-label ar-label--lined ar-label--linedbar ">AptC Device Use</label>
+  <div class="ar-data ">
+      {{ sampleDetails.AptCDeviceUse }}
+  </div>
+</div>
+<div class="ar-form__group ">
+<label class="ar-label ar-label--lined ar-label--linedbar ">ts Usage</label>
+<div class="ar-data ">
+    {{sampleDetails.tsUsage}}
+</div>
+</div>
+<div class="ar-form__group ">
+<label class="ar-label ar-label--lined ar-label--linedbar ">ts Computer Type</label>
+<div class="ar-data ">
+    {{ sampleDetails.tsComputerType }}
+</div>
+</div>
+<div class="ar-form__group ">
+  <label class="ar-label ar-label--lined ar-label--linedbar ">Snow Class</label>
+  <div class="ar-data ">
+      {{sampleDetails.SnowClass}}
+  </div>
+</div>
+<div class="ar-form__group ">
+  <label class="ar-label ar-label--lined ar-label--linedbar ">ts Operating Mode</label>
+  <div class="ar-data ">
+      {{ sampleDetails.tsOperatingMode }}
+  </div>
+</div>
+<div class="ar-form__group ">
+<label class="ar-label ar-label--lined ar-label--linedbar ">ts Virtualization</label>
+<div class="ar-data ">
+    {{sampleDetails.tsVirtualization}}
+</div>
+</div>
+<div class="ar-form__group ">
+<label class="ar-label ar-label--lined ar-label--linedbar ">ts Platform</label>
+<div class="ar-data ">
+    {{ sampleDetails.tsPlatform }}
+</div>
+</div>
+              </div>
+              <div class="col-md-6 ">
+                <div class="ar-form__group ">
+                  <label class="ar-label ar-label--lined ar-label--linedbar ">Contact Comments</label>
+                  <div class="ar-data limitTextHeight" *ngFor="let comment of comments" >
+                  <div style="font-size: medium;display: inline-flex;width: 75%;" >    {{ comment.ContactComment }}</div><a style="color: #666666; font-size: small;"> | {{comment.UpdateBy}},  {{comment.LastUpdatedDate | date: "dd/MM/yyyy h:mm a"  }}</a>
+                  </div>
+                  </div>
+                  <a href="javascript:;" class="ar-kgrid__cell-lnk" style="font-style: italic;float: right;" [hidden]="!limit" ng-show="limit === 2" (click)="showMore()">...see more</a>
+                  </div>
+          </div>
+      </form>
+  </div>
+      <div *ngIf="loading" aria-label="Loading page" class="k-i-loading"></div>
   </section>
 </section>
