@@ -22,14 +22,14 @@ on:
 
 env:
   AZURE_WEBAPP_NAME: Artemis1.0    # set this to your application's name
-  AZURE_WEBAPP_PACKAGE_PATH: './Services'      # set this to the path to your web app project, defaults to the repository root
+  AZURE_WEBAPP_PACKAGE_PATH: '.'      # set this to the path to your web app project, defaults to the repository root
   NODE_VERSION: '12.x'                # set this to the node version to use
 
 jobs:
   build-and-deploy:
     name: Build and Deploy
     runs-on: ubuntu-latest
-    environment: production
+    environment: Artemis1.0
     steps:
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ env.NODE_VERSION }}
