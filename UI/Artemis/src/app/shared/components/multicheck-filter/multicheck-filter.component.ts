@@ -52,7 +52,7 @@ import { FilterService } from '@progress/kendo-angular-grid';
   `]
 })
 export class MultiCheckFilterComponent implements AfterViewInit {
-  @Input() public isPrimitive: boolean;
+  @Input() public isPrimitive: boolean ;
   @Input() public currentFilter: any;
   @Input() public data;
   @Input() public textField;
@@ -99,6 +99,7 @@ export class MultiCheckFilterComponent implements AfterViewInit {
   }
 
   public onInput(e: any) {
+    debugger;
     this.currentData = distinct([
       ...this.currentData.filter(dataItem => this.value.some(val => val === this.valueAccessor(dataItem))),
       ...filterBy(this.data, {

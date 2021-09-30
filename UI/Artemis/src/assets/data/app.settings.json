@@ -1,6 +1,6 @@
 {
   "platformIP": "https://artemisdbwebapp.azurewebsites.net/",
-  "appIP": "https://artemisdbwebapp.azurewebsites.net",
+  "appIP": "http://localhost:3000",
   "enablePing": false,
   "issuer": "https://sso-dev.shell.com",
   "redirectUri": "https://artemisdbwebapp.azurewebsites.net",

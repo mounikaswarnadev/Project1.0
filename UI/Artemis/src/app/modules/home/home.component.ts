@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import {
+  ColumnComponent,
   DataBindingDirective,
   DataStateChangeEvent,
   FilterService,
@@ -38,7 +39,9 @@ export class HomeComponent implements OnInit {
   isDone: boolean = false;
   dialog: boolean = false;
   artemisId: any;
+  columnField: ColumnComponent;
   updateDate: Date;
+  dataItemField: any;
   public gridView: any[];
   public commentsMaxLength = 450;
   public mySelection: string[] = [];
@@ -411,6 +414,8 @@ columns:any[] = ['ArtemisID','ConfirmedBusiness','PlannedDate','Move2Azure','Con
     isEdited,
   }) {
     debugger;
+    this.columnField = column;
+    this.dataItemField = dataItem;
     if (
       this.isEditable(column.field, dataItem) &&
       this.userCanEdit(column.field)
@@ -437,6 +442,7 @@ columns:any[] = ['ArtemisID','ConfirmedBusiness','PlannedDate','Move2Azure','Con
         this.samples.filter((data) => {
           if (data.ArtemisID === this.commentsDTO.ArtemisID) {
            data.PlannedDate = this.commentsDTO.PlannedDate;
+
           }
           this.loadItems();
         this.toastService.success('Value Changed successfully.');
@@ -478,6 +484,7 @@ columns:any[] = ['ArtemisID','ConfirmedBusiness','PlannedDate','Move2Azure','Con
           if(formGroup?.controls?.PlannedDate?.value != null){
             this.commentsDTO.PlannedDate =
               formGroup?.controls?.PlannedDate?.value;
+              // this.commentsDTO.ContactComment = formGroup?.controls?.siteComments?.value;
             }
         this.commentsDTO.ArtemisID = formGroup?.controls?.ArtemisID?.value;
         this.commentsDTO.ContactFocalPoint = formGroup?.controls?.ContactFocalPoint?.value;
@@ -487,10 +494,12 @@ columns:any[] = ['ArtemisID','ConfirmedBusiness','PlannedDate','Move2Azure','Con
             formGroup?.controls?.ConfirmedBusiness?.value;
             data.Move2Azure = formGroup?.controls?.Move2Azure?.value;
             data.ContactFocalPoint = formGroup?.controls?.ContactFocalPoint?.value;
+            // data.ContactComment = formGroup?.controls?.siteComments?.value;
         }
 
       });
       if(this.commentsDTO.PlannedDate.toString() !== this.formGroup?.controls?.PlannedDate?.value.toString()){
+
         this.dialog = true;
         // this.changePlanDate(data);
       }
@@ -510,6 +519,7 @@ columns:any[] = ['ArtemisID','ConfirmedBusiness','PlannedDate','Move2Azure','Con
     }
   }
   saveClicked(item, column, grid) {
+    debugger;
     let sam = [];
     this.loading = true;
     this.commentsDTO = new Samples();
@@ -537,8 +547,29 @@ columns:any[] = ['ArtemisID','ConfirmedBusiness','PlannedDate','Move2Azure','Con
             this.loading = false;
             // this.HandleAPIError(error)
           }
-        );
+        )
         break;
+      }
+      case 'plannedDate': {
+        this.commentsDTO.ContactComment = item.value;
+        this.commentsDTO.UpdatedBy = 'Rajesh D';
+        // this.updateDate = new Date();
+        this.commentsDTO.LastUpdatedDate = new Date();
+        this.sampleService.saveSiteComments(this.commentsDTO).subscribe(
+          (args: any) => {
+            this.loading = false;
+            grid.cancelCell();
+            this.loadItems();
+            this.closeRefreshPopup('no');
+            this.toastService.success('Comments saved successfully.');
+          },
+          (error: any) => {
+            this.loading = false;
+            // this.HandleAPIError(error)
+          }
+        )
+        break;
+
       }
     }
   }

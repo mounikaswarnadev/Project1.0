@@ -75,13 +75,25 @@
         </kendo-grid-column> -->
         <kendo-grid-column
           field="ArtemisID"
-          [filterable]="true"
           title="Artemis ID"
           width="150px "
           *ngIf="!isHidden('ArtemisID')"
 
         >
-          <ng-template kendoGridCellTemplate let-dataItem let-filter>
+          <ng-template kendoGridFilterMenuTemplate
+          let-column="column"
+          let-filter="filter"
+          let-filterService="filterService"
+          let-dataItem="dataItem">
+            <multicheck-filter
+              [isPrimitive]="true"
+              [field]="column.field"
+              [filterService]="filterService"
+              [currentFilter]="filter"
+              [data]="distinctPrimitive(column.field)"
+            ></multicheck-filter>
+          </ng-template>
+          <ng-template kendoGridCellTemplate let-dataItem>
             <a href="javascript:void(0)"
             class="ar-kgrid__cell-lnk"
             (click)="openView(dataItem)"
@@ -95,10 +107,22 @@
           [headerStyle]="{
             color: '#0575D1'
           }"
-          [filterable]="true"
           *ngIf="!isHidden('ConfirmedBusiness')"
 
         >
+          <ng-template kendoGridFilterMenuTemplate
+          let-column="column"
+          let-filter="filter"
+          let-filterService="filterService"
+          let-dataItem="dataItem">
+            <multicheck-filter
+              [isPrimitive]="true"
+              [field]="column.field"
+              [filterService]="filterService"
+              [currentFilter]="filter"
+              [data]="distinctPrimitive(column.field)"
+            ></multicheck-filter>
+          </ng-template>
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
               [ngStyle]="
@@ -155,7 +179,7 @@
         >
           <ng-template let-dataItem="dataItem">
             <div>
-              {{ dataItem.PlannedDate | date: "dd/MM/yyyy h:mm a"  }}
+              {{ dataItem.PlannedDate | date: "dd/MM/yyyy h:mm a"}}
             </div>
             <kendo-datepicker
               calendarType="infinite"
@@ -173,11 +197,23 @@
           [headerStyle]="{
             color: '#0575D1'
           }"
-          [filterable]="true"
           *ngIf="!isHidden('Move2Azure')"
 
         >
-          <ng-template kendoGridCellTemplate let-dataItem>
+        <ng-template kendoGridFilterMenuTemplate
+        let-column="column"
+        let-filter="filter"
+        let-filterService="filterService"
+        let-dataItem="dataItem">
+          <multicheck-filter
+            [isPrimitive]="true"
+            [field]="column.field"
+            [filterService]="filterService"
+            [currentFilter]="filter"
+            [data]="distinctPrimitive(column.field)"
+          ></multicheck-filter>
+        </ng-template>
+        <ng-template kendoGridCellTemplate let-dataItem>
             <span
               [ngStyle]="
                 dataItem.MoveToAzure == null
@@ -199,11 +235,23 @@
           [headerStyle]="{
             color: '#0575D1'
           }"
-          [filterable]="true"
           *ngIf="!isHidden('ContactFocalPoint')"
 
         >
-          <ng-template kendoGridCellTemplate let-dataItem>
+        <ng-template kendoGridFilterMenuTemplate
+        let-column="column"
+        let-filter="filter"
+        let-filterService="filterService"
+        let-dataItem="dataItem">
+          <multicheck-filter
+            [isPrimitive]="true"
+            [field]="column.field"
+            [filterService]="filterService"
+            [currentFilter]="filter"
+            [data]="distinctPrimitive(column.field)"
+          ></multicheck-filter>
+        </ng-template>
+        <ng-template kendoGridCellTemplate let-dataItem>
             <span
               [ngStyle]="
                 dataItem.ContactFocalPoint == null
@@ -223,6 +271,7 @@
 
         <kendo-grid-column
           field="siteComments"
+          [filterable]="false"
           [headerStyle]="{
             color: '#0575D1'
           }"
@@ -398,15 +447,15 @@
             let-filter="filter"
             let-filterService="filterService"
           >
-            <!-- <multicheck-filter
+            <multicheck-filter
               [isPrimitive]="true"
               [field]="column.field"
               [filterService]="filterService"
               [currentFilter]="filter"
               [data]="distinctPrimitive(column.field)"
-            ></multicheck-filter> -->
-            <ng-multiselect-dropdown  class="ar-drpdown" (valueChange)="categoryChange($event, filterService)" [placeholder]="'Select Data'" name="microscope" [data]="distinctPrimitive(column.field)" [settings]="dropdownSettings" (onDeSelect)="onDeSelect($event)" (onDeSelectAll)="onDeSelectAll($event)" (onSelect)="onSelect($event)" (onSelectAll)="onSelectAll($event)">
-            </ng-multiselect-dropdown>
+            ></multicheck-filter>
+            <!-- <ng-multiselect-dropdown  class="ar-drpdown" (valueChange)="categoryChange($event, filterService)" [placeholder]="'Select Data'" name="microscope" [data]="distinctPrimitive(column.field)" [settings]="dropdownSettings" (onDeSelect)="onDeSelect($event)" (onDeSelectAll)="onDeSelectAll($event)" (onSelect)="onSelect($event)" (onSelectAll)="onSelectAll($event)">
+            </ng-multiselect-dropdown> -->
           </ng-template>
           <ng-template kendoGridCellTemplate let-dataItem>
             {{ dataItem.ArtemisLoc }}
@@ -432,6 +481,13 @@
             let-filter="filter"
             let-filterService="filterService"
           >
+          <multicheck-filter
+              [isPrimitive]="true"
+              [field]="column.field"
+              [filterService]="filterService"
+              [currentFilter]="filter"
+              [data]="distinctPrimitive(column.field)"
+            ></multicheck-filter>
             <!-- <kendo-multiselect
                     [autoClose]="false"
                     [data]="distinctPrimitive(column.field)"
@@ -452,7 +508,7 @@
                     <span>{{ dataItem }}</span>
                   </ng-template>
                 </kendo-multiselect> -->
-            <kendo-multiselect
+            <!-- <kendo-multiselect
               style="width: 190px"
               [autoClose]="false"
               [filterable]="true"
@@ -489,7 +545,7 @@
                 </span>
                 <span>{{ dataItem }}</span>
               </ng-template>
-            </kendo-multiselect>
+            </kendo-multiselect> -->
           </ng-template>
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
@@ -513,6 +569,20 @@
           [filterable]="true"
           *ngIf="!isHidden('AptCOrganisation')"
         >
+        <ng-template
+            kendoGridFilterMenuTemplate
+            let-column="column"
+            let-filter="filter"
+            let-filterService="filterService"
+          >
+            <multicheck-filter
+              [isPrimitive]="true"
+              [field]="column.field"
+              [filterService]="filterService"
+              [currentFilter]="filter"
+              [data]="distinctPrimitive(column.field)"
+            ></multicheck-filter>
+            </ng-template>
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
               [ngStyle]="
@@ -537,6 +607,20 @@
           [filterable]="true"
           *ngIf="!isHidden('eMRFOwningBusiness')"
         >
+        <ng-template
+            kendoGridFilterMenuTemplate
+            let-column="column"
+            let-filter="filter"
+            let-filterService="filterService"
+          >
+            <multicheck-filter
+              [isPrimitive]="true"
+              [field]="column.field"
+              [filterService]="filterService"
+              [currentFilter]="filter"
+              [data]="distinctPrimitive(column.field)"
+            ></multicheck-filter>
+            </ng-template>
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
               [ngStyle]="
@@ -561,6 +645,20 @@
           [filterable]="true"
           *ngIf="!isHidden('eMRFOperatingBusiness')"
         >
+        <ng-template
+            kendoGridFilterMenuTemplate
+            let-column="column"
+            let-filter="filter"
+            let-filterService="filterService"
+          >
+            <multicheck-filter
+              [isPrimitive]="true"
+              [field]="column.field"
+              [filterService]="filterService"
+              [currentFilter]="filter"
+              [data]="distinctPrimitive(column.field)"
+            ></multicheck-filter>
+            </ng-template>
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
               [ngStyle]="
@@ -585,6 +683,20 @@
           [filterable]="true"
           *ngIf="!isHidden('SnowOperatingBusiness')"
         >
+        <ng-template
+            kendoGridFilterMenuTemplate
+            let-column="column"
+            let-filter="filter"
+            let-filterService="filterService"
+          >
+            <multicheck-filter
+              [isPrimitive]="true"
+              [field]="column.field"
+              [filterService]="filterService"
+              [currentFilter]="filter"
+              [data]="distinctPrimitive(column.field)"
+            ></multicheck-filter>
+            </ng-template>
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
               [ngStyle]="
@@ -609,6 +721,20 @@
           [filterable]="true"
           *ngIf="!isHidden('eMRFAssetCIOwner')"
         >
+        <ng-template
+            kendoGridFilterMenuTemplate
+            let-column="column"
+            let-filter="filter"
+            let-filterService="filterService"
+          >
+            <multicheck-filter
+              [isPrimitive]="true"
+              [field]="column.field"
+              [filterService]="filterService"
+              [currentFilter]="filter"
+              [data]="distinctPrimitive(column.field)"
+            ></multicheck-filter>
+            </ng-template>
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
               [ngStyle]="
@@ -633,6 +759,20 @@
           [filterable]="true"
           *ngIf="!isHidden('SnowAssetOwner')"
         >
+        <ng-template
+            kendoGridFilterMenuTemplate
+            let-column="column"
+            let-filter="filter"
+            let-filterService="filterService"
+          >
+            <multicheck-filter
+              [isPrimitive]="true"
+              [field]="column.field"
+              [filterService]="filterService"
+              [currentFilter]="filter"
+              [data]="distinctPrimitive(column.field)"
+            ></multicheck-filter>
+            </ng-template>
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
               [ngStyle]="
@@ -655,6 +795,20 @@
           [filterable]="true"
           *ngIf="!isHidden('MigrationCompleted')"
         >
+        <ng-template
+            kendoGridFilterMenuTemplate
+            let-column="column"
+            let-filter="filter"
+            let-filterService="filterService"
+          >
+            <multicheck-filter
+              [isPrimitive]="true"
+              [field]="column.field"
+              [filterService]="filterService"
+              [currentFilter]="filter"
+              [data]="distinctPrimitive(column.field)"
+            ></multicheck-filter>
+            </ng-template>
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
               [ngStyle]="
@@ -679,6 +833,20 @@
           [filterable]="true"
           *ngIf="!isHidden('ExitStrategy')"
         >
+        <ng-template
+            kendoGridFilterMenuTemplate
+            let-column="column"
+            let-filter="filter"
+            let-filterService="filterService"
+          >
+            <multicheck-filter
+              [isPrimitive]="true"
+              [field]="column.field"
+              [filterService]="filterService"
+              [currentFilter]="filter"
+              [data]="distinctPrimitive(column.field)"
+            ></multicheck-filter>
+            </ng-template>
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
               [ngStyle]="
@@ -701,6 +869,20 @@
           [filterable]="true"
           *ngIf="!isHidden('ScopeGroup')"
         >
+        <ng-template
+            kendoGridFilterMenuTemplate
+            let-column="column"
+            let-filter="filter"
+            let-filterService="filterService"
+          >
+            <multicheck-filter
+              [isPrimitive]="true"
+              [field]="column.field"
+              [filterService]="filterService"
+              [currentFilter]="filter"
+              [data]="distinctPrimitive(column.field)"
+            ></multicheck-filter>
+            </ng-template>
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
               [ngStyle]="
@@ -723,6 +905,20 @@
           [filterable]="true"
           *ngIf="!isHidden('ScopeSet')"
         >
+        <ng-template
+            kendoGridFilterMenuTemplate
+            let-column="column"
+            let-filter="filter"
+            let-filterService="filterService"
+          >
+            <multicheck-filter
+              [isPrimitive]="true"
+              [field]="column.field"
+              [filterService]="filterService"
+              [currentFilter]="filter"
+              [data]="distinctPrimitive(column.field)"
+            ></multicheck-filter>
+            </ng-template>
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
               [ngStyle]="
@@ -743,6 +939,20 @@
           [filterable]="true"
           *ngIf="!isHidden('Bucket')"
         >
+        <ng-template
+            kendoGridFilterMenuTemplate
+            let-column="column"
+            let-filter="filter"
+            let-filterService="filterService"
+          >
+            <multicheck-filter
+              [isPrimitive]="true"
+              [field]="column.field"
+              [filterService]="filterService"
+              [currentFilter]="filter"
+              [data]="distinctPrimitive(column.field)"
+            ></multicheck-filter>
+            </ng-template>
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
               [ngStyle]="
@@ -763,6 +973,20 @@
           [filterable]="true"
           *ngIf="!isHidden('Wave')"
         >
+        <ng-template
+            kendoGridFilterMenuTemplate
+            let-column="column"
+            let-filter="filter"
+            let-filterService="filterService"
+          >
+            <multicheck-filter
+              [isPrimitive]="true"
+              [field]="column.field"
+              [filterService]="filterService"
+              [currentFilter]="filter"
+              [data]="distinctPrimitive(column.field)"
+            ></multicheck-filter>
+            </ng-template>
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
               [ngStyle]="
@@ -783,6 +1007,20 @@
           [filterable]="true"
           *ngIf="!isHidden('HighestBucketPerDeployment')"
         >
+        <ng-template
+            kendoGridFilterMenuTemplate
+            let-column="column"
+            let-filter="filter"
+            let-filterService="filterService"
+          >
+            <multicheck-filter
+              [isPrimitive]="true"
+              [field]="column.field"
+              [filterService]="filterService"
+              [currentFilter]="filter"
+              [data]="distinctPrimitive(column.field)"
+            ></multicheck-filter>
+            </ng-template>
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
               [ngStyle]="
@@ -808,6 +1046,20 @@
           [filterable]="true"
           *ngIf="!isHidden('AptManufacturer')"
         >
+        <ng-template
+            kendoGridFilterMenuTemplate
+            let-column="column"
+            let-filter="filter"
+            let-filterService="filterService"
+          >
+            <multicheck-filter
+              [isPrimitive]="true"
+              [field]="column.field"
+              [filterService]="filterService"
+              [currentFilter]="filter"
+              [data]="distinctPrimitive(column.field)"
+            ></multicheck-filter>
+            </ng-template>
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
               [ngStyle]="
@@ -832,6 +1084,7 @@
           [filterable]="true"
           *ngIf="!isHidden('AptModel')"
         >
+
           <ng-template
             kendoGridFilterMenuTemplate
             let-column="column"
@@ -866,6 +1119,20 @@
           [filterable]="true"
           *ngIf="!isHidden('AptModelInfo')"
         >
+        <ng-template
+            kendoGridFilterMenuTemplate
+            let-column="column"
+            let-filter="filter"
+            let-filterService="filterService"
+          >
+            <multicheck-filter
+              [isPrimitive]="true"
+              [field]="column.field"
+              [filterService]="filterService"
+              [currentFilter]="filter"
+              [data]="distinctPrimitive(column.field)"
+            ></multicheck-filter>
+            </ng-template>
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
               [ngStyle]="
@@ -888,6 +1155,20 @@
           [filterable]="true"
           *ngIf="!isHidden('AptAssetClass')"
         >
+        <ng-template
+            kendoGridFilterMenuTemplate
+            let-column="column"
+            let-filter="filter"
+            let-filterService="filterService"
+          >
+            <multicheck-filter
+              [isPrimitive]="true"
+              [field]="column.field"
+              [filterService]="filterService"
+              [currentFilter]="filter"
+              [data]="distinctPrimitive(column.field)"
+            ></multicheck-filter>
+            </ng-template>
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
               [ngStyle]="
@@ -910,6 +1191,20 @@
           [filterable]="true"
           *ngIf="!isHidden('AptCDeviceUse')"
         >
+        <ng-template
+            kendoGridFilterMenuTemplate
+            let-column="column"
+            let-filter="filter"
+            let-filterService="filterService"
+          >
+            <multicheck-filter
+              [isPrimitive]="true"
+              [field]="column.field"
+              [filterService]="filterService"
+              [currentFilter]="filter"
+              [data]="distinctPrimitive(column.field)"
+            ></multicheck-filter>
+            </ng-template>
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
               [ngStyle]="
@@ -932,6 +1227,20 @@
           [filterable]="true"
           *ngIf="!isHidden('tsUsage')"
         >
+        <ng-template
+            kendoGridFilterMenuTemplate
+            let-column="column"
+            let-filter="filter"
+            let-filterService="filterService"
+          >
+            <multicheck-filter
+              [isPrimitive]="true"
+              [field]="column.field"
+              [filterService]="filterService"
+              [currentFilter]="filter"
+              [data]="distinctPrimitive(column.field)"
+            ></multicheck-filter>
+            </ng-template>
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
               [ngStyle]="
@@ -952,6 +1261,20 @@
           [filterable]="true"
           *ngIf="!isHidden('tsComputerType')"
         >
+        <ng-template
+            kendoGridFilterMenuTemplate
+            let-column="column"
+            let-filter="filter"
+            let-filterService="filterService"
+          >
+            <multicheck-filter
+              [isPrimitive]="true"
+              [field]="column.field"
+              [filterService]="filterService"
+              [currentFilter]="filter"
+              [data]="distinctPrimitive(column.field)"
+            ></multicheck-filter>
+            </ng-template>
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
               [ngStyle]="
@@ -974,6 +1297,20 @@
           [filterable]="true"
           *ngIf="!isHidden('SnowClass')"
         >
+        <ng-template
+            kendoGridFilterMenuTemplate
+            let-column="column"
+            let-filter="filter"
+            let-filterService="filterService"
+          >
+            <multicheck-filter
+              [isPrimitive]="true"
+              [field]="column.field"
+              [filterService]="filterService"
+              [currentFilter]="filter"
+              [data]="distinctPrimitive(column.field)"
+            ></multicheck-filter>
+            </ng-template>
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
               [ngStyle]="
@@ -994,6 +1331,20 @@
           [filterable]="true"
           *ngIf="!isHidden('tsOperatingMode')"
         >
+        <ng-template
+            kendoGridFilterMenuTemplate
+            let-column="column"
+            let-filter="filter"
+            let-filterService="filterService"
+          >
+            <multicheck-filter
+              [isPrimitive]="true"
+              [field]="column.field"
+              [filterService]="filterService"
+              [currentFilter]="filter"
+              [data]="distinctPrimitive(column.field)"
+            ></multicheck-filter>
+            </ng-template>
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
               [ngStyle]="
@@ -1018,6 +1369,20 @@
           [filterable]="true"
           *ngIf="!isHidden('tsVirtualization')"
         >
+        <ng-template
+            kendoGridFilterMenuTemplate
+            let-column="column"
+            let-filter="filter"
+            let-filterService="filterService"
+          >
+            <multicheck-filter
+              [isPrimitive]="true"
+              [field]="column.field"
+              [filterService]="filterService"
+              [currentFilter]="filter"
+              [data]="distinctPrimitive(column.field)"
+            ></multicheck-filter>
+            </ng-template>
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
               [ngStyle]="
@@ -1042,6 +1407,20 @@
           [filterable]="true"
           *ngIf="!isHidden('tsPlatform')"
         >
+        <ng-template
+            kendoGridFilterMenuTemplate
+            let-column="column"
+            let-filter="filter"
+            let-filterService="filterService"
+          >
+            <multicheck-filter
+              [isPrimitive]="true"
+              [field]="column.field"
+              [filterService]="filterService"
+              [currentFilter]="filter"
+              [data]="distinctPrimitive(column.field)"
+            ></multicheck-filter>
+            </ng-template>
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
               [ngStyle]="
@@ -1064,6 +1443,20 @@
           [filterable]="true"
           *ngIf="!isHidden('tsConsolidatedOS')"
         >
+        <ng-template
+            kendoGridFilterMenuTemplate
+            let-column="column"
+            let-filter="filter"
+            let-filterService="filterService"
+          >
+            <multicheck-filter
+              [isPrimitive]="true"
+              [field]="column.field"
+              [filterService]="filterService"
+              [currentFilter]="filter"
+              [data]="distinctPrimitive(column.field)"
+            ></multicheck-filter>
+            </ng-template>
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
               [ngStyle]="
@@ -1088,6 +1481,20 @@
           [filterable]="true"
           *ngIf="!isHidden('AptRackName')"
         >
+        <ng-template
+            kendoGridFilterMenuTemplate
+            let-column="column"
+            let-filter="filter"
+            let-filterService="filterService"
+          >
+            <multicheck-filter
+              [isPrimitive]="true"
+              [field]="column.field"
+              [filterService]="filterService"
+              [currentFilter]="filter"
+              [data]="distinctPrimitive(column.field)"
+            ></multicheck-filter>
+            </ng-template>
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
               [ngStyle]="
@@ -1110,6 +1517,20 @@
           [filterable]="true"
           *ngIf="!isHidden('Target')"
         >
+        <ng-template
+            kendoGridFilterMenuTemplate
+            let-column="column"
+            let-filter="filter"
+            let-filterService="filterService"
+          >
+            <multicheck-filter
+              [isPrimitive]="true"
+              [field]="column.field"
+              [filterService]="filterService"
+              [currentFilter]="filter"
+              [data]="distinctPrimitive(column.field)"
+            ></multicheck-filter>
+            </ng-template>
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
               [ngStyle]="
@@ -1131,6 +1552,20 @@
           [filterable]="true"
           *ngIf="!isHidden('AptSerialNumber')"
         >
+        <ng-template
+            kendoGridFilterMenuTemplate
+            let-column="column"
+            let-filter="filter"
+            let-filterService="filterService"
+          >
+            <multicheck-filter
+              [isPrimitive]="true"
+              [field]="column.field"
+              [filterService]="filterService"
+              [currentFilter]="filter"
+              [data]="distinctPrimitive(column.field)"
+            ></multicheck-filter>
+            </ng-template>
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
               [ngStyle]="
@@ -1155,6 +1590,20 @@
           [filterable]="true"
           *ngIf="!isHidden('SnowSerialNumber')"
         >
+        <ng-template
+            kendoGridFilterMenuTemplate
+            let-column="column"
+            let-filter="filter"
+            let-filterService="filterService"
+          >
+            <multicheck-filter
+              [isPrimitive]="true"
+              [field]="column.field"
+              [filterService]="filterService"
+              [currentFilter]="filter"
+              [data]="distinctPrimitive(column.field)"
+            ></multicheck-filter>
+            </ng-template>
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
               [ngStyle]="
@@ -1179,6 +1628,20 @@
           [filterable]="true"
           *ngIf="!isHidden('tsSystemStatus')"
         >
+        <ng-template
+            kendoGridFilterMenuTemplate
+            let-column="column"
+            let-filter="filter"
+            let-filterService="filterService"
+          >
+            <multicheck-filter
+              [isPrimitive]="true"
+              [field]="column.field"
+              [filterService]="filterService"
+              [currentFilter]="filter"
+              [data]="distinctPrimitive(column.field)"
+            ></multicheck-filter>
+            </ng-template>
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
               [ngStyle]="
@@ -1201,6 +1664,20 @@
           [filterable]="true"
           *ngIf="!isHidden('AptCDeviceCondition')"
         >
+        <ng-template
+            kendoGridFilterMenuTemplate
+            let-column="column"
+            let-filter="filter"
+            let-filterService="filterService"
+          >
+            <multicheck-filter
+              [isPrimitive]="true"
+              [field]="column.field"
+              [filterService]="filterService"
+              [currentFilter]="filter"
+              [data]="distinctPrimitive(column.field)"
+            ></multicheck-filter>
+            </ng-template>
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
               [ngStyle]="
@@ -1225,6 +1702,20 @@
           [filterable]="true"
           *ngIf="!isHidden('SnowStatus')"
         >
+        <ng-template
+            kendoGridFilterMenuTemplate
+            let-column="column"
+            let-filter="filter"
+            let-filterService="filterService"
+          >
+            <multicheck-filter
+              [isPrimitive]="true"
+              [field]="column.field"
+              [filterService]="filterService"
+              [currentFilter]="filter"
+              [data]="distinctPrimitive(column.field)"
+            ></multicheck-filter>
+            </ng-template>
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
               [ngStyle]="
@@ -1247,6 +1738,20 @@
           [filterable]="true"
           *ngIf="!isHidden('tsService')"
         >
+        <ng-template
+            kendoGridFilterMenuTemplate
+            let-column="column"
+            let-filter="filter"
+            let-filterService="filterService"
+          >
+            <multicheck-filter
+              [isPrimitive]="true"
+              [field]="column.field"
+              [filterService]="filterService"
+              [currentFilter]="filter"
+              [data]="distinctPrimitive(column.field)"
+            ></multicheck-filter>
+            </ng-template>
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
               [ngStyle]="
@@ -1267,6 +1772,20 @@
           [filterable]="true"
           *ngIf="!isHidden('tsSpecialService')"
         >
+        <ng-template
+            kendoGridFilterMenuTemplate
+            let-column="column"
+            let-filter="filter"
+            let-filterService="filterService"
+          >
+            <multicheck-filter
+              [isPrimitive]="true"
+              [field]="column.field"
+              [filterService]="filterService"
+              [currentFilter]="filter"
+              [data]="distinctPrimitive(column.field)"
+            ></multicheck-filter>
+            </ng-template>
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
               [ngStyle]="
@@ -1291,6 +1810,20 @@
           [filterable]="true"
           *ngIf="!isHidden('tsNetworkType')"
         >
+        <ng-template
+            kendoGridFilterMenuTemplate
+            let-column="column"
+            let-filter="filter"
+            let-filterService="filterService"
+          >
+            <multicheck-filter
+              [isPrimitive]="true"
+              [field]="column.field"
+              [filterService]="filterService"
+              [currentFilter]="filter"
+              [data]="distinctPrimitive(column.field)"
+            ></multicheck-filter>
+            </ng-template>
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
               [ngStyle]="
@@ -1313,6 +1846,20 @@
           [filterable]="true"
           *ngIf="!isHidden('tsDRS')"
         >
+        <ng-template
+            kendoGridFilterMenuTemplate
+            let-column="column"
+            let-filter="filter"
+            let-filterService="filterService"
+          >
+            <multicheck-filter
+              [isPrimitive]="true"
+              [field]="column.field"
+              [filterService]="filterService"
+              [currentFilter]="filter"
+              [data]="distinctPrimitive(column.field)"
+            ></multicheck-filter>
+            </ng-template>
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
               [ngStyle]="
@@ -1333,6 +1880,20 @@
           [filterable]="true"
           *ngIf="!isHidden('tsSHELL_DeploymentID')"
         >
+        <ng-template
+            kendoGridFilterMenuTemplate
+            let-column="column"
+            let-filter="filter"
+            let-filterService="filterService"
+          >
+            <multicheck-filter
+              [isPrimitive]="true"
+              [field]="column.field"
+              [filterService]="filterService"
+              [currentFilter]="filter"
+              [data]="distinctPrimitive(column.field)"
+            ></multicheck-filter>
+            </ng-template>
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
               [ngStyle]="
@@ -1357,6 +1918,20 @@
           [filterable]="true"
           *ngIf="!isHidden('eMRFDeploymentID')"
         >
+        <ng-template
+            kendoGridFilterMenuTemplate
+            let-column="column"
+            let-filter="filter"
+            let-filterService="filterService"
+          >
+            <multicheck-filter
+              [isPrimitive]="true"
+              [field]="column.field"
+              [filterService]="filterService"
+              [currentFilter]="filter"
+              [data]="distinctPrimitive(column.field)"
+            ></multicheck-filter>
+            </ng-template>
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
               [ngStyle]="
@@ -1380,8 +1955,21 @@
           width="200px"
           [filterable]="true"
           *ngIf="!isHidden('tsSHELL_DeploymentName')"
-
         >
+        <ng-template
+            kendoGridFilterMenuTemplate
+            let-column="column"
+            let-filter="filter"
+            let-filterService="filterService"
+          >
+            <multicheck-filter
+              [isPrimitive]="true"
+              [field]="column.field"
+              [filterService]="filterService"
+              [currentFilter]="filter"
+              [data]="distinctPrimitive(column.field)"
+            ></multicheck-filter>
+            </ng-template>
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
               [ngStyle]="
@@ -1406,6 +1994,20 @@
           [filterable]="true"
           *ngIf="!isHidden('eMRFDeploymentName')"
         >
+        <ng-template
+            kendoGridFilterMenuTemplate
+            let-column="column"
+            let-filter="filter"
+            let-filterService="filterService"
+          >
+            <multicheck-filter
+              [isPrimitive]="true"
+              [field]="column.field"
+              [filterService]="filterService"
+              [currentFilter]="filter"
+              [data]="distinctPrimitive(column.field)"
+            ></multicheck-filter>
+            </ng-template>
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
               [ngStyle]="
@@ -1430,6 +2032,20 @@
           [filterable]="true"
           *ngIf="!isHidden('eMRFDeploymentCIOwner')"
         >
+        <ng-template
+            kendoGridFilterMenuTemplate
+            let-column="column"
+            let-filter="filter"
+            let-filterService="filterService"
+          >
+            <multicheck-filter
+              [isPrimitive]="true"
+              [field]="column.field"
+              [filterService]="filterService"
+              [currentFilter]="filter"
+              [data]="distinctPrimitive(column.field)"
+            ></multicheck-filter>
+            </ng-template>
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
               [ngStyle]="
@@ -1454,6 +2070,20 @@
           [filterable]="true"
           *ngIf="!isHidden('eMRFApplicationID')"
         >
+        <ng-template
+            kendoGridFilterMenuTemplate
+            let-column="column"
+            let-filter="filter"
+            let-filterService="filterService"
+          >
+            <multicheck-filter
+              [isPrimitive]="true"
+              [field]="column.field"
+              [filterService]="filterService"
+              [currentFilter]="filter"
+              [data]="distinctPrimitive(column.field)"
+            ></multicheck-filter>
+            </ng-template>
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
               [ngStyle]="
@@ -1478,6 +2108,20 @@
           [filterable]="true"
           *ngIf="!isHidden('eMRFApplicationName')"
         >
+        <ng-template
+            kendoGridFilterMenuTemplate
+            let-column="column"
+            let-filter="filter"
+            let-filterService="filterService"
+          >
+            <multicheck-filter
+              [isPrimitive]="true"
+              [field]="column.field"
+              [filterService]="filterService"
+              [currentFilter]="filter"
+              [data]="distinctPrimitive(column.field)"
+            ></multicheck-filter>
+            </ng-template>
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
               [ngStyle]="
@@ -1502,6 +2146,20 @@
           [filterable]="true"
           *ngIf="!isHidden('eMRFPortfolioName')"
         >
+        <ng-template
+            kendoGridFilterMenuTemplate
+            let-column="column"
+            let-filter="filter"
+            let-filterService="filterService"
+          >
+            <multicheck-filter
+              [isPrimitive]="true"
+              [field]="column.field"
+              [filterService]="filterService"
+              [currentFilter]="filter"
+              [data]="distinctPrimitive(column.field)"
+            ></multicheck-filter>
+            </ng-template>
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
               [ngStyle]="
@@ -1526,6 +2184,20 @@
           [filterable]="true"
           *ngIf="!isHidden('eMRFPortfolioManager')"
         >
+        <ng-template
+            kendoGridFilterMenuTemplate
+            let-column="column"
+            let-filter="filter"
+            let-filterService="filterService"
+          >
+            <multicheck-filter
+              [isPrimitive]="true"
+              [field]="column.field"
+              [filterService]="filterService"
+              [currentFilter]="filter"
+              [data]="distinctPrimitive(column.field)"
+            ></multicheck-filter>
+            </ng-template>
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
               [ngStyle]="
@@ -1550,6 +2222,20 @@
           [filterable]="true"
           *ngIf="!isHidden('tsAppl_LifeCycle')"
         >
+        <ng-template
+            kendoGridFilterMenuTemplate
+            let-column="column"
+            let-filter="filter"
+            let-filterService="filterService"
+          >
+            <multicheck-filter
+              [isPrimitive]="true"
+              [field]="column.field"
+              [filterService]="filterService"
+              [currentFilter]="filter"
+              [data]="distinctPrimitive(column.field)"
+            ></multicheck-filter>
+            </ng-template>
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
               [ngStyle]="
@@ -1574,6 +2260,20 @@
           [filterable]="true"
           *ngIf="!isHidden('tsAppl_Business_Criticality')"
         >
+        <ng-template
+            kendoGridFilterMenuTemplate
+            let-column="column"
+            let-filter="filter"
+            let-filterService="filterService"
+          >
+            <multicheck-filter
+              [isPrimitive]="true"
+              [field]="column.field"
+              [filterService]="filterService"
+              [currentFilter]="filter"
+              [data]="distinctPrimitive(column.field)"
+            ></multicheck-filter>
+            </ng-template>
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
               [ngStyle]="
@@ -1598,6 +2298,20 @@
           [filterable]="true"
           *ngIf="!isHidden('tsAppl_DR_Required')"
         >
+        <ng-template
+            kendoGridFilterMenuTemplate
+            let-column="column"
+            let-filter="filter"
+            let-filterService="filterService"
+          >
+            <multicheck-filter
+              [isPrimitive]="true"
+              [field]="column.field"
+              [filterService]="filterService"
+              [currentFilter]="filter"
+              [data]="distinctPrimitive(column.field)"
+            ></multicheck-filter>
+            </ng-template>
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
               [ngStyle]="
@@ -1623,6 +2337,20 @@
           *ngIf="!isHidden('eMRFBusinessApplicationOwner')"
 
         >
+        <ng-template
+            kendoGridFilterMenuTemplate
+            let-column="column"
+            let-filter="filter"
+            let-filterService="filterService"
+          >
+            <multicheck-filter
+              [isPrimitive]="true"
+              [field]="column.field"
+              [filterService]="filterService"
+              [currentFilter]="filter"
+              [data]="distinctPrimitive(column.field)"
+            ></multicheck-filter>
+            </ng-template>
           <ng-template kendoGridCellTemplate let-dataItem>
             <span
               [ngStyle]="
@@ -1652,41 +2380,47 @@
         [height]="455"
         class="p-a-2 p-t-0"
       >
-        <p class="">Please Add Comments for Changing the Planned Date</p>
+
+        <p style="color: #434343;">Planned date has been changed From: <strong>{{formGroup?.controls?.PlannedDate?.value | date: "dd/MM/yyyy h:mm a"}}</strong> To: <strong>{{this.commentsDTO.PlannedDate | date: "dd/MM/yyyy h:mm a"}}</strong>
+        </p>
+        <p class="">Reason:</p>
+
         <span class="comments">
-          <textarea #input name="siteComments" class="k-textbox" required>{{
-            this.commentsDTO.ContactComment
-              ? this.commentsDTO.ContactComment
+          <textarea #input name="plannedDate" class="k-textbox" required> {{
+            dataItemField.ContactComment
+              ? dataItemField.ContactComment
               : ""
           }}</textarea
           ><br />
           <div>&nbsp;</div>
-          <!-- <div class="charCount">
-            ({{ formGroup.get(formGroup).value?.length }}/{{
+          <div class="charCount">
+            ({{ formGroup.get(columnField.field).value?.length }}/{{
               commentsMaxLength
             }})
-          </div> -->
-          <!-- <button [ngClass]="{'saveDisabled' : formGroup.get(column.field).value?.trim().length == 0, 'save' : formGroup.get(column.field).value?.trim().length > 0}" [disabled]="formGroup.get(column.field).value?.trim().length == 0" (click)="saveClicked(dataItem, 'siteComments', grid)">Save</button> -->
-          <!-- <button
-        [ngClass]="{'saveDisabled' : formGroup.get(column.field).value?.trim().length == 0||this.commentsDTO.ContactComment==null&&!(formGroup.get(column.field).value?.trim().length>0), 'save' : formGroup.get(column.field).value?.trim().length > 0}"
-        [disabled]="formGroup.get(column.field).value == null || formGroup.get(column.field).value?.trim().length == 0 || this.commentsDTO.ContactComment == formGroup.get(column.field).value"
-        (click)="saveClicked(formGroup.get(column.field).value, 'siteComments', grid)">Save</button> -->
-          <div style="float: right">
+          </div>
+          <!-- <button [ngClass]="{'saveDisabled' : formGroup.get(this.columnField.field).value?.trim().length == 0, 'save' : formGroup.get(columnField.field).value?.trim().length > 0}" [disabled]="formGroup.get(columnField.field).value?.trim().length == 0" (click)="saveClicked(dataItemField, 'siteComments', grid)">Save</button> -->
+          <button
+          class="save"
+        (click)="saveClicked(input, 'plannedDate', grid)">Save</button>
+        <button class="cancel" (click)="closeRefreshPopup('no')">
+          Cancel</button
+        ><br />
+          <!-- <div style="float: right">
             <button class="saveDisabled" [disabled]>Save</button>
             <button class="cancel" (click)="closeRefreshPopup('no')">
               Cancel</button
             ><br />
-          </div>
+          </div> -->
           <div>&nbsp;</div>
           <div
             *ngIf="this.commentsDTO.ContactComment"
             class="by"
             style="color: #b8b8b8"
           >
-            Last edited by {{ this.commentsDTO.UpdatedBy }}
+            Last edited by {{ dataItemField.UpdatedBy }}
           </div>
           <div class="on" style="color: #b8b8b8">
-            {{ this.commentsDTO.LastUpdatedDate | date: "dd/MM/yyyy h:mm a" }}
+            {{ dataItemField.LastUpdatedDate | date: "dd/MM/yyyy h:mm a" }}
           </div>
           <br />
         </span>
