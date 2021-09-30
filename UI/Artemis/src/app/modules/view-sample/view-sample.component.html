@@ -189,17 +189,80 @@
 </div>
               </div>
               <div class="col-md-6 ">
-                <div class="ar-form__group ">
-                  <label class="ar-label ar-label--lined ar-label--linedbar ">Contact Comments</label>
+                <div class="ar-form__group " style="padding-bottom: 10px;">
+                  <label class="ar-label ar-label--lined ar-label--linedbar " style="display: inline-flex;align-items: end;">Contact Comments
+                    <div class="editEnabled">
+                      <i class="fas fa-edit editIcon" title="Add New Comment" (click)="openComment()"></i>
+                    </div>
+                  </label>
+
                   <div class="ar-data limitTextHeight" *ngFor="let comment of comments" >
                   <div style="font-size: medium;display: inline-flex;width: 75%;" >    {{ comment.ContactComment }}</div><a style="color: #666666; font-size: small;"> | {{comment.UpdateBy}},  {{comment.LastUpdatedDate | date: "dd/MM/yyyy h:mm a"  }}</a>
                   </div>
                   </div>
-                  <a href="javascript:;" class="ar-kgrid__cell-lnk" style="font-style: italic;float: right;" [hidden]="!limit" ng-show="limit === 2" (click)="showMore()">...see more</a>
+                  <a href="javascript:;" *ngIf="content.length > size && content.length >= 5" class="ar-kgrid__cell-lnk" style="font-style: italic;float: right;" [hidden]="!limit" ng-show="limit === 2" (click)="showMore()">...see more</a>
+                  <a href="javascript:;" *ngIf="comments.length == content.length && content.length >= 5" class="ar-kgrid__cell-lnk" style="font-style: italic;float: right;" [hidden]="!limit" ng-show="limit === 2" (click)="showLess()">...see less</a>
                   </div>
           </div>
       </form>
   </div>
+  <kendo-dialog
+        title="Planned Date Change"
+        *ngIf="editableComment && sampleDetails"
+        (close)="closeRefreshPopup('no')"
+        [minWidth]="250"
+        [width]="835"
+        [height]="455"
+        class="p-a-2 p-t-0"
+      >
+
+
+        <p class="">Please Add Comments</p>
+
+        <span class="comments">
+          <textarea #input name="plannedDate" class="k-textbox" required> {{
+            sampleDetails.ContactComment
+              ? sampleDetails.ContactComment
+              : ""
+          }}</textarea
+          ><br />
+          <div>&nbsp;</div>
+          <div class="charCount">
+            (/{{
+              commentsMaxLength
+            }})
+          </div>
+          <!-- <button [ngClass]="{'saveDisabled' : formGroup.get(this.columnField.field).value?.trim().length == 0, 'save' : formGroup.get(columnField.field).value?.trim().length > 0}" [disabled]="formGroup.get(columnField.field).value?.trim().length == 0" (click)="saveClicked(dataItemField, 'siteComments', grid)">Save</button> -->
+          <button
+          class="save"
+        (click)="saveClicked(input)">Save</button>
+        <button class="cancel" (click)="closeRefreshPopup('no')">
+          Cancel</button
+        ><br />
+          <!-- <div style="float: right">
+            <button class="saveDisabled" [disabled]>Save</button>
+            <button class="cancel" (click)="closeRefreshPopup('no')">
+              Cancel</button
+            ><br />
+          </div> -->
+          <div>&nbsp;</div>
+          <div
+            *ngIf="sampleDetails.ContactComment"
+            class="by"
+            style="color: #b8b8b8"
+          >
+            Last edited by {{ sampleDetails.UpdatedBy }}
+          </div>
+          <div class="on" style="color: #b8b8b8">
+            {{ sampleDetails.LastUpdatedDate | date: "dd/MM/yyyy h:mm a" }}
+          </div>
+          <br />
+        </span>
+        <kendo-dialog-actions>
+          <!-- <button class="vce-btn vce-btn--sm vce-btn--blu" (click)="closeRefreshPopup('yes')">REFRESH</button> -->
+          <!-- <button class="vce-btn vce-btn--sm" (click)="closeRefreshPopup('no')">CANCEL</button> -->
+        </kendo-dialog-actions>
+      </kendo-dialog>
       <div *ngIf="loading" aria-label="Loading page" class="k-i-loading"></div>
   </section>
 </section>

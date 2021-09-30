@@ -5,12 +5,10 @@
     "main": "server.js",
     "dependencies": {
         "express": "^4.17.1",
-        "mssql": "^7.2.0",
-        "mysql": "^2.18.1",
-        "mysql2": "^2.2.5",
         "nodemon": "^2.0.12",
         "tedious": "^11.4.0",
-        "webpack": "^5.55.0"
+        "webpack": "^5.55.0",
+        "mssql": "^7.2.0"
     },
     "devDependencies": {
         "webpack-cli": "^4.8.0"
@@ -18,7 +16,7 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "dev": "nodemon ./server.js localhost 3000",
-        "build": "webpack",
+        "build": "npm run-script build",
         "start": "nodemon server.bundle.js"
     },
     "keywords": [],
