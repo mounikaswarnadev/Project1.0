@@ -1,0 +1,45 @@
+/*_imageupload.scss*/
+
+#{$ar}-imageupload{
+    $imgUp:&;
+    position: relative;
+    @include mix-square(90px);
+    border-radius: 100%;
+    margin-bottom: 20px;
+    cursor: pointer;
+    overflow: hidden;
+
+    &__pic{
+        font-size: 92px;
+        @include mix-square(90px);
+        border-radius: 100%;
+        display: inline-flex;
+        color: #aaa;
+    }
+
+    &__action{
+        background: rgba(0,0,0,.6);
+        position: absolute;
+        bottom: -50px;
+        left:0;
+        right:0;
+        height: 45px;
+        color:$white;
+        font-size: 12px;
+        padding: 5px 10px;
+        text-align: center;
+        transition: bottom .1s;
+        cursor: pointer;
+        &-btn{
+            position: absolute;
+            widows: 100%;
+            visibility: hidden;
+        }
+    }
+
+    &:hover{
+        #{$imgUp}__action{
+            bottom: 0;
+        }
+    }
+}

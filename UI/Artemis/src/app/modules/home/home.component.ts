@@ -7,7 +7,15 @@ import {
   FilterService,
   SelectAllCheckboxState,
 } from '@progress/kendo-angular-grid';
-import { CompositeFilterDescriptor, distinct, FilterDescriptor, process, SortDescriptor, State } from '@progress/kendo-data-query';
+import {
+  CompositeFilterDescriptor,
+  distinct,
+  FilterDescriptor,
+  process,
+  SortDescriptor,
+  State,
+} from '@progress/kendo-data-query';
+import { time } from 'console';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { Subscription } from 'rxjs';
 import { CacheService } from 'src/app/core/services/cache-service/cache.service';
@@ -16,12 +24,15 @@ import { ToastService } from 'src/app/core/services/toast/toast.service';
 import { UserNavigationControlService } from 'src/app/core/services/user-context/user.navigation-control.service';
 import { UtilityService } from 'src/app/core/services/utility/utility.service';
 import { SampleDetails } from 'src/app/models/samples';
-import {  CommentsDTO, Samples } from 'src/app/models/samples.model';
+import { CommentsDTO, Samples } from 'src/app/models/samples.model';
 
-const flatten = filter => {
+const flatten = (filter) => {
   const filters = (filter || {}).filters;
   if (filters) {
-    return filters.reduce((acc, curr) => acc.concat(curr.filters ? flatten(curr) : [curr]), []);
+    return filters.reduce(
+      (acc, curr) => acc.concat(curr.filters ? flatten(curr) : [curr]),
+      []
+    );
   }
   return [];
 };
@@ -32,7 +43,7 @@ const flatten = filter => {
 })
 export class HomeComponent implements OnInit {
   @ViewChild(DataBindingDirective) dataBinding: DataBindingDirective;
-  dropdownSettings : IDropdownSettings;
+  dropdownSettings: IDropdownSettings;
   loading: boolean = true;
   gridData: any;
   isSelected = false;
@@ -42,25 +53,86 @@ export class HomeComponent implements OnInit {
   columnField: ColumnComponent;
   updateDate: Date;
   dataItemField: any;
+  plannedDate: any;
   public gridView: any[];
   public commentsMaxLength = 450;
   public mySelection: string[] = [];
   samples: Samples[] = [];
   selectedItems: any;
   private sampleSub: Subscription;
-  public microscopeFields: string[] = []
+  public microscopeFields: string[] = [];
   commentsDTO: Samples;
   sampleData: SampleDetails[] = [];
   colm: Samples[];
   select: boolean = false;
   public formGroup: FormGroup;
+  public format = 'MM/dd/yyyy HH:mm:ss';
   public filterService: FilterService;
   public isPrimitive: boolean;
   public currentFilter: any;
   inpValue: any;
   private categoryFilter: any[] = [];
-columns:any[] = ['ArtemisID','ConfirmedBusiness','PlannedDate','Move2Azure','ContactFocalPoint','siteComments','MergedAssetTag','MergedLocation','tsCustBusiness','AptCOrganisation','eMRFOwningBusiness','eMRFOperatingBusiness','SnowOperatingBusiness','eMRFAssetCIOwner','SnowAssetOwner','MigrationCompleted','ExitStrategy','ScopeGroup','ScopeSet','Bucket','Wave','HighestBucketPerDeployment','AptManufacturer','AptModel','AptModelInfo','AptAssetClass','AptCDeviceUse','tsUsage','tsComputerType','SnowClass','tsOperatingMode','tsVirtualization','tsPlatform','tsConsolidatedOS','AptRackName','Target','AptSerialNumber','SnowSerialNumber','tsSystemStatus','AptCDeviceCondition','SnowStatus','tsService','tsSpecialService','tsNetworkType','tsDRS','tsSHELL_DeploymentID','eMRFDeploymentID','tsSHELL_DeploymentName','eMRFDeploymentName','eMRFDeploymentCIOwner','eMRFApplicationID','eMRFApplicationName','eMRFPortfolioName','eMRFPortfolioManager','tsAppl_LifeCycle','tsAppl_Business_Criticality','tsAppl_DR_Required','eMRFBusinessApplicationOwner']
-// columns: Samples[];
+  columns: any[] = [
+    'ArtemisID',
+    'ConfirmedBusiness',
+    'PlannedDate',
+    'Move2Azure',
+    'ContactFocalPoint',
+    'siteComments',
+    'MergedAssetTag',
+    'MergedLocation',
+    'tsCustBusiness',
+    'AptCOrganisation',
+    'eMRFOwningBusiness',
+    'eMRFOperatingBusiness',
+    'SnowOperatingBusiness',
+    'eMRFAssetCIOwner',
+    'SnowAssetOwner',
+    'MigrationCompleted',
+    'ExitStrategy',
+    'ScopeGroup',
+    'ScopeSet',
+    'Bucket',
+    'Wave',
+    'HighestBucketPerDeployment',
+    'AptManufacturer',
+    'AptModel',
+    'AptModelInfo',
+    'AptAssetClass',
+    'AptCDeviceUse',
+    'tsUsage',
+    'tsComputerType',
+    'SnowClass',
+    'tsOperatingMode',
+    'tsVirtualization',
+    'tsPlatform',
+    'tsConsolidatedOS',
+    'AptRackName',
+    'Target',
+    'AptSerialNumber',
+    'SnowSerialNumber',
+    'tsSystemStatus',
+    'AptCDeviceCondition',
+    'SnowStatus',
+    'tsService',
+    'tsSpecialService',
+    'tsNetworkType',
+    'tsDRS',
+    'tsSHELL_DeploymentID',
+    'eMRFDeploymentID',
+    'tsSHELL_DeploymentName',
+    'eMRFDeploymentName',
+    'eMRFDeploymentCIOwner',
+    'eMRFApplicationID',
+    'eMRFApplicationName',
+    'eMRFPortfolioName',
+    'eMRFPortfolioManager',
+    'tsAppl_LifeCycle',
+    'tsAppl_Business_Criticality',
+    'tsAppl_DR_Required',
+    'eMRFBusinessApplicationOwner',
+  ];
+  // columns: Samples[];
   public selectAllState: SelectAllCheckboxState = 'unchecked';
   public state: State = {
     skip: 0,
@@ -85,7 +157,7 @@ columns:any[] = ['ArtemisID','ConfirmedBusiness','PlannedDate','Move2Azure','Con
   ngOnInit(): void {
     this.selectedItems = this.columns;
     this.loadItems();
-    console.log(this.commentsDTO,'ccc');
+    console.log(this.commentsDTO, 'ccc');
     this.dropdownSettings = {
       singleSelection: false,
       idField: 'id',
@@ -94,7 +166,7 @@ columns:any[] = ['ArtemisID','ConfirmedBusiness','PlannedDate','Move2Azure','Con
       unSelectAllText: 'UnSelect All',
       itemsShowLimit: 1,
       allowSearchFilter: true,
-      enableCheckAll: true
+      enableCheckAll: true,
     };
     // this.formGroup = this.createFormGroup(this.samples);
   }
@@ -103,32 +175,32 @@ columns:any[] = ['ArtemisID','ConfirmedBusiness','PlannedDate','Move2Azure','Con
   public isHidden(columnName: string): boolean {
     return this.hiddenColumns.indexOf(columnName) > -1;
   }
-  public hideColumns(columnName: any): void{
+  public hideColumns(columnName: any): void {
     const hiddenColumns = this.hiddenColumns;
     let cName;
-    if(columnName.length > 1){
-    for(let i=0; i< columnName.length; i++){
-      cName = columnName[i]
-      if(this.select == false){
-        if (!this.isHidden(cName)) {
-          hiddenColumns.push(cName);
-          }}
-             if(this.select == true) {
-               if (this.isHidden(cName)) {
-                hiddenColumns.splice(hiddenColumns.indexOf(cName), 1);
+    if (columnName.length > 1) {
+      for (let i = 0; i < columnName.length; i++) {
+        cName = columnName[i];
+        if (this.select == false) {
+          if (!this.isHidden(cName)) {
+            hiddenColumns.push(cName);
+          }
+        }
+        if (this.select == true) {
+          if (this.isHidden(cName)) {
+            hiddenColumns.splice(hiddenColumns.indexOf(cName), 1);
           }
         }
       }
-    //   else{
-    //   if (this.isHidden(cName)) {
-    //   hiddenColumns.push(cName);
-    //   } else {
-    //     hiddenColumns.splice(hiddenColumns.indexOf(cName), 1);
-    //   }
-    // }
+      //   else{
+      //   if (this.isHidden(cName)) {
+      //   hiddenColumns.push(cName);
+      //   } else {
+      //     hiddenColumns.splice(hiddenColumns.indexOf(cName), 1);
+      //   }
+      // }
     }
   }
-
 
   public hideColumn(columnName: string): void {
     const hiddenColumns = this.hiddenColumns;
@@ -165,36 +237,36 @@ columns:any[] = ['ArtemisID','ConfirmedBusiness','PlannedDate','Move2Azure','Con
     console.log(items);
     this.microscopeFields.push(items);
   }
-  onIDeSelect(item: any){
+  onIDeSelect(item: any) {
     debugger;
     this.hideColumn(item);
-    this.microscopeFields.slice(item)
+    this.microscopeFields.slice(item);
   }
-  onIDeSelectAll(items: any){
+  onIDeSelectAll(items: any) {
     debugger;
     this.select = false;
     this.hideColumns(this.selectedItems);
-    this.microscopeFields.slice(items)
+    this.microscopeFields.slice(items);
   }
-  onDeSelect(item: any){
+  onDeSelect(item: any) {
     debugger;
     this.isItemSelected(item);
     // this.hideColumn(item);
-    this.microscopeFields.slice(item)
+    this.microscopeFields.slice(item);
   }
-  onDeSelectAll(items: any){
+  onDeSelectAll(items: any) {
     debugger;
     this.select = false;
-    this.isItemSelected(items)
+    this.isItemSelected(items);
     // this.hideColumns(this.selectedItems);
-    this.microscopeFields.slice(items)
+    this.microscopeFields.slice(items);
   }
   openView(sample: SampleDetails) {
     debugger;
     if (sample) {
       this.userNavigationControlService.navigateByAccess([
         {
-          path: "viewsample",
+          path: 'viewsample',
 
           params: {
             queryParams: {
@@ -215,7 +287,7 @@ columns:any[] = ['ArtemisID','ConfirmedBusiness','PlannedDate','Move2Azure','Con
     debugger;
     // this.samples = this.cacheService.get("allsamples");
     // if (this.samples == undefined) {
-      this.samples = [];
+    this.samples = [];
     this.loading = true;
     this.sampleService.getSamples();
     this.sampleSub = this.sampleService
@@ -225,8 +297,10 @@ columns:any[] = ['ArtemisID','ConfirmedBusiness','PlannedDate','Move2Azure','Con
           this.samples = samples;
           let records = samples.filter((sample) => sample.ArtemisID);
 
-          this.samples = records.filter((item, i, arr) =>
-            arr.findIndex((x) => (x.ArtemisID === item.ArtemisID)) === i)
+          this.samples = records.filter(
+            (item, i, arr) =>
+              arr.findIndex((x) => x.ArtemisID === item.ArtemisID) === i
+          );
           this.gridData = process(this.samples, this.state);
           this.loading = false;
           this.gridView = this.samples;
@@ -239,18 +313,6 @@ columns:any[] = ['ArtemisID','ConfirmedBusiness','PlannedDate','Move2Azure','Con
           this.sampleData.length = 0;
         }
       });
-    // }
-    // else {
-    //   this.loading = false;
-    //       let records = this.samples.filter((sample) => sample.ArtemisID);
-
-    //       this.samples = records.filter((item, i, arr) =>
-    //         arr.findIndex((x) => (x.ArtemisID === item.ArtemisID)) === i)
-    //   this.gridData = process(this.samples, this.state);
-    //   this.gridView = this.samples;
-
-    // }
-
   }
   get canEditTeamComments(): boolean {
     return true;
@@ -264,15 +326,13 @@ columns:any[] = ['ArtemisID','ConfirmedBusiness','PlannedDate','Move2Azure','Con
   public isChecked = false;
 
   public get isIndet() {
-    return (
-      this.value.length !== 0 && this.value.length !== this.samples.length
-    );
+    return this.value.length !== 0 && this.value.length !== this.samples.length;
   }
   public onValueChange(e) {
     this.isChecked = this.value.length === this.samples.length;
   }
   public get toggleAllText() {
-    return this.isChecked ? "Deselect All" : "Select All";
+    return this.isChecked ? 'Deselect All' : 'Select All';
   }
 
   public isItemSelected(item) {
@@ -292,27 +352,29 @@ columns:any[] = ['ArtemisID','ConfirmedBusiness','PlannedDate','Move2Azure','Con
   public distinctPrimitive(fieldName: string): any {
     return distinct(this.samples, fieldName).map((item) => item[fieldName]);
   }
-  public categoryFilters(filter: CompositeFilterDescriptor): FilterDescriptor[] {
+  public categoryFilters(
+    filter: CompositeFilterDescriptor
+  ): FilterDescriptor[] {
     this.categoryFilter.splice(
-      0, this.categoryFilter.length,
+      0,
+      this.categoryFilter.length,
       ...flatten(filter).map(({ value }) => value)
     );
     return this.categoryFilter;
   }
   public categoryChange(values: any[], filterService: FilterService): void {
     filterService.filter({
-      filters: values.map(value => ({
+      filters: values.map((value) => ({
         field: 'tsCustBusiness',
         operator: 'eq',
-        value
+        value,
       })),
-      logic: 'or'
+      logic: 'or',
     });
   }
   public handleChange(value: Date) {
     // Update the JSON birthDate string date
     // this.model.birthDate = this.intl.formatDate(value, "yyyy-MM-dd");
-
     // this.output = JSON.stringify(this.model);
     // this.user = this.parse(this.model);
   }
@@ -332,9 +394,7 @@ columns:any[] = ['ArtemisID','ConfirmedBusiness','PlannedDate','Move2Azure','Con
   public onSelectedKeysChange(e: any) {
     this.isSelected = true;
     this.artemisId = e;
-    var data = this.samples.filter(
-      (i) => i.ArtemisID == this.mySelection[0]
-    );
+    var data = this.samples.filter((i) => i.ArtemisID == this.mySelection[0]);
     const len = this.mySelection.length;
     if (len === 0) {
       this.selectAllState = 'unchecked';
@@ -427,31 +487,35 @@ columns:any[] = ['ArtemisID','ConfirmedBusiness','PlannedDate','Move2Azure','Con
     if (
       (!isEdited && column.field == 'PlannedDate') ||
       column.field == 'value' ||
-      column.field == 'ConfirmedBusiness' || column.field == 'MigrationComment' ||
-      column.field == 'Move2Azure' || column.field == 'ContactFocalPoint'
+      column.field == 'ConfirmedBusiness' ||
+      column.field == 'MigrationComment' ||
+      column.field == 'Move2Azure' ||
+      column.field == 'ContactFocalPoint'
     ) {
       this.formGroup = this.createFormGroup(dataItem);
       sender.editCell(rowIndex, columnIndex, this.createFormGroup(dataItem));
     }
   }
 
-  changePlanDate(data: any){
-    this.sampleService.editSample(this.commentsDTO).subscribe(
-      (args: any) => {
-        this.loading = false;
-        this.samples.filter((data) => {
-          if (data.ArtemisID === this.commentsDTO.ArtemisID) {
-           data.PlannedDate = this.commentsDTO.PlannedDate;
-
-          }
-          this.loadItems();
+  changePlanDate(data: any) {
+    this.sampleService.editSample(this.commentsDTO).subscribe((args: any) => {
+      this.loading = false;
+      this.samples.filter((data) => {
+        if (data.ArtemisID === this.commentsDTO.ArtemisID) {
+          data.PlannedDate = this.commentsDTO.PlannedDate;
+        }
+        this.loadItems();
         this.toastService.success('Value Changed successfully.');
-        });
-      }
-    )
+      });
+    });
   }
   public closeRefreshPopup(status) {
     this.dialog = false;
+    // this.samples.filter((data) => {
+    // if (data.ArtemisID === this.commentsDTO.ArtemisID) {
+    //  data.PlannedDate = this.convert(this.formGroup?.controls?.PlannedDate?.value);
+    // }
+    // })
     if (status == 'yes') {
       // this.loadItems();
     }
@@ -459,64 +523,103 @@ columns:any[] = ['ArtemisID','ConfirmedBusiness','PlannedDate','Move2Azure','Con
   public cellCloseHandler(args: any) {
     debugger;
     const { formGroup, dataItem } = args;
-    if(args.column.field !== "ContactFocalPoint" && args.column.field !== "Move2Azure" && args.column.field !== "PlannedDate" && args.column.field !== "ConfirmedBusiness"){
+    if (
+      args.column.field !== 'ContactFocalPoint' &&
+      args.column.field !== 'Move2Azure' &&
+      args.column.field !== 'PlannedDate' &&
+      args.column.field !== 'ConfirmedBusiness'
+    ) {
       args.preventDefault();
     }
     if (!formGroup.valid) {
-    //   // prevent closing the edited cell if there are invalid values.
-
+      //   // prevent closing the edited cell if there are invalid values.
     } else if (formGroup.dirty) {
       this.samples.filter((data) => {
         this.commentsDTO = new Samples();
 
-        if(formGroup?.controls?.ConfirmedBusiness?.value != null){
-        this.commentsDTO.ConfirmedBusiness =
-          formGroup?.controls?.ConfirmedBusiness?.value;
+        if (formGroup?.controls?.ConfirmedBusiness?.value != null) {
+          this.commentsDTO.ConfirmedBusiness =
+            formGroup?.controls?.ConfirmedBusiness?.value;
         }
-        if(formGroup?.controls?.MigrationComment?.value != null){
+        if (formGroup?.controls?.MigrationComment?.value != null) {
           this.commentsDTO.MigrationComment =
             formGroup?.controls?.MigrationComment?.value;
-          }
-        if(formGroup?.controls?.Move2Azure?.value != null){
-          this.commentsDTO.Move2Azure =
-            formGroup?.controls?.Move2Azure?.value;
-          }
-          if(formGroup?.controls?.PlannedDate?.value != null){
-            this.commentsDTO.PlannedDate =
-              formGroup?.controls?.PlannedDate?.value;
-              // this.commentsDTO.ContactComment = formGroup?.controls?.siteComments?.value;
-            }
+        }
+        if (formGroup?.controls?.Move2Azure?.value != null) {
+          this.commentsDTO.Move2Azure = formGroup?.controls?.Move2Azure?.value;
+        }
+        if (formGroup?.controls?.PlannedDate?.value != null) {
+          this.commentsDTO.PlannedDate = this.convert(
+            formGroup?.controls?.PlannedDate?.value
+          );
+          this.plannedDate = this.commentsDTO.PlannedDate;
+          // this.commentsDTO.ContactComment = formGroup?.controls?.siteComments?.value;
+        }
         this.commentsDTO.ArtemisID = formGroup?.controls?.ArtemisID?.value;
-        this.commentsDTO.ContactFocalPoint = formGroup?.controls?.ContactFocalPoint?.value;
+        this.commentsDTO.ContactFocalPoint =
+          formGroup?.controls?.ContactFocalPoint?.value;
         if (data.ArtemisID === formGroup?.controls?.ArtemisID?.value) {
-          data.PlannedDate = formGroup?.controls?.PlannedDate?.value;
+          // data.PlannedDate = this.convert(formGroup?.controls?.PlannedDate?.value);
           data.ConfirmedBusiness =
             formGroup?.controls?.ConfirmedBusiness?.value;
-            data.Move2Azure = formGroup?.controls?.Move2Azure?.value;
-            data.ContactFocalPoint = formGroup?.controls?.ContactFocalPoint?.value;
-            // data.ContactComment = formGroup?.controls?.siteComments?.value;
+          data.Move2Azure = formGroup?.controls?.Move2Azure?.value;
+          data.ContactFocalPoint =
+            formGroup?.controls?.ContactFocalPoint?.value;
+          // data.ContactComment = formGroup?.controls?.siteComments?.value;
         }
-
       });
-      if(this.commentsDTO.PlannedDate.toString() !== this.formGroup?.controls?.PlannedDate?.value.toString()){
-
+      if (
+        this.commentsDTO.PlannedDate.toString() !==
+        this.formGroup?.controls?.PlannedDate?.value.toString()
+      ) {
         this.dialog = true;
-        // this.changePlanDate(data);
+        // this.changePlanDate(this.commentsDTO);
       }
-    if(this.commentsDTO.ConfirmedBusiness != this.formGroup?.controls?.ConfirmedBusiness?.value || this.commentsDTO.Move2Azure != this.formGroup?.controls?.Move2Azure?.value || this.commentsDTO.ContactFocalPoint != this.formGroup?.controls?.ContactFocalPoint?.value){
-      this.sampleService.editSample(this.commentsDTO).subscribe(
-        (args: any) => {
-          this.loading = false;
-          this.loadItems();
-          this.toastService.success('Value Changed successfully.');
-        },
-        (error: any) => {
-          this.loading = false;
-          // this.HandleAPIError(error)
-        }
-      );
+      if (
+        this.commentsDTO.ConfirmedBusiness !=
+          this.formGroup?.controls?.ConfirmedBusiness?.value ||
+        this.commentsDTO.Move2Azure !=
+          this.formGroup?.controls?.Move2Azure?.value ||
+        this.commentsDTO.ContactFocalPoint !=
+          this.formGroup?.controls?.ContactFocalPoint?.value
+      ) {
+        this.sampleService.editSample(this.commentsDTO).subscribe(
+          (args: any) => {
+            this.loading = false;
+            this.loadItems();
+            this.toastService.success('Value Changed successfully.');
+          },
+          (error: any) => {
+            this.loading = false;
+            // this.HandleAPIError(error)
+          }
+        );
+      }
     }
-    }
+  }
+  convertDate(str) {
+    debugger;
+    var hours, minutes, seconds;
+    var date = new Date(str),
+      month = ('0' + (date.getMonth() + 1)).slice(-2),
+      day = ('0' + date.getDate()).slice(-2);
+
+    var mySQLDate = [date.getFullYear(), month, day].join('-');
+    return [mySQLDate].join(' ');
+  }
+  convert(str) {
+    debugger;
+    var hours, minutes, seconds;
+    var date = new Date(str),
+      month = ('0' + (date.getMonth() + 1)).slice(-2),
+      day = ('0' + date.getDate()).slice(-2);
+    hours = ('0' + date.getHours()).slice(-2);
+    minutes = ('0' + date.getMinutes()).slice(-2);
+    seconds = ('0' + date.getSeconds()).slice(-2);
+
+    var mySQLDate = [date.getFullYear(), month, day].join('-');
+    var mySQLTime = [hours, minutes, seconds].join(':');
+    return [mySQLDate, mySQLTime].join(' ');
   }
   saveClicked(item, column, grid) {
     debugger;
@@ -524,10 +627,10 @@ columns:any[] = ['ArtemisID','ConfirmedBusiness','PlannedDate','Move2Azure','Con
     this.loading = true;
     this.commentsDTO = new Samples();
     this.commentsDTO.ArtemisID = this.formGroup?.controls?.ArtemisID?.value;
-    this.samples.filter((x) =>{
+    this.samples.filter((x) => {
       x.ArtemisID = this.artemisId;
-      sam.push(x)
-    })
+      sam.push(x);
+    });
 
     switch (column) {
       case 'siteComments': {
@@ -547,7 +650,7 @@ columns:any[] = ['ArtemisID','ConfirmedBusiness','PlannedDate','Move2Azure','Con
             this.loading = false;
             // this.HandleAPIError(error)
           }
-        )
+        );
         break;
       }
       case 'plannedDate': {
@@ -555,8 +658,10 @@ columns:any[] = ['ArtemisID','ConfirmedBusiness','PlannedDate','Move2Azure','Con
         this.commentsDTO.UpdatedBy = 'Rajesh D';
         // this.updateDate = new Date();
         this.commentsDTO.LastUpdatedDate = new Date();
+        this.commentsDTO.PlannedDate = this.plannedDate;
         this.sampleService.saveSiteComments(this.commentsDTO).subscribe(
           (args: any) => {
+            // this.changePlanDate(this.commentsDTO);
             this.loading = false;
             grid.cancelCell();
             this.loadItems();
@@ -567,9 +672,8 @@ columns:any[] = ['ArtemisID','ConfirmedBusiness','PlannedDate','Move2Azure','Con
             this.loading = false;
             // this.HandleAPIError(error)
           }
-        )
+        );
         break;
-
       }
     }
   }

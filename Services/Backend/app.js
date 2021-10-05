@@ -10,7 +10,9 @@ var  router = express.Router()
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(express.static(path.resolve("../../Artemis1.0/UI/Artemis/dist/Artemis")));
+// app.use("/", express.static(path.join(__dirname, "angular")));
+// app.use(express.static(path.resolve("../../Artemis/dist/Artemis")));
+app.use(express.static(path.resolve("Backend/dist/Artemis")));
 
 
 app.use((req, res, next) => {
@@ -30,9 +32,9 @@ app.use((req, res, next) => {
 //   res.sendFile(path.join(__dirname, "angular", "index.html"));
 // });
 app.get('/', (req,res) => {
-    res.sendFile(path.resolve("../../Artemis1.0/UI/Artemis/dist/Artemis/index.html"))
-  });
-
+  // res.sendFile(path.resolve("../../Artemis/dist/Artemis/index.html"))
+  res.sendFile(path.resolve("Backend/dist/Artemis/index.html"))
+});
 app.post('/api/samples',(req, res, next) => {
   const sample = req.body;
   console.log(sample,'sample');

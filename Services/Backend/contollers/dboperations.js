@@ -37,6 +37,24 @@ async function editsample(editdate){
     console.log(err);
 }
 }
+async function editPlannedDate(editdate){
+
+  try{
+    let pool = await sql.connect(config);
+    if(editdate.ConfirmedBusiness != null){
+    let insertComment = await pool.request()
+    .input('ArtemisID', sql.Int, editdate.ArtemisID)
+    .input('PlannedDate', sql.NVarChar, editdate.PlannedDate)
+    .query("UPDATE dbo.ArtemisProjectPlanNaction_4Test SET PlannedDate=@PlannedDate WHERE ArtemisID = @ArtemisID")
+    .then(res =>{
+    })
+    return insertComment;
+  }
+  }
+  catch (err) {
+    console.log(err);
+}
+}
 async function addSamples(sample) {
 
   try {
@@ -62,7 +80,16 @@ async function addSamples(sample) {
       // .query("SELECT ContactComment,DateUpdated,UpdatedBy,LastUpdatedDate,AddedDate,LastInScope FROM dbo.ArtemisProjectPlanNaction_4Test WHERE ArtemisID = @ArtemisID")
 
         })
-      }).then(result =>{
+      }).then(res =>{
+        console.log(sample.PlannedDate,'planned')
+        if(sample.PlannedDate !== null && sample.PlannedDate !== undefined){
+        pool.request()
+        .input('ArtemisID', sql.Int, sample.ArtemisID)
+        .input('PlannedDate', sql.NVarChar, sample.PlannedDate)
+        .query("UPDATE dbo.ArtemisProjectPlanNaction_4Test SET PlannedDate=@PlannedDate WHERE ArtemisID = @ArtemisID AND @PlannedDate IS NOT NULL")
+        }
+      })
+      .then(result =>{
        pool.request()
       .input('ContactComment', sql.NVarChar, sample.ContactComment)
       .input('ArtemisID', sql.Int, sample.ArtemisID)
@@ -127,4 +154,4 @@ async  function  getComments(productId) {
   }
 }
 
-module.exports = {getSamples:  getSamples, addSamples : addSamples, editsample : editsample, getSample: getSample, getComments: getComments};
+module.exports = {getSamples:  getSamples, addSamples : addSamples, editsample : editsample, getSample: getSample, getComments: getComments, editPlannedDate: editPlannedDate};

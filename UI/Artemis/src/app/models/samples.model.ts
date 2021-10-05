@@ -34,7 +34,7 @@ export class Samples {
   Wave: string;
   MigrationComment: string;
   HighestBucketPerDeployment: string;
-  PlannedDate: Date;
+  PlannedDate: any;
   AptManufacturer: string;
   AptModel: string;
   AptModelInfo: string;
