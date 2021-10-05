@@ -3,6 +3,7 @@
     "version": "1.0.0",
     "description": "",
     "main": "server.js",
+    "engines" : {"node" : "12.18.0"},
     "dependencies": {
         "express": "^4.17.1",
         "nodemon": "^2.0.12",
@@ -10,14 +11,12 @@
         "webpack": "^5.55.0",
         "mssql": "^7.2.0"
     },
-    "devDependencies": {
-        "webpack-cli": "^4.8.0"
-    },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "dev": "nodemon ./server.js localhost 3000",
-        "build": "npm run-script build",
-        "start": "nodemon server.bundle.js"
+        "start": "node server.js",
+        "server": "nodemon server.js",
+        "client": "npm start --prefix ./../../UI/Artemis",
+        "dev": "nodemon ./server.js localhost 3000"
     },
     "keywords": [],
     "author": "",

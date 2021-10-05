@@ -1,0 +1,138 @@
+/*_header.scss*/
+
+#{$ar}-form {
+    position: relative;
+    &__group {
+        position: relative;
+        padding-bottom: 35px;
+        &--divider {
+            border-bottom: solid 1px #ccc;
+        }
+    }
+    &__actions {
+        padding-top: 50px;
+    }
+}
+
+#{$ar}-label {
+    display: inline-block;
+    width: 100%;
+    position: relative;
+    color: #666666;
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    &--lined {
+        // border-bottom: solid 1px #eee;
+        margin-bottom: 10px;
+        padding-bottom: 10px;
+    }
+    &--linedbar {
+        border-bottom: solid 1px #eee;
+    }
+    &--required {
+        &:after {
+            content: "*";
+            margin-left: 5px;
+            color: $error;
+        }
+    }
+}
+
+#{$ar}-data {
+    font-weight: normal;
+    font-size: 14px;
+    color: #4b4b4b;
+    &--box {
+        margin-bottom: 23px;
+    }
+    &__item {
+        margin-right: 20px;
+        &-icn {
+            font-size: 30px;
+            vertical-align: middle;
+            margin-right: 8px;
+            color: $sc-md-blue;
+            &--yellow {
+                color: $pc-shell-yellow;
+            }
+        }
+    }
+    &__txt {}
+    &__val {
+        display: inline-block;
+        padding-left: 10px;
+        font-weight: 600;
+    }
+}
+
+#{$ar}-control {
+    $control: &;
+    height: 40px;
+    border: solid 1px $nc-lt-gray;
+    width: 100%;
+    border-radius: 3px;
+    font-size: 14px;
+    padding: 10px 15px;
+    &:hover,
+    &:active,
+    &:focus {
+        outline: none;
+        border: solid 1px $nc-mid-gray;
+    }
+    &:focus {
+        border: solid 1px $pc-shell-yellow;
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .03), 0 4px 5px 0 rgba(0, 0, 0, .04);
+    }
+    &--error {
+        border-color: $error;
+        &:hover,
+        &:active,
+        &:focus {
+            border: solid 1px $error;
+        }
+    }
+    &__error {
+        position: absolute;
+        color: $error;
+        font-size: 12px;
+        padding-top: 5px;
+    }
+    &--sm {
+        height: 35px;
+    }
+    &--w70 {
+        width: 70px;
+    }
+    &--search {
+        display: inline-flex;
+        align-items: center;
+        width: 300px;
+        padding: 0;
+        height: 35px;
+        overflow: hidden;
+        #{$control}__txt {
+            padding: 10px 15px;
+            border: none;
+            height: 100%;
+            width: 100%;
+            &:hover,
+            &:focus,
+            &:active {
+                outline: none;
+            }
+        }
+        #{$control}__icn {
+            padding: 6px 10px;
+            background: #fff;
+        }
+        &:focus-within {
+            border: solid 1px $pc-shell-yellow;
+        }
+    }
+}
+
+textarea#{$ar}-control {
+    min-height: 100px;
+}

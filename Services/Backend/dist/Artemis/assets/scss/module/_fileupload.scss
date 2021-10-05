@@ -1,0 +1,33 @@
+/*_fileupload.scss*/
+
+#{$ar}-fileupload{
+    display: flex;
+    flex-flow: row nowrap;
+    padding: 0;
+    @extend #{$ar}-control;
+
+    &__btn{
+        background-color: $sc-md-blue;
+        width: 100px;
+        color: $white;
+        line-height: 40px;
+        text-align: center;
+    }
+
+    &__control{
+        visibility: hidden;
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+
+    }
+
+    &__txt{
+        width: 100%;
+        padding: 10px 15px;
+        cursor: pointer;
+        @extend .ellipsis;
+    }
+}

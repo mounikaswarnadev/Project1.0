@@ -179,15 +179,17 @@
         >
           <ng-template let-dataItem="dataItem">
             <div>
-              {{ dataItem.PlannedDate | date: "dd/MM/yyyy h:mm a"}}
+              {{ convertDate(dataItem.PlannedDate) | date: "dd/MM/yyyy h:mm a"}}
             </div>
-            <kendo-datepicker
-              calendarType="infinite"
+            <kendo-datetimepicker
+            [format]="format"
               #planneddate
               name="dataItem.PlannedDate"
               (valueChange)="handleChange($event)"
               [(ngModel)]="dataItem.PlannedDate"
-            ></kendo-datepicker>
+            ></kendo-datetimepicker>
+            <!-- <kendo-datetimepicker [value]="dataItem.PlannedDate">
+            </kendo-datetimepicker> -->
           </ng-template>
         </kendo-grid-column>
         <kendo-grid-column
@@ -2381,7 +2383,7 @@
         class="p-a-2 p-t-0"
       >
 
-        <p style="color: #434343;">Planned date has been changed From: <strong>{{formGroup?.controls?.PlannedDate?.value | date: "dd/MM/yyyy h:mm a"}}</strong> To: <strong>{{this.commentsDTO.PlannedDate | date: "dd/MM/yyyy h:mm a"}}</strong>
+        <p style="color: #434343;">Planned date has been changed From: <strong>{{formGroup?.controls?.PlannedDate?.value | date: "dd/MM/yyyy"}}</strong> To: <strong>{{this.commentsDTO.PlannedDate | date: "dd/MM/yyyy"}}</strong>
         </p>
         <p class="">Reason:</p>
 

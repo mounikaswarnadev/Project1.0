@@ -1,0 +1,44 @@
+/*_toggler.scss*/
+
+#{$ar}-toggler{
+	$togBtn:&;
+	display:inline-block;
+
+	#{$togBtn}__checkbox{
+		position: absolute;
+		visibility: hidden;
+
+		+ #{$togBtn}__label{
+			display: inline-block;
+		    width: 40px;
+		    height: 18px;
+		    background-color: #f0f0f0;
+		    border: solid 2px #9B9B9B;
+		    border-radius: 15px;
+		    cursor: pointer;
+            box-sizing: content-box;
+
+			&:after{
+				content: "";
+			    display: inline-block;
+                @include mix-square(15px);
+			    background-color: #9B9B9B;
+			    border-radius: 20px;
+			    margin: 1px;
+			    position: relative;
+			    left:0;
+			    transition: all .2s ease-in-out;
+			}
+		}
+
+		&:checked{
+			+ #{$togBtn}__label{
+			    border: solid 2px $green;
+				&:after{
+                    background: $green;
+                    left:21px;
+				}
+			}
+		}
+	}
+}

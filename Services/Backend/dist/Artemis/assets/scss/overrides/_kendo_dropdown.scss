@@ -1,0 +1,33 @@
+/*_kendo_window.scss*/
+
+.k-dropdown-wrap .k-clear-value {
+  right: calc(calc( 1.42857143em + 8px) + 6px);
+}
+
+#{$ar}-kdropdown{
+    $kdropdown:&;
+    .k-dropdown-wrap{
+        border-color: $nc-lt-gray;
+        background: $white;
+
+        &:hover{
+            border:solid 1px $nc-mid-gray;
+            background: $white;
+        }
+
+        &.k-state-focused{
+            border:solid 1px $pc-shell-yellow;
+            box-shadow: 0 2px 4px 0 rgba(0,0,0,.03), 0 4px 5px 0 rgba(0,0,0,.04);
+        }
+
+        .k-input{
+            height: 38px;
+        }
+    }
+
+    &--error{
+        .k-dropdown-wrap{
+            border-color: $error;
+        }
+    }
+}

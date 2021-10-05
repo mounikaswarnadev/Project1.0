@@ -1,0 +1,78 @@
+/*_grid.scss*/
+
+#{$ar}-grid{
+    height: 100%;
+    overflow: auto;
+    overflow-y: overlay;
+    &__header{
+        table{
+            table-layout: fixed;
+            border-collapse: collapse;
+            width: 100%;
+            max-width: none;
+            thead{
+                background-color: #fff;
+                border-bottom:solid 1px #ccc;
+                th{
+                    font-size: 14px;
+                    color: #666;
+                    font-weight: normal;
+                    padding: 10px 15px;
+                    text-align: left;
+                }
+            }
+
+        }
+    }
+
+    &__content{
+        height: calc(100% - 37px);
+        overflow: auto;
+        overflow-y: overlay;
+        table{
+            table-layout: fixed;
+            border-collapse: collapse;
+            width: 100%;
+            max-width: none;
+            tbody{
+                td{
+                    font-size: 14px;
+                    color: #424342;
+                    font-weight: normal;
+                    padding: 15px;
+                    text-align: left;
+                    word-break: break-word;
+                    @extend .ellipsis;
+                }
+
+                tr{
+                    background: #fff;
+                    // &:nth-child(odd){
+                    //     //background-color: #fff;
+                    // }
+                    border-bottom: solid 1px #eee;
+                }
+            }
+        }
+    }
+
+    &--offset-164{
+        height: calc(100% - 164px)
+    }
+
+    &__cell{
+
+        &-lnk{
+            color: $link;
+            cursor: pointer;
+
+            &--red{
+                color: $link--red;
+            }
+
+            &--uline{
+                text-decoration: underline;
+            }
+        }
+    }
+}
